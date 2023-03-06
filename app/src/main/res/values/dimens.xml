@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="settings_left">20dp</dimen>
+    <dimen name="settings_right">12dp</dimen>
+    <dimen name="settings_height_buttons">61dp</dimen>
+</resources>

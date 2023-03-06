@@ -1,18 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    android:background="@color/background">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textSize="22sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingTop="24dp"
+        android:paddingStart="17dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="28dp"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_01"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:backgroundTint="@color/white"
+            android:text="@string/txt_search"
+            android:textColor="@color/dark_grey"
+            android:textSize="22sp"
+            android:textAlignment="center"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            tools:ignore="NestedWeights"
+            app:icon="@drawable/ic_search"
+            app:iconGravity="textStart"
+            app:iconPadding="10dp"
+            app:iconTint="@color/dark_grey"
+            app:cornerRadius="15dp"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_02"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:backgroundTint="@color/white"
+            android:text="@string/txt_library"
+            android:textColor="@color/dark_grey"
+            android:textSize="22sp"
+            android:textAlignment="center"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            tools:ignore="NestedWeights"
+            app:icon="@drawable/ic_library"
+            app:iconGravity="textStart"
+            app:iconPadding="10dp"
+            app:iconTint="@color/dark_grey"
+            app:cornerRadius="15dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_03"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:backgroundTint="@color/white"
+            android:text="@string/txt_settings"
+            android:textColor="@color/dark_grey"
+            android:textSize="22sp"
+            android:textAlignment="center"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            tools:ignore="NestedWeights"
+            app:icon="@drawable/ic_settings"
+            app:iconGravity="textStart"
+            app:iconPadding="10dp"
+            app:iconTint="@color/dark_grey"
+            app:cornerRadius="15dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

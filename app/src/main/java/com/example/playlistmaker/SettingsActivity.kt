@@ -6,31 +6,20 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 
-class MainActivity : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_settings)
         onClickListeners() // Запуск всех прослушивателей на активити
     }
 
     private fun onClickListeners(){
-        onClickSearch()
-        onClickLibrary()
-        onClickSettings()
+        onClickReturn()
     }
 
-    private fun onClickSearch(){
-        val item = findViewById<Button>(R.id.btn_01)
-        intentCall(item, SearchActivity())
-    }
-    private fun onClickLibrary(){
-        val item = findViewById<Button>(R.id.btn_02)
-        intentCall(item, LibraryActivity())
-    }
-
-    private fun onClickSettings(){
-        val item = findViewById<Button>(R.id.btn_03)
-        intentCall(item, SettingsActivity())
+    private fun onClickReturn(){
+        val item = findViewById<Button>(R.id.btn_04)
+        intentCall(item, MainActivity())
     }
 
     private fun intentCall(view: View, activity: AppCompatActivity){ // Общий вызов Intent
