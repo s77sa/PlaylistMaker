@@ -9,4 +9,6 @@
     <string name="txt_support">Write to support</string>
     <string name="txt_terms">Terms of use</string>
     <string name="txt_return">Return</string>
+    <string name="library_hello">Library</string>
+    <string name="search_hello">Search</string>
 </resources>

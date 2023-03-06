@@ -8,5 +8,7 @@
     <string name="txt_support">Написать в поддержку</string>
     <string name="txt_terms">Пользовательское соглашение</string>
     <string name="txt_return">Веруться</string>
+    <string name="library_hello">Library</string>
+    <string name="search_hello">Search</string>
 
 </resources>
