@@ -20,22 +20,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onClickSearch(){
-        val item = findViewById<Button>(R.id.btn_01)
-        intentCall(item, SearchActivity())
+        val item = findViewById<Button>(R.id.btn_search)
+        intentCall(item, SearchActivity::class.java)
     }
     private fun onClickLibrary(){
-        val item = findViewById<Button>(R.id.btn_02)
-        intentCall(item, LibraryActivity())
+        val item = findViewById<Button>(R.id.btn_library)
+        intentCall(item, LibraryActivity::class.java)
     }
 
     private fun onClickSettings(){
-        val item = findViewById<Button>(R.id.btn_03)
-        intentCall(item, SettingsActivity())
+        val item = findViewById<Button>(R.id.btn_settings)
+        intentCall(item, SettingsActivity::class.java)
     }
 
-    private fun intentCall(view: View, activity: AppCompatActivity){ // Общий вызов Intent
+    private fun intentCall(view: View, activityClass: Class<out AppCompatActivity>){ // Общий вызов Intent
         view.setOnClickListener{
-            val intent = Intent(this, activity::class.java)
+            val intent = Intent(this, activityClass)
             startActivity(intent)
         }
     }
