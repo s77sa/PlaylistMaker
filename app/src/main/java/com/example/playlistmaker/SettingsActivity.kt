@@ -23,11 +23,4 @@ class SettingsActivity : AppCompatActivity() {
             this.finish()
         }
     }
-// Не стал убирать эту функцию, считаю что она еще пригодиться в дальнейшем
-    private fun intentCall(view: View, activityClass: Class<out AppCompatActivity>){ // Общий вызов Intent
-        view.setOnClickListener{
-            val intent = Intent(this, activityClass)
-            startActivity(intent)
-        }
-    }
 }

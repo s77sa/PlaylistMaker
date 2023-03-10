@@ -13,23 +13,25 @@
         android:layout_height="56dp"
         android:orientation="horizontal">
 
-        <com.google.android.material.imageview.ShapeableImageView
+        <ImageView
             android:id="@+id/iv_settings_back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:backgroundTint="@color/white"
-            android:foreground="@drawable/ic_arrow"
-            android:foregroundGravity="center"
-            android:foregroundTint="@color/dark_grey" />
+            android:src="@drawable/ic_arrow"
+            app:tint="@color/dark_grey"
+            android:contentDescription="@string/txt_return" />
 
         <TextView
             android:id="@+id/tv_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="28dp"
             android:text="@string/txt_settings"
             android:textColor="@color/dark_grey"
             android:textSize="22sp" />
