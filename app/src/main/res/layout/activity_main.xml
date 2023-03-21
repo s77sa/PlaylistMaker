@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/background">
+    android:background="?attr/colorPrimary">
+<!--    android:background="@color/blue">-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +20,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="16dp"
             android:text="@string/app_name"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="@dimen/btn_main_text_size"/>
     </LinearLayout>
 
@@ -33,62 +34,41 @@
         android:paddingBottom="28dp"
         >
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.button.MaterialButton style="@style/MainButtonStyle"
             android:id="@+id/btn_search"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:backgroundTint="@color/white"
             android:text="@string/txt_search"
-            android:textColor="@color/dark_grey"
-            android:textSize="@dimen/btn_main_text_size"
-            android:textAlignment="center"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
             tools:ignore="NestedWeights"
+            android:textColor="?attr/colorPrimaryVariant"
+            android:backgroundTint="?attr/colorOnPrimary"
+            app:iconTint="?attr/colorPrimaryVariant"
             app:icon="@drawable/ic_search"
             app:iconGravity="textStart"
             app:iconPadding="10dp"
-            app:iconTint="@color/dark_grey"
-            app:cornerRadius="15dp"
-            android:textAllCaps="false"/>
+            app:cornerRadius="15dp"/>
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.button.MaterialButton style="@style/MainButtonStyle"
             android:id="@+id/btn_library"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:backgroundTint="@color/white"
             android:text="@string/txt_library"
-            android:textColor="@color/dark_grey"
-            android:textSize="@dimen/btn_main_text_size"
-            android:textAlignment="center"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:textColor="?attr/colorPrimaryVariant"
+            android:backgroundTint="?attr/colorOnPrimary"
+            app:iconTint="?attr/colorPrimaryVariant"
             tools:ignore="NestedWeights"
             app:icon="@drawable/ic_library"
             app:iconGravity="textStart"
             app:iconPadding="10dp"
-            app:iconTint="@color/dark_grey"
-            app:cornerRadius="15dp"
-            android:textAllCaps="false"/>
+            app:cornerRadius="15dp"/>
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.button.MaterialButton style="@style/MainButtonStyle"
             android:id="@+id/btn_settings"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:backgroundTint="@color/white"
             android:text="@string/txt_settings"
-            android:textColor="@color/dark_grey"
-            android:textSize="@dimen/btn_main_text_size"
-            android:textAlignment="center"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:textColor="?attr/colorPrimaryVariant"
+            android:backgroundTint="?attr/colorOnPrimary"
+            app:iconTint="?attr/colorPrimaryVariant"
             tools:ignore="NestedWeights"
             app:icon="@drawable/ic_settings"
             app:iconGravity="textStart"
             app:iconPadding="10dp"
-            app:iconTint="@color/dark_grey"
-            app:cornerRadius="15dp"
-            android:textAllCaps="false"/>
+            app:cornerRadius="15dp"/>
 
     </LinearLayout>
 
