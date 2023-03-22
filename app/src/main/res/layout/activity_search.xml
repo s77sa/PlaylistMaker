@@ -12,28 +12,14 @@
         android:layout_height="56dp"
         android:orientation="horizontal">
 
-        <ImageView
+        <ImageView style="@style/ImageViewHeaderStyle"
             android:id="@+id/iv_search_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:backgroundTint="?attr/colorPrimaryVariant"
-            android:src="@drawable/ic_arrow"
             app:tint="?attr/colorOnSecondary"
             android:contentDescription="@string/txt_return" />
 
-        <TextView
+        <TextView style="@style/TextViewHeaderStyle"
             android:id="@+id/tv_settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="28dp"
-            android:text="@string/txt_search"
-            android:textColor="?attr/colorOnSecondary"
-            android:textSize="22sp" />
+            android:text="@string/txt_search" />
 
     </LinearLayout>
 

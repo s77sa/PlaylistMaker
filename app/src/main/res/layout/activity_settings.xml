@@ -13,36 +13,23 @@
         android:layout_height="56dp"
         android:orientation="horizontal">
 
-        <ImageView
+        <ImageView style="@style/ImageViewHeaderStyle"
             android:id="@+id/iv_settings_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:backgroundTint="?attr/colorPrimaryVariant"
-            android:src="@drawable/ic_arrow"
             app:tint="?attr/colorOnSecondary"
             android:contentDescription="@string/txt_return" />
 
-        <TextView
+        <TextView style="@style/TextViewHeaderStyle"
             android:id="@+id/tv_settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="28dp"
-            android:text="@string/txt_settings"
-            android:textColor="?attr/colorOnSecondary"
-            android:textSize="22sp" />
+            android:text="@string/txt_settings"/>
+
     </LinearLayout>
 
-    <Switch style="@style/TextViewStyle"
+    <Switch style="@style/TextViewSearchStyle"
         android:id="@+id/switch_theme"
         android:text="@string/txt_dark_theme"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-    <TextView style="@style/TextViewStyle"
+    <TextView style="@style/TextViewSearchStyle"
         android:id="@+id/tv_share"
         android:text="@string/txt_share"
         android:gravity="center_vertical"
@@ -51,7 +38,7 @@
         app:drawableRightCompat="@drawable/ic_share"
         android:fontFamily="@font/ys_display_regular"/>
 
-    <TextView style="@style/TextViewStyle"
+    <TextView style="@style/TextViewSearchStyle"
         android:id="@+id/tv_support"
         android:text="@string/txt_support"
         android:gravity="center_vertical"
@@ -59,7 +46,7 @@
         app:drawableTint="?attr/colorSecondaryVariant"
         app:drawableRightCompat="@drawable/ic_support"/>
 
-    <TextView style="@style/TextViewStyle"
+    <TextView style="@style/TextViewSearchStyle"
         android:id="@+id/tv_terms"
         android:text="@string/txt_terms"
         android:gravity="center_vertical"
@@ -70,7 +57,7 @@
 <!--    Без этой заглушки у меня не работает анимация нажатия на последнем элементе-->
     <TextView
         android:id="@+id/tv_stub"
-        style="@style/TextViewStyle"
+        style="@style/TextViewSearchStyle"
         android:layout_height="0dp"/>
 
 </LinearLayout>
