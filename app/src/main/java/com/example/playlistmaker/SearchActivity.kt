@@ -1,18 +1,21 @@
 package com.example.playlistmaker
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var inputEditText: EditText
     private lateinit var clearButton: ImageView
-
+    private var searchText = ""
     companion object{
         const val TEXT_SEARCH = "first value"
     }
@@ -29,9 +32,8 @@ class SearchActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         Log.println(Log.INFO, "my_tag", "onSave_Search")
-        val editText = inputEditText.text.toString()
-        outState.putString(TEXT_SEARCH, editText)
-        Log.println(Log.INFO, "my_tag", "onSave_Search: $editText")
+        outState.putString(TEXT_SEARCH, searchText)
+        Log.println(Log.INFO, "my_tag", "onSave_Search: $searchText")
     }
 
     override fun onRestoreInstanceState(
@@ -44,6 +46,7 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.setText(txt)
         if (txt != null) {
             inputEditText.setSelection(txt.length)
+            searchText = txt
         }
     }
 
@@ -59,7 +62,8 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                // Empty
+                // Запись вводимого текста в глобальную переменную
+                searchText = inputEditText.text.toString()
             }
         }
         inputEditText.addTextChangedListener(simpleTextWatcher) // init text watcher
@@ -75,6 +79,12 @@ class SearchActivity : AppCompatActivity() {
     private fun onClickListeners(){
         onClickReturn()
         onClickSearchClear()
+        onClickClear()
+    }
+
+    private fun onClickClear(){ // Очистка строки поиска
+        val item = findViewById<ImageView>(R.id.iv_search_clear)
+        item.setOnClickListener(clickListener())
     }
 
     private fun onClickReturn(){ // Возврат на предыдущий экран
@@ -87,7 +97,14 @@ class SearchActivity : AppCompatActivity() {
         clearButton.setOnClickListener(clickListener())
     }
     private fun clearInputText(){ // Очистка поля ввода
+        // Очистка строки ввода
         inputEditText.setText("")
+        // Скрытие клавиатуры
+        val imm: InputMethodManager = this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        var view: View? = this.currentFocus
+        if (view != null) {
+            imm.hideSoftInputFromWindow(view.windowToken,0)
+        }
     }
 
     private fun clickListener() = View.OnClickListener { view ->

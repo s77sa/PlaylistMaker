@@ -12,6 +12,7 @@
     <string name="search_hello">Search</string>
     <string name="link_practicum_ad" translatable="false">https://practicum.yandex.ru/android-developer/</string>
     <string name="email_dest" translatable="false">s77sa@yandex.ru</string>
+    <string name="email_subject" translatable="false">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="email_text" translatable="false">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="link_terms" translatable="false">https://yandex.ru/legal/practicum_offer/</string>
     <string name="error_no_email" translatable="false">No mail clients</string>

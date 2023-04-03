@@ -1,5 +1,6 @@
 package com.example.playlistmaker.utils
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 //import android.content.ContextWrapper
@@ -26,11 +27,13 @@ class Intents {
         }
     }
 
-    fun intentEmail(activity: Activity, address: String, text: String)
+    @SuppressLint("QueryPermissionsNeeded")
+    fun intentEmail(activity: Activity, address: String, subject: String, text: String)
     {
         val shareIntent = Intent(Intent.ACTION_SENDTO)
         shareIntent.data = Uri.parse("mailto:")
         shareIntent.putExtra(Intent.EXTRA_EMAIL, address)
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT,subject)
         val putExtra = shareIntent.putExtra(Intent.EXTRA_TEXT, text)
         //try {
             if (putExtra.resolveActivity(activity.packageManager) != null) {
