@@ -39,13 +39,14 @@
                 />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="24dp"
             android:orientation="horizontal">
 
             <TextView style="@style/TextViewSearchItemStyle"
                 android:id="@+id/tv_artistName"
                 android:text="Test text"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="fill_horizontal"
@@ -59,7 +60,8 @@
             <TextView style="@style/TextViewSearchItemStyle"
                 android:id="@+id/tv_trackTime"
                 android:text="4:40"
-                android:layout_width="wrap_content"
+                android:layout_weight="0"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minWidth="16dp"
                 android:layout_gravity="fill_horizontal"
