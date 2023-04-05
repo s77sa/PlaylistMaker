@@ -1,3 +1,4 @@
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -19,6 +20,7 @@ class SearchViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         artistName.text = item.artistName
         trackTime.text = item.trackTime
         glideBind(item.artworkUrl100, artWork)
+//        Log.println(Log.INFO, "my_tag", "bind TrackData: ${trackName.}")
     }
 
     private fun glideBind(link: String, target: ImageView){
@@ -29,10 +31,4 @@ class SearchViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
             .transform(RoundedCorners(2))
             .into(target)
     }
-//    private val searchTrack: TextView = itemView.findViewById(R.id.tvNewsText)
-//
-//    fun bind(item: NewsData){
-//        //val tempText = item.text
-//        textNews.text = item.text
-//    }
 }

@@ -17,7 +17,6 @@
         android:layout_width="45dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_playlist_stub"/>
-<!--    app:tint="@color/text_gray"-->
 
     <LinearLayout
         android:layout_width="0dp"
@@ -33,7 +32,11 @@
                 android:layout_height="24dp"
                 android:textSize="16sp"
                 android:textColor="?attr/colorOnSecondary"
-                tools:text="Item" />
+                android:maxLines="1"
+                android:ellipsize="end"
+                app:autoSizeTextType="none"
+                tools:text="Item"
+                />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -45,7 +48,10 @@
                 android:text="Test text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="fill_horizontal"
                 android:textSize="11sp"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="?attr/colorSecondaryVariant"
                 app:drawableTint="?attr/colorSecondaryVariant"
                 app:drawableRightCompat="@drawable/ic_ellipse"/>
@@ -55,6 +61,9 @@
                 android:text="4:40"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minWidth="16dp"
+                android:layout_gravity="fill_horizontal"
+                android:maxLines="1"
                 android:textSize="11sp"
                 android:textColor="?attr/colorSecondaryVariant"/>
 
