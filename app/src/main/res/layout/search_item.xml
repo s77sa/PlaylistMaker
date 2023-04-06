@@ -7,7 +7,7 @@
     android:layout_height="64dp"
     android:orientation="horizontal"
     android:paddingStart="12dp"
-    android:paddingEnd="8dp"
+    android:paddingEnd="20dp"
     android:paddingTop="8dp"
     android:paddingBottom="8dp">
 
@@ -26,13 +26,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp" >
 
-            <TextView style="@style/TextViewSearchItemStyle"
+            <TextView style="@style/TextViewPrimarySearchItemStyle"
                 android:id="@+id/tv_trackName"
                 android:layout_width="match_parent"
                 android:layout_height="24dp"
-                android:textSize="16sp"
                 android:textColor="?attr/colorOnSecondary"
-                android:maxLines="1"
                 android:ellipsize="end"
                 app:autoSizeTextType="none"
                 tools:text="Item"
@@ -43,31 +41,21 @@
             android:layout_height="24dp"
             android:orientation="horizontal">
 
-            <TextView style="@style/TextViewSearchItemStyle"
+            <TextView style="@style/TextViewSecondarySearchItemStyle"
                 android:id="@+id/tv_artistName"
-                android:text="Test text"
+                tools:text="Test text"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="fill_horizontal"
-                android:textSize="11sp"
-                android:maxLines="1"
                 android:ellipsize="end"
-                android:textColor="?attr/colorSecondaryVariant"
-                app:drawableTint="?attr/colorSecondaryVariant"
                 app:drawableRightCompat="@drawable/ic_ellipse"/>
 
-            <TextView style="@style/TextViewSearchItemStyle"
+            <TextView style="@style/TextViewSecondarySearchItemStyle"
                 android:id="@+id/tv_trackTime"
-                android:text="4:40"
+                tools:text="4:40"
                 android:layout_weight="0"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minWidth="16dp"
-                android:layout_gravity="fill_horizontal"
-                android:maxLines="1"
-                android:textSize="11sp"
-                android:textColor="?attr/colorSecondaryVariant"/>
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
