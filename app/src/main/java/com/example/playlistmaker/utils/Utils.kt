@@ -1,16 +1,22 @@
 package com.example.playlistmaker.utils
 
+import android.app.Activity
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.example.playlistmaker.TrackData
 
 class Utils {
+    // Скрытие клавиатуры. Убрал сюда, так как может пригодиться в других активити
+    fun hideKeyboard(activity: Activity){
+        val imm: InputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        var view: View? = activity.currentFocus
+        if (view != null) {
+            imm.hideSoftInputFromWindow(view.windowToken,0)
+        }
+    }
+
     fun mockTrackData(): MutableList<TrackData> {
         return mutableListOf(
-            TrackData(
-                trackName = "Smells Like Teen Spirit Smells Like Teen Spirit Smells Like Teen Spirit",
-                artistName = "Nirvana Nirvana Nirvana Nirvana Nirvana Nirvana Nirvana Nirvana Nirvana",
-                trackTime = "5:01",
-                artworkUrl100 = "https://is5-ssl.mzstatic.com/image/thumb/Music115/v4/7b/58/c2/7b58c21a-2b51-2bb2-e59a-9bb9b96ad8c3/00602567924166.rgb.jpg/100x100bb.jpg"
-            ),
             TrackData(
                 trackName = "Smells Like Teen Spirit",
                 artistName = "Nirvana",
