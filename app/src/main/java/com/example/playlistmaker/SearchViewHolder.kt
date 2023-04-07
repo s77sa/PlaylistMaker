@@ -20,11 +20,10 @@ class SearchViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         artistName.text = item.artistName
         trackTime.text = item.trackTime
         glideBind(item.artworkUrl100, artWork)
-//        Log.println(Log.INFO, "my_tag", "bind TrackData: ${trackName.}")
     }
 
     private fun glideBind(link: String, target: ImageView){
-        Glide.with(target.context)
+        Glide.with(target)
             .load(link)
             .placeholder(R.drawable.ic_playlist_stub)
             .centerInside()

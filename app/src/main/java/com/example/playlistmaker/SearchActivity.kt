@@ -1,14 +1,12 @@
 package com.example.playlistmaker
 
 import SearchAdapter
-import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +17,6 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var inputEditText: EditText
     private lateinit var clearButton: ImageView
     private lateinit var rvItems: RecyclerView
-    //private lateinit var rvAdapter: SearchAdapter
     private var rvList: MutableList<TrackData> = mutableListOf()
     private var searchText = ""
 
@@ -30,7 +27,7 @@ class SearchActivity : AppCompatActivity() {
         inputEditText = findViewById<EditText>(R.id.et_search)
         clearButton = findViewById<ImageView>(R.id.iv_search_clear)
         rvItems = findViewById<RecyclerView>(R.id.rv_Search)
-        onClickListeners() // Запуск всех прослушивателей на активити
+        initOnClickListeners()
         textWatcherInit()
         rvItems.adapter = SearchAdapter(rvList) // Адаптер для RV
     }
@@ -56,7 +53,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
        // Заполнение RecyclerView
-    private fun searchResultToRecycle(){
+    private fun addSearchResultToRecycle(){
         Log.println(Log.INFO, "my_tag", "searchToRecycle")
         val start = rvList.size
         rvList.addAll(utils.mockTrackData())
@@ -91,7 +88,7 @@ class SearchActivity : AppCompatActivity() {
                 Log.println(Log.INFO, "my_tag", "afterTextChanged")
 
                 if (searchText.isNotEmpty()) {
-                    searchResultToRecycle() // Заполнение RecyclerView
+                    addSearchResultToRecycle() // Заполнение RecyclerView
                 }
             }
         }
@@ -106,7 +103,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun onClickListeners(){
+    private fun initOnClickListeners(){
         onClickReturn()
         onClickSearchClear()
         onClickClear()
