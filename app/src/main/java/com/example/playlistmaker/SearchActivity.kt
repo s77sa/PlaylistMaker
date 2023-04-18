@@ -19,10 +19,6 @@ import com.example.playlistmaker.retrofit.TracksRetrofit
 import com.example.playlistmaker.utils.Utils
 import retrofit2.Call
 import retrofit2.Callback
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import okhttp3.internal.wait
 import retrofit2.Response
 
 class SearchActivity : AppCompatActivity() {
@@ -33,8 +29,10 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var inputEditText: EditText
     private lateinit var clearButton: ImageView
     private lateinit var rvItems: RecyclerView
-    private var rvList: MutableList<TrackData> = mutableListOf()
+//    private var rvList: MutableList<TrackData> = mutableListOf()
+    private var rvList: MutableList<Track> = mutableListOf()
     private var searchText = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,10 +48,9 @@ class SearchActivity : AppCompatActivity() {
         queryInput(inputEditText)
     }
 
-   private fun queryInput(editText: EditText){
+    private fun queryInput(editText: EditText) {
         editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
                 Toast.makeText(applicationContext, "Search run", Toast.LENGTH_SHORT).show()
                 retrofitCall(editText.text.toString())
             }
@@ -61,20 +58,26 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun retrofitCall(text: String){
+    private fun retrofitCall(text: String) {
         val call = tracksApi.searchTracks(text)
-        call.enqueue(object: Callback<Tracks> {
+        call.enqueue(object : Callback<Tracks> {
             override fun onResponse(call: Call<Tracks>, response: Response<Tracks>) {
                 Log.println(Log.INFO, "my_tag", "onResponse")
+                if(response.code() == 200){
+                    Log.println(Log.INFO, "my_tag", "ResponseCode: ${response.code()}")
+                    Log.println(Log.INFO, "my_tag", "TrackCount: ${response.body()?.resultCount}")
+                    if(response.body()?.results?.isNotEmpty() == true){
+                        addSearchResultToRecycle(response.body()?.results!!)
+                    }
+                }
             }
             override fun onFailure(call: Call<Tracks>, t: Throwable) {
                 Log.println(Log.INFO, "my_tag", "onFailure")
             }
-
         })
     }
 
-    private fun retrofitInit(baseUrl: String){
+    private fun retrofitInit(baseUrl: String) {
         retrofit = TracksRetrofit(baseUrl, interceptor)
         tracksApi = retrofit.retrofitInit()
     }
@@ -100,21 +103,21 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-       // Заполнение RecyclerView
-    private fun addSearchResultToRecycle(){
-        Log.println(Log.INFO, "my_tag", "searchToRecycle")
-        val start = rvList.size
-        rvList.addAll(utils.mockTrackData())
-        rvItems.adapter?.notifyItemRangeInserted(start,rvList.size)
+    // Заполнение RecyclerView
+    private fun addSearchResultToRecycle(list: MutableList<Track>) {
+        Log.println(Log.INFO, "my_tag", "searchToRecycle2")
+        val start = list.size
+        rvList.addAll(list)
+        rvItems.adapter?.notifyItemRangeInserted(start, rvList.size)
         Log.println(Log.INFO, "my_tag", "searchToRecycle rvList: ${rvList.size}")
     }
 
     // Очистка RecycleView
-    private fun clearRecycle(){
+    private fun clearRecycle() {
         Log.println(Log.INFO, "my_tag", "clearRecycle")
         val count = rvList.size
         rvList.clear()
-        rvItems.adapter?.notifyItemRangeRemoved(0,count)
+        rvItems.adapter?.notifyItemRangeRemoved(0, count)
         Log.println(Log.INFO, "my_tag", "rvlist: ${rvList.size}")
     }
 
@@ -137,6 +140,7 @@ class SearchActivity : AppCompatActivity() {
 
                 if (searchText.isNotEmpty()) {
                     //addSearchResultToRecycle() // Заполнение RecyclerView
+
                 }
             }
         }
@@ -151,38 +155,38 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun onClickListenersInit(){
+    private fun onClickListenersInit() {
         onClickReturn()
         onClickSearchClear()
         onClickClear()
         onClickSearch()
     }
 
-    private fun onClickSearch(){ // Клик на строку поиска
+    private fun onClickSearch() { // Клик на строку поиска
         inputEditText.setOnClickListener(clickListener())
     }
 
-    private fun onClickClear(){ // Очистка строки поиска
+    private fun onClickClear() { // Очистка строки поиска
         val item = findViewById<ImageView>(R.id.iv_search_clear)
         item.setOnClickListener(clickListener())
     }
 
-    private fun onClickReturn(){ // Возврат на предыдущий экран
+    private fun onClickReturn() { // Возврат на предыдущий экран
         val item = findViewById<ImageView>(R.id.iv_search_back)
         item.setOnClickListener(clickListener())
     }
 
-    private fun onClickSearchClear(){ // Очистка ввода
+    private fun onClickSearchClear() { // Очистка ввода
         clearButton.setOnClickListener(clickListener())
     }
 
-    private fun clearInputText(){ // Очистка поля ввода
+    private fun clearInputText() { // Очистка поля ввода
         Log.println(Log.INFO, "my_tag", "clearInputText")
         // Очистка строки ввода
         inputEditText.setText("")
     }
 
-    private fun clearButtonListener(){
+    private fun clearButtonListener() {
         utils.hideKeyboard(this) // Скрытие клавиатуры
         clearInputText() // Очистка текста в поле поиска
         clearRecycle() // Очистка RV
@@ -195,7 +199,8 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    companion object{
+    companion object {
         const val TEXT_SEARCH = "first value"
     }
 }
+

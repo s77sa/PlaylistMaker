@@ -8,21 +8,7 @@ class TracksRetrofit (
     private val baseUrl: String,
     private val interceptorEnable: Boolean = false
 ){
-//    fun retrofitInit(): Retrofit {
-//        val retrofit: Retrofit = if (interceptorEnable){
-//            Retrofit.Builder().client(interceptorClient())
-//                .baseUrl(baseUrl)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build()
-//        }else {
-//            Retrofit.Builder()
-//                .baseUrl(baseUrl)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build()
-//        }
-//        return retrofit
-//        //return retrofit
-//    }
+
     fun retrofitInit(): TracksApi {
         val retrofit: Retrofit = if (interceptorEnable){
             Retrofit.Builder().client(interceptorClient())
