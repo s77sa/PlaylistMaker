@@ -17,5 +17,6 @@
     <string name="link_terms" translatable="false">https://yandex.ru/legal/practicum_offer/</string>
     <string name="error_no_email" translatable="false">No mail clients</string>
     <string name="error_no_browser" translatable="false">No internet browser</string>
+    <string name="searchBaseUrl" translatable="false">http://itunes.apple.com</string>
 
 </resources>

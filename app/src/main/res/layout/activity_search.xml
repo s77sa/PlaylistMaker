@@ -54,6 +54,7 @@
             android:hint="@string/txt_search"
             android:lines="1"
             android:singleLine="true"
+            android:imeOptions="actionDone"
             android:textColor="@color/black"
             android:textColorHint="?attr/colorOnSecondaryContainer"
             android:textCursorDrawable="@color/blue"

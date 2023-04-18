@@ -7,12 +7,28 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.retrofit.Track
+import com.example.playlistmaker.retrofit.Tracks
+import com.example.playlistmaker.retrofit.TracksApi
+import com.example.playlistmaker.retrofit.TracksRetrofit
 import com.example.playlistmaker.utils.Utils
+import retrofit2.Call
+import retrofit2.Callback
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.internal.wait
+import retrofit2.Response
 
 class SearchActivity : AppCompatActivity() {
+    private lateinit var tracksApi: TracksApi
+    private lateinit var retrofit: TracksRetrofit
+    private val interceptor: Boolean = true
     private val utils: Utils = Utils()
     private lateinit var inputEditText: EditText
     private lateinit var clearButton: ImageView
@@ -27,10 +43,42 @@ class SearchActivity : AppCompatActivity() {
         inputEditText = findViewById<EditText>(R.id.et_search)
         clearButton = findViewById<ImageView>(R.id.iv_search_clear)
         rvItems = findViewById<RecyclerView>(R.id.rv_Search)
-        initOnClickListeners()
+        onClickListenersInit()
         textWatcherInit()
+        retrofitInit(getString(R.string.searchBaseUrl))
         rvItems.adapter = SearchAdapter(rvList) // Адаптер для RV
+        queryInput(inputEditText)
     }
+
+   private fun queryInput(editText: EditText){
+        editText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
+                Toast.makeText(applicationContext, "Search run", Toast.LENGTH_SHORT).show()
+                retrofitCall(editText.text.toString())
+            }
+            false
+        }
+    }
+
+    private fun retrofitCall(text: String){
+        val call = tracksApi.searchTracks(text)
+        call.enqueue(object: Callback<Tracks> {
+            override fun onResponse(call: Call<Tracks>, response: Response<Tracks>) {
+                Log.println(Log.INFO, "my_tag", "onResponse")
+            }
+            override fun onFailure(call: Call<Tracks>, t: Throwable) {
+                Log.println(Log.INFO, "my_tag", "onFailure")
+            }
+
+        })
+    }
+
+    private fun retrofitInit(baseUrl: String){
+        retrofit = TracksRetrofit(baseUrl, interceptor)
+        tracksApi = retrofit.retrofitInit()
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         Log.println(Log.INFO, "my_tag", "onSave_Search")
@@ -88,7 +136,7 @@ class SearchActivity : AppCompatActivity() {
                 Log.println(Log.INFO, "my_tag", "afterTextChanged")
 
                 if (searchText.isNotEmpty()) {
-                    addSearchResultToRecycle() // Заполнение RecyclerView
+                    //addSearchResultToRecycle() // Заполнение RecyclerView
                 }
             }
         }
@@ -103,7 +151,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun initOnClickListeners(){
+    private fun onClickListenersInit(){
         onClickReturn()
         onClickSearchClear()
         onClickClear()
