@@ -43,24 +43,26 @@
             app:iconPadding="50dp"
             android:contentDescription="@string/txt_search" />
 
-        <EditText style="@style/EditTextStyle"
+        <EditText
             android:id="@+id/et_search"
+            style="@style/EditTextStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
+            android:background="@null"
             android:hint="@string/txt_search"
+            android:imeOptions="actionDone"
+            android:inputType="text"
             android:lines="1"
             android:singleLine="true"
-            android:imeOptions="actionDone"
             android:textColor="@color/black"
             android:textColorHint="?attr/colorOnSecondaryContainer"
             android:textCursorDrawable="@color/blue"
-            android:background="@null"
-            android:inputType="text"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
         <ImageView
             android:id="@+id/iv_search_clear"
@@ -76,10 +78,75 @@
 
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
+        android:visibility="gone"
         android:id="@+id/rv_Search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="24dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/layout_not_found"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="110dp"
+            tools:srcCompat="@drawable/ic_notfound" />
+
+        <TextView style="@style/TextViewSearchStub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/search_nothing"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_no_internet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="110dp"
+            tools:srcCompat="@drawable/ic_no_internet" />
+
+        <TextView style="@style/TextViewSearchStub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/search_no_internet_up"/>
+
+        <TextView style="@style/TextViewSearchStub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/search_no_internet_down"/>
+
+        <Button style="@style/ButtonSearchRefresh"
+            android:id="@+id/btn_search_refresh"
+            android:layout_width="92dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:padding="0dp"
+            android:text="@string/search_button_refresh"
+            app:cornerRadius="16dp"
+            tools:ignore="TouchTargetSizeCheck" />
+    </LinearLayout>
 
 </LinearLayout>
