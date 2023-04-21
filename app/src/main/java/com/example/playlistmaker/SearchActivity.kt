@@ -1,33 +1,35 @@
 package com.example.playlistmaker
 
-import android.app.Activity
+import SearchAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.utils.Utils
 
 class SearchActivity : AppCompatActivity() {
+    private val utils: Utils = Utils()
     private lateinit var inputEditText: EditText
     private lateinit var clearButton: ImageView
+    private lateinit var rvItems: RecyclerView
+    private var rvList: MutableList<TrackData> = mutableListOf()
     private var searchText = ""
-    companion object{
-        const val TEXT_SEARCH = "first value"
-    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         Log.println(Log.INFO, "my_tag", "onCreate_Search")
         inputEditText = findViewById<EditText>(R.id.et_search)
         clearButton = findViewById<ImageView>(R.id.iv_search_clear)
-
-        onClickListeners() // Запуск всех прослушивателей на активити
+        rvItems = findViewById<RecyclerView>(R.id.rv_Search)
+        initOnClickListeners()
         textWatcherInit()
+        rvItems.adapter = SearchAdapter(rvList) // Адаптер для RV
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -50,6 +52,24 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+       // Заполнение RecyclerView
+    private fun addSearchResultToRecycle(){
+        Log.println(Log.INFO, "my_tag", "searchToRecycle")
+        val start = rvList.size
+        rvList.addAll(utils.mockTrackData())
+        rvItems.adapter?.notifyItemRangeInserted(start,rvList.size)
+        Log.println(Log.INFO, "my_tag", "searchToRecycle rvList: ${rvList.size}")
+    }
+
+    // Очистка RecycleView
+    private fun clearRecycle(){
+        Log.println(Log.INFO, "my_tag", "clearRecycle")
+        val count = rvList.size
+        rvList.clear()
+        rvItems.adapter?.notifyItemRangeRemoved(0,count)
+        Log.println(Log.INFO, "my_tag", "rvlist: ${rvList.size}")
+    }
+
     private fun textWatcherInit() { // Инициализация TextWatcher
 
         val simpleTextWatcher = object : TextWatcher {
@@ -59,11 +79,17 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
+                Log.println(Log.INFO, "my_tag", "onTextChanged")
             }
 
             override fun afterTextChanged(s: Editable?) {
                 // Запись вводимого текста в глобальную переменную
                 searchText = inputEditText.text.toString()
+                Log.println(Log.INFO, "my_tag", "afterTextChanged")
+
+                if (searchText.isNotEmpty()) {
+                    addSearchResultToRecycle() // Заполнение RecyclerView
+                }
             }
         }
         inputEditText.addTextChangedListener(simpleTextWatcher) // init text watcher
@@ -76,10 +102,16 @@ class SearchActivity : AppCompatActivity() {
             View.VISIBLE
         }
     }
-    private fun onClickListeners(){
+
+    private fun initOnClickListeners(){
         onClickReturn()
         onClickSearchClear()
         onClickClear()
+        onClickSearch()
+    }
+
+    private fun onClickSearch(){ // Клик на строку поиска
+        inputEditText.setOnClickListener(clickListener())
     }
 
     private fun onClickClear(){ // Очистка строки поиска
@@ -91,26 +123,31 @@ class SearchActivity : AppCompatActivity() {
         val item = findViewById<ImageView>(R.id.iv_search_back)
         item.setOnClickListener(clickListener())
     }
+
     private fun onClickSearchClear(){ // Очистка ввода
-        //val item = findViewById<ImageView>(R.id.iv_search_clear)
-        //item.setOnClickListener(clickListener())
         clearButton.setOnClickListener(clickListener())
     }
+
     private fun clearInputText(){ // Очистка поля ввода
+        Log.println(Log.INFO, "my_tag", "clearInputText")
         // Очистка строки ввода
         inputEditText.setText("")
-        // Скрытие клавиатуры
-        val imm: InputMethodManager = this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        var view: View? = this.currentFocus
-        if (view != null) {
-            imm.hideSoftInputFromWindow(view.windowToken,0)
-        }
+    }
+
+    private fun clearButtonListener(){
+        utils.hideKeyboard(this) // Скрытие клавиатуры
+        clearInputText() // Очистка текста в поле поиска
+        clearRecycle() // Очистка RV
     }
 
     private fun clickListener() = View.OnClickListener { view ->
         when (view.id) {
             R.id.iv_search_back -> this.finish()
-            R.id.iv_search_clear -> clearInputText()
+            R.id.iv_search_clear -> clearButtonListener()
         }
+    }
+
+    companion object{
+        const val TEXT_SEARCH = "first value"
     }
 }
