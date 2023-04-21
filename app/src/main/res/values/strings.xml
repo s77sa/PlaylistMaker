@@ -19,6 +19,7 @@
     <string name="error_no_browser" translatable="false">No internet browser</string>
     <string name="searchBaseUrl" translatable="false">http://itunes.apple.com</string>
     <string name="search_nothing">Ничего не нашлось</string>
+    <string name="search_no_internet_full">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
     <string name="search_no_internet_up">Проблемы со связью</string>
     <string name="search_no_internet_down">Загрузка не удалась. Проверьте подключение к интернету</string>
     <string name="search_button_refresh">Обновить</string>

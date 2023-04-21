@@ -87,66 +87,65 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <LinearLayout
-        android:id="@+id/layout_not_found"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="110dp"
-            tools:srcCompat="@drawable/ic_notfound" />
-
-        <TextView style="@style/TextViewSearchStub"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/search_nothing"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_no_internet"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="visible">
+        android:layout_height="match_parent">
 
-        <ImageView
+        <LinearLayout
+            android:id="@+id/layout_is_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="110dp"
-            tools:srcCompat="@drawable/ic_no_internet" />
+            android:orientation="vertical"
+            android:visibility="gone">
 
-        <TextView style="@style/TextViewSearchStub"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_is_empty" />
+
+            <TextView style="@style/TextViewSearchStub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/search_nothing"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_no_internet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/search_no_internet_up"/>
-
-        <TextView style="@style/TextViewSearchStub"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/search_no_internet_down"/>
-
-        <Button style="@style/ButtonSearchRefresh"
-            android:id="@+id/btn_search_refresh"
-            android:layout_width="92dp"
-            android:layout_height="36dp"
             android:layout_gravity="center"
-            android:layout_marginTop="24dp"
-            android:padding="0dp"
-            android:text="@string/search_button_refresh"
-            app:cornerRadius="16dp"
-            tools:ignore="TouchTargetSizeCheck" />
-    </LinearLayout>
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_no_internet" />
+
+            <TextView
+                style="@style/TextViewSearchStub"
+                android:layout_width="312dp"
+                android:layout_height="88dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/search_no_internet_full" />
+
+            <Button
+                android:id="@+id/btn_search_refresh"
+                style="@style/ButtonSearchRefresh"
+                android:layout_width="92dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:padding="0dp"
+                android:text="@string/search_button_refresh"
+                app:cornerRadius="16dp"
+                tools:ignore="TouchTargetSizeCheck" />
+        </LinearLayout>
+
+    </FrameLayout>
 
 </LinearLayout>

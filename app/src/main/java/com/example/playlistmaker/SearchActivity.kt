@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import SearchAdapter
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -8,8 +9,10 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.retrofit.Track
@@ -29,11 +32,14 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var inputEditText: EditText
     private lateinit var clearButton: ImageView
     private lateinit var rvItems: RecyclerView
-//    private var rvList: MutableList<TrackData> = mutableListOf()
+    private lateinit var refreshButton: Button
+    private lateinit var layoutIsEmpty: LinearLayout
+    private lateinit var layoutNoInternet: LinearLayout
     private var rvList: MutableList<Track> = mutableListOf()
     private var searchText = ""
 
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -41,6 +47,9 @@ class SearchActivity : AppCompatActivity() {
         inputEditText = findViewById<EditText>(R.id.et_search)
         clearButton = findViewById<ImageView>(R.id.iv_search_clear)
         rvItems = findViewById<RecyclerView>(R.id.rv_Search)
+        refreshButton = findViewById<Button>(R.id.btn_search_refresh)
+        layoutIsEmpty = findViewById<LinearLayout>(R.id.layout_is_empty)
+        layoutNoInternet = findViewById<LinearLayout>(R.id.layout_no_internet)
         onClickListenersInit()
         textWatcherInit()
         retrofitInit(getString(R.string.searchBaseUrl))
@@ -62,17 +71,22 @@ class SearchActivity : AppCompatActivity() {
         val call = tracksApi.searchTracks(text)
         call.enqueue(object : Callback<Tracks> {
             override fun onResponse(call: Call<Tracks>, response: Response<Tracks>) {
-                Log.println(Log.INFO, "my_tag", "onResponse")
-                if(response.code() == 200){
-                    Log.println(Log.INFO, "my_tag", "ResponseCode: ${response.code()}")
+                Log.println(Log.INFO, "my_tag", "onResponse Code: ${response.code()}")
+                if (response.code() == 200) {
                     Log.println(Log.INFO, "my_tag", "TrackCount: ${response.body()?.resultCount}")
-                    if(response.body()?.results?.isNotEmpty() == true){
+                    if (response.body()?.results?.isNotEmpty() == true) {
                         addSearchResultToRecycle(response.body()?.results!!)
+                        showInvisibleLayout(1)
+                    } else {
+                        showInvisibleLayout(2)
                     }
                 }
+
             }
+
             override fun onFailure(call: Call<Tracks>, t: Throwable) {
                 Log.println(Log.INFO, "my_tag", "onFailure")
+                showInvisibleLayout(3)
             }
         })
     }
@@ -82,24 +96,20 @@ class SearchActivity : AppCompatActivity() {
         tracksApi = retrofit.retrofitInit()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        Log.println(Log.INFO, "my_tag", "onSave_Search")
-        outState.putString(TEXT_SEARCH, searchText)
-        Log.println(Log.INFO, "my_tag", "onSave_Search: $searchText")
+    private fun searchRefresh() {
+        showInvisibleLayout(0)
+        retrofitCall(searchText)
     }
 
-    override fun onRestoreInstanceState(
-        savedInstanceState: Bundle
-    ) {
-        super.onRestoreInstanceState(savedInstanceState)
-        Log.println(Log.INFO, "my_tag", "onRestore_Search")
-        val txt = savedInstanceState.getString(TEXT_SEARCH)
-        Log.println(Log.INFO, "my_tag", "onRestore_Search: $txt")
-        inputEditText.setText(txt)
-        if (txt != null) {
-            inputEditText.setSelection(txt.length)
-            searchText = txt
+    // 0 - hide all; 1 - show recycleView; 2 - show layout SerchIsEmpty; 3 - show layout NoInternet
+    private fun showInvisibleLayout(value: Int) {
+        rvItems.visibility = View.GONE
+        layoutNoInternet.visibility = View.GONE
+        layoutIsEmpty.visibility = View.GONE
+        when (value) {
+            1 -> rvItems.visibility = View.VISIBLE
+            2 -> layoutIsEmpty.visibility = View.VISIBLE
+            3 -> layoutNoInternet.visibility = View.VISIBLE
         }
     }
 
@@ -160,6 +170,11 @@ class SearchActivity : AppCompatActivity() {
         onClickSearchClear()
         onClickClear()
         onClickSearch()
+        onClickRefresh()
+    }
+
+    private fun onClickRefresh() {
+        refreshButton.setOnClickListener(clickListener())
     }
 
     private fun onClickSearch() { // Клик на строку поиска
@@ -184,6 +199,7 @@ class SearchActivity : AppCompatActivity() {
         Log.println(Log.INFO, "my_tag", "clearInputText")
         // Очистка строки ввода
         inputEditText.setText("")
+        showInvisibleLayout(0)
     }
 
     private fun clearButtonListener() {
@@ -196,6 +212,28 @@ class SearchActivity : AppCompatActivity() {
         when (view.id) {
             R.id.iv_search_back -> this.finish()
             R.id.iv_search_clear -> clearButtonListener()
+            R.id.btn_search_refresh -> searchRefresh()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.println(Log.INFO, "my_tag", "onSave_Search")
+        outState.putString(TEXT_SEARCH, searchText)
+        Log.println(Log.INFO, "my_tag", "onSave_Search: $searchText")
+    }
+
+    override fun onRestoreInstanceState(
+        savedInstanceState: Bundle
+    ) {
+        super.onRestoreInstanceState(savedInstanceState)
+        Log.println(Log.INFO, "my_tag", "onRestore_Search")
+        val txt = savedInstanceState.getString(TEXT_SEARCH)
+        Log.println(Log.INFO, "my_tag", "onRestore_Search: $txt")
+        inputEditText.setText(txt)
+        if (txt != null) {
+            inputEditText.setSelection(txt.length)
+            searchText = txt
         }
     }
 
