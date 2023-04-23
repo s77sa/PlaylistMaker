@@ -17,13 +17,10 @@ class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val artistName: TextView = itemView.findViewById((R.id.tv_artistName))
     private val trackTime: TextView = itemView.findViewById((R.id.tv_trackTime))
 
-    //    fun bind(item: TrackData){
     fun bind(item: Track) {
         trackName.text = item.trackName
         artistName.text = item.artistName
-//        trackTime.text = item.trackTime
         trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(item.trackTimeMillis)
-        //trackTime.text = item.trackTimeMillis.toString()
         glideBind(item.artworkUrl100, artWork)
     }
 

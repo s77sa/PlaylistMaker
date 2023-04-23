@@ -76,9 +76,9 @@ class SearchActivity : AppCompatActivity() {
                     Log.println(Log.INFO, "my_tag", "TrackCount: ${response.body()?.resultCount}")
                     if (response.body()?.results?.isNotEmpty() == true) {
                         addSearchResultToRecycle(response.body()?.results!!)
-                        showInvisibleLayout(1)
+                        showInvisibleLayout(State.SUCCESS)
                     } else {
-                        showInvisibleLayout(2)
+                        showInvisibleLayout(State.NOT_FOUND)
                     }
                 }
 
@@ -86,7 +86,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<Tracks>, t: Throwable) {
                 Log.println(Log.INFO, "my_tag", "onFailure")
-                showInvisibleLayout(3)
+                showInvisibleLayout(State.ERROR)
             }
         })
     }
@@ -97,19 +97,25 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchRefresh() {
-        showInvisibleLayout(0)
+        showInvisibleLayout()
         retrofitCall(searchText)
     }
 
-    // 0 - hide all; 1 - show recycleView; 2 - show layout SerchIsEmpty; 3 - show layout NoInternet
-    private fun showInvisibleLayout(value: Int) {
+    enum class State{
+        SUCCESS, // Show RV
+        ERROR, // Show Layout NoInternet
+        NOT_FOUND, // Show Layout Empty
+        HIDE_ALL // Hide all Layout and RV
+    }
+    private fun showInvisibleLayout(state: State = State.HIDE_ALL) {
         rvItems.visibility = View.GONE
         layoutNoInternet.visibility = View.GONE
         layoutIsEmpty.visibility = View.GONE
-        when (value) {
-            1 -> rvItems.visibility = View.VISIBLE
-            2 -> layoutIsEmpty.visibility = View.VISIBLE
-            3 -> layoutNoInternet.visibility = View.VISIBLE
+        when (state) {
+            State.SUCCESS -> rvItems.visibility = View.VISIBLE
+            State.NOT_FOUND -> layoutIsEmpty.visibility = View.VISIBLE
+            State.ERROR -> layoutNoInternet.visibility = View.VISIBLE
+            else -> {}
         }
     }
 
@@ -199,7 +205,7 @@ class SearchActivity : AppCompatActivity() {
         Log.println(Log.INFO, "my_tag", "clearInputText")
         // Очистка строки ввода
         inputEditText.setText("")
-        showInvisibleLayout(0)
+        showInvisibleLayout(State.HIDE_ALL)
     }
 
     private fun clearButtonListener() {

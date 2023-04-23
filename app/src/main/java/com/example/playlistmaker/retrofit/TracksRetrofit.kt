@@ -10,17 +10,11 @@ class TracksRetrofit (
 ){
 
     fun retrofitInit(): TracksApi {
-        val retrofit: Retrofit = if (interceptorEnable){
-            Retrofit.Builder().client(interceptorClient())
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }else {
-            Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
+        val retrofit: Retrofit = Retrofit.Builder().apply {
+            if(interceptorEnable) client(interceptorClient())
+            baseUrl(baseUrl)
+            addConverterFactory(GsonConverterFactory.create())
+        }.build()
         return retrofit.create(TracksApi::class.java)
     }
 
