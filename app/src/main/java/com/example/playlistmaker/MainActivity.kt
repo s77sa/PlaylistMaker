@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
         onClickSearch()
         onClickLibrary()
         onClickSettings()
-
     }
 
     private fun onClickSearch(){

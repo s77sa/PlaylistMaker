@@ -101,12 +101,6 @@ class SearchActivity : AppCompatActivity() {
         retrofitCall(searchText)
     }
 
-    enum class State{
-        SUCCESS, // Show RV
-        ERROR, // Show Layout NoInternet
-        NOT_FOUND, // Show Layout Empty
-        HIDE_ALL // Hide all Layout and RV
-    }
     private fun showInvisibleLayout(state: State = State.HIDE_ALL) {
         rvItems.visibility = View.GONE
         layoutNoInternet.visibility = View.GONE
@@ -241,6 +235,13 @@ class SearchActivity : AppCompatActivity() {
             inputEditText.setSelection(txt.length)
             searchText = txt
         }
+    }
+
+    enum class State{
+        SUCCESS, // Show RV
+        ERROR, // Show Layout NoInternet
+        NOT_FOUND, // Show Layout Empty
+        HIDE_ALL // Hide all Layout and RV
     }
 
     companion object {
