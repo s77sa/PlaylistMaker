@@ -6,8 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatDelegate
-import com.example.playlistmaker.utils.Intents
+import com.example.playlistmaker.models.Intents
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -30,12 +29,12 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun themeSwitchCheck()
     {
-        themeSwitcher.isChecked = (applicationContext as App).darkTheme
+        themeSwitcher.isChecked = (applicationContext as com.example.playlistmaker.models.App).darkTheme
     }
 
     private fun onClickThemeSwitch() {
         themeSwitcher.setOnCheckedChangeListener { _, checked ->
-            (applicationContext as App).switchThemeAndSave(checked)
+            (applicationContext as com.example.playlistmaker.models.App).switchThemeAndSave(checked)
         }
     }
 

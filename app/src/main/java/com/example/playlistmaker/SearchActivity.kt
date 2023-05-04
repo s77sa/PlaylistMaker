@@ -1,6 +1,5 @@
 package com.example.playlistmaker
 
-import SearchAdapter
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,11 +14,15 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.models.HISTORY_COUNT
+import com.example.playlistmaker.models.PLAY_LIST_PREFERENCES
+import com.example.playlistmaker.models.Preferences
+import com.example.playlistmaker.models.recyclerview.SearchAdapter
 import com.example.playlistmaker.retrofit.Track
 import com.example.playlistmaker.retrofit.Tracks
 import com.example.playlistmaker.retrofit.TracksApi
 import com.example.playlistmaker.retrofit.TracksRetrofit
-import com.example.playlistmaker.utils.Utils
+import com.example.playlistmaker.models.Utils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,13 +33,20 @@ class SearchActivity : AppCompatActivity() {
     private val interceptor: Boolean = true
     private val utils: Utils = Utils()
     private lateinit var inputEditText: EditText
-    private lateinit var clearButton: ImageView
     private lateinit var rvItems: RecyclerView
-    private lateinit var refreshButton: Button
+    private lateinit var rvHistory: RecyclerView
+    private lateinit var rvSearchAdapter: SearchAdapter
+    private lateinit var rvHistoryAdapter: SearchAdapter
+    private lateinit var buttonRefresh: Button
+    private lateinit var buttonClear: ImageView
+    private lateinit var buttonClearHistory: Button
     private lateinit var layoutIsEmpty: LinearLayout
     private lateinit var layoutNoInternet: LinearLayout
-    private var rvList: MutableList<Track> = mutableListOf()
+    private lateinit var layoutHistory: LinearLayout
+    private var searchTrackList: MutableList<Track> = mutableListOf()
+    private var historyTrackList: MutableList<Track> = mutableListOf()
     private var searchText = ""
+    private lateinit var preferences: Preferences
 
 
     @SuppressLint("MissingInflatedId")
@@ -45,16 +55,82 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
         Log.println(Log.INFO, "my_tag", "onCreate_Search")
         inputEditText = findViewById<EditText>(R.id.et_search)
-        clearButton = findViewById<ImageView>(R.id.iv_search_clear)
+        buttonClear = findViewById<ImageView>(R.id.iv_search_clear)
         rvItems = findViewById<RecyclerView>(R.id.rv_Search)
-        refreshButton = findViewById<Button>(R.id.btn_search_refresh)
+        buttonRefresh = findViewById<Button>(R.id.btn_search_refresh)
         layoutIsEmpty = findViewById<LinearLayout>(R.id.layout_is_empty)
         layoutNoInternet = findViewById<LinearLayout>(R.id.layout_no_internet)
-        onClickListenersInit()
+        layoutHistory = findViewById<LinearLayout>(R.id.layout_history)
+        buttonClearHistory = findViewById<Button>(R.id.btn_clear_history)
+        rvHistory = findViewById<RecyclerView>(R.id.rv_history)
         textWatcherInit()
         retrofitInit(getString(R.string.searchBaseUrl))
-        rvItems.adapter = SearchAdapter(rvList) // Адаптер для RV
+        rvSearchAdapter = SearchAdapter(searchTrackList) // Адаптер для RV
+        rvHistoryAdapter = SearchAdapter(historyTrackList)
+        rvItems.adapter = rvSearchAdapter
+        rvHistory.adapter = rvHistoryAdapter
+        onClickListenersInit()
         queryInput(inputEditText)
+        preferences = Preferences(getSharedPreferences(PLAY_LIST_PREFERENCES, MODE_PRIVATE))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadHistoryFromSharedPrefs()
+        showHistory()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveHistoryToSharedPrefs()
+    }
+
+    private fun saveHistoryToSharedPrefs() {
+        preferences.saveUserHistory(Tracks(historyTrackList.size, historyTrackList))
+    }
+
+    private fun loadHistoryFromSharedPrefs() {
+        historyTrackList.addAll(preferences.restoreUserHistory().results)
+    }
+
+    private fun clearHistory() {
+        if (historyTrackList.size > 0) historyTrackList.clear()
+        showInvisibleLayout(State.HIDE_ALL)
+    }
+
+    private fun showHistory() {
+        Log.println(Log.INFO, "my_tag", "showHistory: ${historyTrackList.size}")
+        if (historyTrackList.size > 0) {
+            updateHistoryRecycleView()
+            showInvisibleLayout(State.SHOW_HISTORY)
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun updateHistoryRecycleView() {
+        Log.println(Log.INFO, "my_tag", "updateHistoryRecycleView")
+        rvHistory.adapter?.notifyDataSetChanged()
+    }
+
+    private fun onFocusListenerSearchInit() {
+        inputEditText.setOnFocusChangeListener { _, hasFocus ->
+            Log.println(Log.INFO, "my_tag", "onFocusListenerInit")
+            if (hasFocus) {
+                showHistory()
+            }
+        }
+    }
+
+    private fun addTrackToHistory(item: Track) {
+        for (history in historyTrackList) {
+            if (history.trackId == item.trackId) {
+                historyTrackList.remove(item)
+            }
+        }
+        if (historyTrackList.size < HISTORY_COUNT) {
+            historyTrackList.add(0, item)
+        }
+        Log.println(Log.INFO, "my_tag", "trackHistorySize: ${historyTrackList.size}")
     }
 
     private fun queryInput(editText: EditText) {
@@ -62,6 +138,7 @@ class SearchActivity : AppCompatActivity() {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 Toast.makeText(applicationContext, "Search run", Toast.LENGTH_SHORT).show()
                 retrofitCall(editText.text.toString())
+                showInvisibleLayout(State.HIDE_ALL)
             }
             false
         }
@@ -105,10 +182,12 @@ class SearchActivity : AppCompatActivity() {
         rvItems.visibility = View.GONE
         layoutNoInternet.visibility = View.GONE
         layoutIsEmpty.visibility = View.GONE
+        layoutHistory.visibility = View.GONE
         when (state) {
             State.SUCCESS -> rvItems.visibility = View.VISIBLE
             State.NOT_FOUND -> layoutIsEmpty.visibility = View.VISIBLE
             State.ERROR -> layoutNoInternet.visibility = View.VISIBLE
+            State.SHOW_HISTORY -> layoutHistory.visibility = View.VISIBLE
             else -> {}
         }
     }
@@ -117,18 +196,18 @@ class SearchActivity : AppCompatActivity() {
     private fun addSearchResultToRecycle(list: MutableList<Track>) {
         Log.println(Log.INFO, "my_tag", "searchToRecycle2")
         val start = list.size
-        rvList.addAll(list)
-        rvItems.adapter?.notifyItemRangeInserted(start, rvList.size)
-        Log.println(Log.INFO, "my_tag", "searchToRecycle rvList: ${rvList.size}")
+        searchTrackList.addAll(list)
+        rvItems.adapter?.notifyItemRangeInserted(start, searchTrackList.size)
+        Log.println(Log.INFO, "my_tag", "searchToRecycle rvList: ${searchTrackList.size}")
     }
 
     // Очистка RecycleView
     private fun clearRecycle() {
         Log.println(Log.INFO, "my_tag", "clearRecycle")
-        val count = rvList.size
-        rvList.clear()
+        val count = searchTrackList.size
+        searchTrackList.clear()
         rvItems.adapter?.notifyItemRangeRemoved(0, count)
-        Log.println(Log.INFO, "my_tag", "rvlist: ${rvList.size}")
+        Log.println(Log.INFO, "my_tag", "rvlist: ${searchTrackList.size}")
     }
 
     private fun textWatcherInit() { // Инициализация TextWatcher
@@ -139,7 +218,8 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearButton.visibility = clearButtonVisibility(s)
+                buttonClear.visibility = clearButtonVisibility(s)
+                showHistory()
                 Log.println(Log.INFO, "my_tag", "onTextChanged")
             }
 
@@ -150,7 +230,6 @@ class SearchActivity : AppCompatActivity() {
 
                 if (searchText.isNotEmpty()) {
                     //addSearchResultToRecycle() // Заполнение RecyclerView
-
                 }
             }
         }
@@ -171,10 +250,30 @@ class SearchActivity : AppCompatActivity() {
         onClickClear()
         onClickSearch()
         onClickRefresh()
+        onClickRecyclerViewSearchItem()
+        onFocusListenerSearchInit()
+        onClickClearHistory()
+    }
+
+    private fun onClickRecyclerViewSearchItem() {
+        rvSearchAdapter.setOnClickListener(object : SearchAdapter.OnClickListener {
+            override fun onClick(position: Int, track: Track) {
+                Toast.makeText(
+                    applicationContext,
+                    "Add to history: ${track.trackName}",
+                    Toast.LENGTH_SHORT
+                ).show()
+                addTrackToHistory(track)
+            }
+        })
+    }
+
+    private fun onClickClearHistory() {
+        buttonClearHistory.setOnClickListener(clickListener())
     }
 
     private fun onClickRefresh() {
-        refreshButton.setOnClickListener(clickListener())
+        buttonRefresh.setOnClickListener(clickListener())
     }
 
     private fun onClickSearch() { // Клик на строку поиска
@@ -192,14 +291,14 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun onClickSearchClear() { // Очистка ввода
-        clearButton.setOnClickListener(clickListener())
+        buttonClear.setOnClickListener(clickListener())
     }
 
     private fun clearInputText() { // Очистка поля ввода
         Log.println(Log.INFO, "my_tag", "clearInputText")
         // Очистка строки ввода
         inputEditText.setText("")
-        showInvisibleLayout(State.HIDE_ALL)
+        showHistory()
     }
 
     private fun clearButtonListener() {
@@ -213,6 +312,7 @@ class SearchActivity : AppCompatActivity() {
             R.id.iv_search_back -> this.finish()
             R.id.iv_search_clear -> clearButtonListener()
             R.id.btn_search_refresh -> searchRefresh()
+            R.id.btn_clear_history -> clearHistory()
         }
     }
 
@@ -237,10 +337,11 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    enum class State{
+    enum class State {
         SUCCESS, // Show RV
         ERROR, // Show Layout NoInternet
         NOT_FOUND, // Show Layout Empty
+        SHOW_HISTORY, // Show Layout History
         HIDE_ALL // Hide all Layout and RV
     }
 

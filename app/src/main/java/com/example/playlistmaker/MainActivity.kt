@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import com.example.playlistmaker.utils.Intents
+import com.example.playlistmaker.models.Intents
 
 @Suppress("DUPLICATE_LABEL_IN_WHEN")
 class MainActivity : AppCompatActivity() {
