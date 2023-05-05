@@ -3,6 +3,7 @@ package com.example.playlistmaker
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.BoringLayout
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -17,12 +18,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.models.HISTORY_COUNT
 import com.example.playlistmaker.models.PLAY_LIST_PREFERENCES
 import com.example.playlistmaker.models.Preferences
-import com.example.playlistmaker.models.recyclerview.SearchAdapter
 import com.example.playlistmaker.retrofit.Track
 import com.example.playlistmaker.retrofit.Tracks
 import com.example.playlistmaker.retrofit.TracksApi
 import com.example.playlistmaker.retrofit.TracksRetrofit
 import com.example.playlistmaker.models.Utils
+import com.example.playlistmaker.recyclerview.SearchAdapter
+//import com.example.playlistmaker.recyclerview.SearchAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -90,7 +92,9 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun loadHistoryFromSharedPrefs() {
-        historyTrackList.addAll(preferences.restoreUserHistory().results)
+        val trackList: MutableList<Track>? = preferences.restoreUserHistory()?.results
+        if (trackList != null) historyTrackList.addAll(trackList)
+
     }
 
     private fun clearHistory() {
@@ -122,12 +126,18 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun addTrackToHistory(item: Track) {
+        var exist: Track? = null
         for (history in historyTrackList) {
             if (history.trackId == item.trackId) {
-                historyTrackList.remove(item)
+                exist = history
             }
         }
-        if (historyTrackList.size < HISTORY_COUNT) {
+        if(exist != null) {
+            historyTrackList.remove(exist)
+            historyTrackList.add(0, exist)
+        }
+        else{
+            if (historyTrackList.size >= HISTORY_COUNT) historyTrackList.removeAt(HISTORY_COUNT - 1)
             historyTrackList.add(0, item)
         }
         Log.println(Log.INFO, "my_tag", "trackHistorySize: ${historyTrackList.size}")

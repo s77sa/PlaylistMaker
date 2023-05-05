@@ -28,10 +28,12 @@ class Preferences(
             .apply()
     }
 
-    fun restoreUserHistory(): Tracks {
+    fun restoreUserHistory(): Tracks? {
         var tracks: Tracks? = null
         val json = sharedPreferences.getString(TRACKS_HISTORY, null)
-        tracks = Gson().fromJson(json, Tracks::class.java)
+        if (json != null) {
+            tracks = Gson().fromJson(json, Tracks::class.java)
+        }
         return tracks
     }
 }

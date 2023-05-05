@@ -1,4 +1,4 @@
-package com.example.playlistmaker.models.recyclerview
+package com.example.playlistmaker.recyclerview
 
 import android.view.View
 import android.widget.ImageView
