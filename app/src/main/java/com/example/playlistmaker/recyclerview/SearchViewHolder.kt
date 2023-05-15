@@ -1,3 +1,5 @@
+package com.example.playlistmaker.recyclerview
+
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -5,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.TrackData
 import com.example.playlistmaker.retrofit.Track
 import java.text.SimpleDateFormat
 import java.util.*
