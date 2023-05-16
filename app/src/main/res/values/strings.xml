@@ -25,5 +25,15 @@
     <string name="search_button_refresh">Обновить</string>
     <string name="search_history">Вы искали</string>
     <string name="search_button_clear_history">Очистить историю</string>
+    <string name="player_header_trackTime">Длительность</string>
+    <string name="player_header_collectionName">Альбом</string>
+    <string name="player_header_releaseDate">Год</string>
+    <string name="player_header_primaryGenreName">Жанр</string>
+    <string name="player_header_country">Страна</string>
+    <string name="trackImage" translatable="false">TrackImage</string>
+    <string name="track_name" translatable="false">Track Name</string>
+    <string name="artist_name" translatable="false">Artist Name</string>
+    <string name="CurrentTime" translatable="false">0:30</string>
+    <string name="todo" translatable="false">TODO</string>
 
 </resources>

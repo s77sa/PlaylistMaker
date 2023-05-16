@@ -16,6 +16,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.models.HISTORY_COUNT
+import com.example.playlistmaker.models.Intents2
 import com.example.playlistmaker.models.PLAY_LIST_PREFERENCES
 import com.example.playlistmaker.models.Preferences
 import com.example.playlistmaker.retrofit.Track
@@ -24,7 +25,6 @@ import com.example.playlistmaker.retrofit.TracksApi
 import com.example.playlistmaker.retrofit.TracksRetrofit
 import com.example.playlistmaker.models.Utils
 import com.example.playlistmaker.recyclerview.SearchAdapter
-//import com.example.playlistmaker.recyclerview.SearchAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,7 +33,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var tracksApi: TracksApi
     private lateinit var retrofit: TracksRetrofit
     private val interceptor: Boolean = true
-    private val utils: Utils = Utils()
+    //private val utils: Utils = Utils()
     private lateinit var inputEditText: EditText
     private lateinit var rvItems: RecyclerView
     private lateinit var rvHistory: RecyclerView
@@ -87,6 +87,11 @@ class SearchActivity : AppCompatActivity() {
         saveHistoryToSharedPrefs()
     }
 
+    private fun callPlayerActivity(){
+        Intents2.intentCall(this,PlayerActivity::class.java)
+//        intents.intentCall(this, SettingsActivity::class.java)
+    }
+
     private fun saveHistoryToSharedPrefs() {
         preferences.saveUserHistory(Tracks(historyTrackList.size, historyTrackList))
     }
@@ -100,6 +105,8 @@ class SearchActivity : AppCompatActivity() {
     private fun clearHistory() {
         if (historyTrackList.size > 0) historyTrackList.clear()
         showInvisibleLayout(State.HIDE_ALL)
+        Log.println(Log.INFO, "my_tag", "clearHistory")
+
     }
 
     private fun showHistory() {
@@ -256,7 +263,8 @@ class SearchActivity : AppCompatActivity() {
 
     private fun onClickListenersInit() {
         onClickReturn()
-        onClickSearchClear()
+        //onClickSearchClear()
+        buttonClear.setOnClickListener(clickListener())
         onClickClear()
         onClickSearch()
         onClickRefresh()
@@ -274,6 +282,7 @@ class SearchActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
                 addTrackToHistory(track)
+                callPlayerActivity()
             }
         })
     }
@@ -302,6 +311,10 @@ class SearchActivity : AppCompatActivity() {
 
     private fun onClickSearchClear() { // Очистка ввода
         buttonClear.setOnClickListener(clickListener())
+        // clearHistory()
+//        buttonClear.setOnClickListener{
+//            clearHistory()
+//        }
     }
 
     private fun clearInputText() { // Очистка поля ввода
@@ -312,7 +325,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun clearButtonListener() {
-        utils.hideKeyboard(this) // Скрытие клавиатуры
+        Utils.hideKeyboard(this) // Скрытие клавиатуры
         clearInputText() // Очистка текста в поле поиска
         clearRecycle() // Очистка RV
     }

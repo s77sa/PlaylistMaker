@@ -27,7 +27,7 @@ class Intents {
         }
     }
 
-    @SuppressLint("QueryPermissionsNeeded")
+    @SuppressLint("QueryPermissionsNeeded", "SuspiciousIndentation")
     fun intentEmail(activity: Activity, address: String, subject: String, text: String)
     {
         val shareIntent = Intent(Intent.ACTION_SENDTO)
@@ -35,17 +35,12 @@ class Intents {
         shareIntent.putExtra(Intent.EXTRA_EMAIL, address)
         shareIntent.putExtra(Intent.EXTRA_SUBJECT,subject)
         val putExtra = shareIntent.putExtra(Intent.EXTRA_TEXT, text)
-        //try {
             if (putExtra.resolveActivity(activity.packageManager) != null) {
                 activity.startActivity(shareIntent)
             }
             else {
                 Toast.makeText(activity, R.string.error_no_email, Toast.LENGTH_SHORT).show()
             }
-//        } catch (e: Exception)
-//        {
-//            Toast.makeText(activity, R.string.error_no_email, Toast.LENGTH_SHORT).show()
-//        }
     }
 
     fun intentSend(activity: Activity, text: String){

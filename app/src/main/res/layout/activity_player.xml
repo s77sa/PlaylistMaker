@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PlayerActivity">
+
+    <View
+        android:id="@+id/bottomView"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_player_back"
+        style="@style/ImageViewHeaderStyle"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="20dp"
+        android:contentDescription="@string/txt_return"
+        app:layout_constraintBottom_toBottomOf="@+id/bottomView"
+        app:layout_constraintStart_toStartOf="@+id/bottomView"
+        app:layout_constraintTop_toTopOf="@+id/bottomView"
+        app:tint="?attr/colorOnSecondary" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineFirstLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="24dp"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineFirstRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="24dp"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineSecondLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineSecondRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_artWorkBig"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="26dp"
+        android:contentDescription="@string/trackImage"
+        android:scaleType="fitCenter"
+        app:layout_constraintDimensionRatio="h,1:1"
+        app:layout_constraintEnd_toEndOf="@+id/guideLineFirstRight"
+        app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft"
+        app:layout_constraintTop_toBottomOf="@+id/bottomView"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <TextView
+        android:id="@+id/tv_TrackName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/ys_display_medium"
+        android:maxLines="1"
+        android:text="@string/track_name"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft"
+        app:layout_constraintTop_toBottomOf="@+id/iv_artWorkBig" />
+
+    <TextView
+        android:id="@+id/tv_ArtistName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/ys_display_medium"
+        android:maxLines="1"
+        android:text="@string/artist_name"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft"
+        app:layout_constraintTop_toBottomOf="@+id/tv_TrackName" />
+
+    <ImageView
+        android:id="@+id/iv_queue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_play"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft"
+        app:layout_constraintTop_toTopOf="@+id/iv_play"
+        app:srcCompat="@drawable/ic_button_queue"
+        android:contentDescription="@string/todo" />
+
+    <ImageView
+        android:id="@+id/iv_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideLineFirstRight"
+        app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ArtistName"
+        app:srcCompat="@drawable/ic_button_play"
+        android:contentDescription="@string/todo" />
+
+    <ImageView
+        android:id="@+id/iv_favorite_border"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_play"
+        app:layout_constraintEnd_toStartOf="@+id/guideLineFirstRight"
+        app:layout_constraintTop_toTopOf="@+id/iv_play"
+        app:srcCompat="@drawable/ic_button_favorite_border"
+        android:contentDescription="@string/todo" />
+
+    <TextView
+        android:id="@+id/tv_trackTimeCurrent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/ys_display_medium"
+        android:maxLines="1"
+        android:text="@string/CurrentTime"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/iv_play"
+        app:layout_constraintStart_toStartOf="@+id/iv_play"
+        app:layout_constraintTop_toBottomOf="@+id/iv_play" />
+
+    <TextView
+        android:id="@+id/tv_trackTimeHeader"
+        style="@style/TextViewPlayerDescriptionHeaders"
+        android:layout_marginTop="32dp"
+        android:text="@string/player_header_trackTime"
+        app:layout_constraintStart_toStartOf="@+id/guideLineSecondLeft"
+        app:layout_constraintTop_toBottomOf="@+id/tv_trackTimeCurrent" />
+
+    <TextView
+        android:id="@+id/tv_collectionNameHeader"
+        style="@style/TextViewPlayerDescriptionHeaders"
+        android:layout_marginTop="16dp"
+        android:text="@string/player_header_collectionName"
+        app:layout_constraintStart_toStartOf="@+id/guideLineSecondLeft"
+        app:layout_constraintTop_toBottomOf="@+id/tv_trackTimeHeader" />
+
+    <TextView
+        android:id="@+id/tv_releaseDateHeader"
+        style="@style/TextViewPlayerDescriptionHeaders"
+        android:layout_marginTop="16dp"
+        android:text="@string/player_header_releaseDate"
+        app:layout_constraintStart_toStartOf="@+id/guideLineSecondLeft"
+        app:layout_constraintTop_toBottomOf="@+id/tv_collectionNameHeader" />
+
+    <TextView
+        android:id="@+id/tv_primaryGenreHeader"
+        style="@style/TextViewPlayerDescriptionHeaders"
+        android:layout_marginTop="16dp"
+        android:text="@string/player_header_primaryGenreName"
+        app:layout_constraintStart_toStartOf="@+id/guideLineSecondLeft"
+        app:layout_constraintTop_toBottomOf="@+id/tv_releaseDateHeader" />
+
+    <TextView
+        android:id="@+id/tv_countryHeader"
+        style="@style/TextViewPlayerDescriptionHeaders"
+        android:layout_marginTop="16dp"
+        android:text="@string/player_header_country"
+        app:layout_constraintStart_toStartOf="@+id/guideLineSecondLeft"
+        app:layout_constraintTop_toBottomOf="@+id/tv_primaryGenreHeader" />
+
+    <TextView
+        android:id="@+id/tv_trackTimeValue"
+        style="@style/TextViewPlayerDescriptionValues"
+        android:text="@string/player_header_trackTime"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_trackTimeHeader"
+        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight"
+        app:layout_constraintTop_toTopOf="@+id/tv_trackTimeHeader" />
+
+
+    <TextView
+        android:id="@+id/tv_collectionNameValue"
+        style="@style/TextViewPlayerDescriptionValues"
+        android:layout_marginTop="16dp"
+        android:text="@string/player_header_collectionName"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_collectionNameHeader"
+        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight"
+        app:layout_constraintTop_toBottomOf="@+id/tv_trackTimeHeader" />
+
+    <TextView
+        android:id="@+id/tv_releaseDateValue"
+        style="@style/TextViewPlayerDescriptionValues"
+        android:layout_marginTop="16dp"
+        android:text="@string/player_header_releaseDate"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_releaseDateHeader"
+        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight"
+        app:layout_constraintTop_toBottomOf="@+id/tv_collectionNameValue" />
+
+    <TextView
+        android:id="@+id/tv_primaryGenreValue"
+        style="@style/TextViewPlayerDescriptionValues"
+        android:layout_marginTop="16dp"
+        android:text="@string/player_header_primaryGenreName"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_primaryGenreHeader"
+        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight"
+        app:layout_constraintTop_toBottomOf="@+id/tv_releaseDateValue" />
+
+    <TextView
+        android:id="@+id/tv_countryValue"
+        style="@style/TextViewPlayerDescriptionValues"
+        android:layout_marginTop="16dp"
+        android:text="@string/player_header_country"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_countryHeader"
+        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight"
+        app:layout_constraintTop_toBottomOf="@+id/tv_primaryGenreValue" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

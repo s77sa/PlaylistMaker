@@ -18,4 +18,9 @@
     <string name="search_button_refresh">Refresh</string>
     <string name="search_history">You searched</string>
     <string name="search_button_clear_history">Clear the history</string>
+    <string name="player_header_trackTime">Duration</string>
+    <string name="player_header_collectionName">Collection name</string>
+    <string name="player_header_releaseDate">Release year</string>
+    <string name="player_header_primaryGenreName">Genre</string>
+    <string name="player_header_country">Contry</string>
 </resources>
