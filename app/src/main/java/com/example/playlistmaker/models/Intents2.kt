@@ -14,15 +14,13 @@ import com.example.playlistmaker.retrofit.Track
 
 object Intents2 {
 
-    fun intentCallWithKey(activity: Activity, activityClass: Class<out AppCompatActivity>){
+    fun intentCall(activity: Activity, activityClass: Class<out AppCompatActivity>){
         val intent = Intent(activity, activityClass)
         activity.startActivity(intent)
     }
-    fun intentCall(activity: Activity, activityClass: Class<out AppCompatActivity>, track: Track){
+    fun intentCallWithKey(activity: Activity, activityClass: Class<out AppCompatActivity>, keyName: String, keyValue: String){
         val intent = Intent(activity, activityClass).apply {
-            for(key in track::class.members){
-                putExtra(key.name,key.javaClass.getResource())
-            }
+            putExtra(keyName, keyValue)
         }
         activity.startActivity(intent)
     }

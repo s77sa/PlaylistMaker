@@ -63,7 +63,7 @@
         app:layout_constraintEnd_toEndOf="@+id/guideLineFirstRight"
         app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft"
         app:layout_constraintTop_toBottomOf="@+id/bottomView"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        android:src="@drawable/ic_playlist_stub" />
 
     <TextView
         android:id="@+id/tv_TrackName"
@@ -92,7 +92,8 @@
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft"
         app:layout_constraintTop_toTopOf="@+id/iv_play"
-        app:srcCompat="@drawable/ic_button_queue"/>
+        app:srcCompat="@drawable/ic_button_queue"
+        android:contentDescription="@string/buttonDescription"/>
 
     <ImageView
         android:id="@+id/iv_play"
@@ -101,7 +102,8 @@
         app:layout_constraintBottom_toTopOf="@+id/tv_trackTimeCurrent"
         app:layout_constraintEnd_toStartOf="@+id/guideLineFirstRight"
         app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft"
-        app:srcCompat="@drawable/ic_button_play" />
+        app:srcCompat="@drawable/ic_button_play"
+        android:contentDescription="@string/buttonDescription"/>
 
     <ImageView
         android:id="@+id/iv_favorite_border"
@@ -109,7 +111,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/iv_play"
         app:layout_constraintEnd_toStartOf="@+id/guideLineFirstRight"
         app:layout_constraintTop_toTopOf="@+id/iv_play"
-        app:srcCompat="@drawable/ic_button_favorite_border"/>
+        app:srcCompat="@drawable/ic_button_favorite_border"
+        android:contentDescription="@string/buttonDescription"/>
 
     <TextView
         android:id="@+id/tv_trackTimeCurrent"

@@ -3,7 +3,6 @@ package com.example.playlistmaker
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.BoringLayout
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -25,15 +24,17 @@ import com.example.playlistmaker.retrofit.TracksApi
 import com.example.playlistmaker.retrofit.TracksRetrofit
 import com.example.playlistmaker.models.Utils
 import com.example.playlistmaker.recyclerview.SearchAdapter
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+const val KEY_INTENT_PLAYER_ACTIVITY: String = "track"
 class SearchActivity : AppCompatActivity() {
     private lateinit var tracksApi: TracksApi
     private lateinit var retrofit: TracksRetrofit
     private val interceptor: Boolean = true
-    //private val utils: Utils = Utils()
     private lateinit var inputEditText: EditText
     private lateinit var rvItems: RecyclerView
     private lateinit var rvHistory: RecyclerView
@@ -56,15 +57,15 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         Log.println(Log.INFO, "my_tag", "onCreate_Search")
-        inputEditText = findViewById<EditText>(R.id.et_search)
-        buttonClear = findViewById<ImageView>(R.id.iv_search_clear)
-        rvItems = findViewById<RecyclerView>(R.id.rv_Search)
-        buttonRefresh = findViewById<Button>(R.id.btn_search_refresh)
-        layoutIsEmpty = findViewById<LinearLayout>(R.id.layout_is_empty)
-        layoutNoInternet = findViewById<LinearLayout>(R.id.layout_no_internet)
-        layoutHistory = findViewById<LinearLayout>(R.id.layout_history)
-        buttonClearHistory = findViewById<Button>(R.id.btn_clear_history)
-        rvHistory = findViewById<RecyclerView>(R.id.rv_history)
+        inputEditText = findViewById(R.id.et_search)
+        buttonClear = findViewById(R.id.iv_search_clear)
+        rvItems = findViewById(R.id.rv_Search)
+        buttonRefresh = findViewById(R.id.btn_search_refresh)
+        layoutIsEmpty = findViewById(R.id.layout_is_empty)
+        layoutNoInternet = findViewById(R.id.layout_no_internet)
+        layoutHistory = findViewById(R.id.layout_history)
+        buttonClearHistory = findViewById(R.id.btn_clear_history)
+        rvHistory = findViewById(R.id.rv_history)
         textWatcherInit()
         retrofitInit(getString(R.string.searchBaseUrl))
         rvSearchAdapter = SearchAdapter(searchTrackList) // Адаптер для RV
@@ -87,18 +88,32 @@ class SearchActivity : AppCompatActivity() {
         saveHistoryToSharedPrefs()
     }
 
-    private fun callPlayerActivity(){
-        Intents2.intentCall(this,PlayerActivity::class.java)
-//        intents.intentCall(this, SettingsActivity::class.java)
+    private fun callPlayerActivity(trackValue: Track){
+        val trackJson = convertTrackToJson(trackValue)
+        Intents2.intentCallWithKey(
+            this,
+            PlayerActivity::class.java,
+            KEY_INTENT_PLAYER_ACTIVITY,
+            trackJson)
+    }
+
+    private fun convertTrackToJson(track: Track): String {
+        val gson: Gson = GsonBuilder().create()
+        return gson.toJson(track)
     }
 
     private fun saveHistoryToSharedPrefs() {
         preferences.saveUserHistory(Tracks(historyTrackList.size, historyTrackList))
+        Log.println(Log.INFO, "my_tag", "saveHistoryToSharedPrefs: ${historyTrackList.size}")
     }
 
     private fun loadHistoryFromSharedPrefs() {
-        val trackList: MutableList<Track>? = preferences.restoreUserHistory()?.results
-        if (trackList != null) historyTrackList.addAll(trackList)
+        val newTrackList: MutableList<Track>? = preferences.restoreUserHistory()?.results
+        if (newTrackList != null){
+            if (historyTrackList.size > 0 && newTrackList.size > 0) historyTrackList.clear()
+            historyTrackList.addAll(newTrackList)
+        }
+        Log.println(Log.INFO, "my_tag", "loadHistoryFromSharedPrefs: ${historyTrackList.size}")
 
     }
 
@@ -175,11 +190,9 @@ class SearchActivity : AppCompatActivity() {
                         showInvisibleLayout(State.NOT_FOUND)
                     }
                 }
-
             }
-
             override fun onFailure(call: Call<Tracks>, t: Throwable) {
-                Log.println(Log.INFO, "my_tag", "onFailure")
+                Log.println(Log.INFO, "my_tag", "retrofitCall onFailure ${t.message}")
                 showInvisibleLayout(State.ERROR)
             }
         })
@@ -263,14 +276,22 @@ class SearchActivity : AppCompatActivity() {
 
     private fun onClickListenersInit() {
         onClickReturn()
-        //onClickSearchClear()
         buttonClear.setOnClickListener(clickListener())
         onClickClear()
         onClickSearch()
         onClickRefresh()
         onClickRecyclerViewSearchItem()
+        onClickRecyclerViewHistoryItem()
         onFocusListenerSearchInit()
         onClickClearHistory()
+    }
+
+    private fun onClickRecyclerViewHistoryItem() {
+        rvHistoryAdapter.setOnClickListener(object : SearchAdapter.OnClickListener {
+            override fun onClick(position: Int, track: Track) {
+                callPlayerActivity(track)
+            }
+        })
     }
 
     private fun onClickRecyclerViewSearchItem() {
@@ -282,7 +303,7 @@ class SearchActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
                 addTrackToHistory(track)
-                callPlayerActivity()
+                callPlayerActivity(track)
             }
         })
     }
@@ -307,14 +328,6 @@ class SearchActivity : AppCompatActivity() {
     private fun onClickReturn() { // Возврат на предыдущий экран
         val item = findViewById<ImageView>(R.id.iv_search_back)
         item.setOnClickListener(clickListener())
-    }
-
-    private fun onClickSearchClear() { // Очистка ввода
-        buttonClear.setOnClickListener(clickListener())
-        // clearHistory()
-//        buttonClear.setOnClickListener{
-//            clearHistory()
-//        }
     }
 
     private fun clearInputText() { // Очистка поля ввода
