@@ -9,11 +9,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 //import androidx.core.content.ContextCompat.startActivity
 import com.example.playlistmaker.R
+import com.example.playlistmaker.retrofit.Track
 
 
 object Intents2 {
-    fun intentCall(activity: Activity, activityClass: Class<out AppCompatActivity>){
+
+    fun intentCallWithKey(activity: Activity, activityClass: Class<out AppCompatActivity>){
         val intent = Intent(activity, activityClass)
+        activity.startActivity(intent)
+    }
+    fun intentCall(activity: Activity, activityClass: Class<out AppCompatActivity>, track: Track){
+        val intent = Intent(activity, activityClass).apply {
+            for(key in track::class.members){
+                putExtra(key.name,key.javaClass.getResource())
+            }
+        }
         activity.startActivity(intent)
     }
 

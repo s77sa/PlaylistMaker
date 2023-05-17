@@ -35,5 +35,6 @@
     <string name="artist_name" translatable="false">Artist Name</string>
     <string name="CurrentTime" translatable="false">0:30</string>
     <string name="todo" translatable="false">TODO</string>
+    <string name="buttonDescription" translatable="false">Button</string>
 
 </resources>

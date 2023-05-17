@@ -29,33 +29,25 @@
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideLineFirstLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        style="@style/PlayerGuideline"
         app:layout_constraintGuide_begin="24dp"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideLineFirstRight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        style="@style/PlayerGuideline"
         app:layout_constraintGuide_end="24dp"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideLineSecondLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        style="@style/PlayerGuideline"
         app:layout_constraintGuide_begin="16dp"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideLineSecondRight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        style="@style/PlayerGuideline"
         app:layout_constraintGuide_end="16dp"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -63,10 +55,11 @@
         android:id="@+id/iv_artWorkBig"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="26dp"
         android:contentDescription="@string/trackImage"
+        app:layout_constraintBottom_toTopOf="@+id/tv_TrackName"
+        android:layout_marginTop="26dp"
+        android:layout_marginBottom="24dp"
         android:scaleType="fitCenter"
-        app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toEndOf="@+id/guideLineFirstRight"
         app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft"
         app:layout_constraintTop_toBottomOf="@+id/bottomView"
@@ -74,119 +67,104 @@
 
     <TextView
         android:id="@+id/tv_TrackName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        style="@style/PlayerTextViewDescriptionValues"
         android:fontFamily="@font/ys_display_medium"
-        android:maxLines="1"
         android:text="@string/track_name"
-        android:textColor="@color/black"
         android:textSize="22sp"
-        app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft"
-        app:layout_constraintTop_toBottomOf="@+id/iv_artWorkBig" />
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_ArtistName"
+        app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft" />
 
     <TextView
         android:id="@+id/tv_ArtistName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        style="@style/PlayerTextViewDescriptionValues"
         android:fontFamily="@font/ys_display_medium"
-        android:maxLines="1"
         android:text="@string/artist_name"
-        android:textColor="@color/black"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft"
-        app:layout_constraintTop_toBottomOf="@+id/tv_TrackName" />
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/iv_play"
+        app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft" />
 
     <ImageView
         android:id="@+id/iv_queue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/PlayerButtonsRound"
         app:layout_constraintBottom_toBottomOf="@+id/iv_play"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft"
         app:layout_constraintTop_toTopOf="@+id/iv_play"
-        app:srcCompat="@drawable/ic_button_queue"
-        android:contentDescription="@string/todo" />
+        app:srcCompat="@drawable/ic_button_queue"/>
 
     <ImageView
         android:id="@+id/iv_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        style="@style/PlayerButtonsRound"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_trackTimeCurrent"
         app:layout_constraintEnd_toStartOf="@+id/guideLineFirstRight"
         app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft"
-        app:layout_constraintTop_toBottomOf="@+id/tv_ArtistName"
-        app:srcCompat="@drawable/ic_button_play"
-        android:contentDescription="@string/todo" />
+        app:srcCompat="@drawable/ic_button_play" />
 
     <ImageView
         android:id="@+id/iv_favorite_border"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/PlayerButtonsRound"
         app:layout_constraintBottom_toBottomOf="@+id/iv_play"
         app:layout_constraintEnd_toStartOf="@+id/guideLineFirstRight"
         app:layout_constraintTop_toTopOf="@+id/iv_play"
-        app:srcCompat="@drawable/ic_button_favorite_border"
-        android:contentDescription="@string/todo" />
+        app:srcCompat="@drawable/ic_button_favorite_border"/>
 
     <TextView
         android:id="@+id/tv_trackTimeCurrent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        style="@style/PlayerTextViewDescriptionValues"
         android:fontFamily="@font/ys_display_medium"
-        android:maxLines="1"
         android:text="@string/CurrentTime"
-        android:textColor="@color/black"
         android:textSize="14sp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_trackTimeHeader"
         app:layout_constraintEnd_toEndOf="@+id/iv_play"
-        app:layout_constraintStart_toStartOf="@+id/iv_play"
-        app:layout_constraintTop_toBottomOf="@+id/iv_play" />
+        app:layout_constraintStart_toStartOf="@+id/iv_play" />
 
     <TextView
         android:id="@+id/tv_trackTimeHeader"
-        style="@style/TextViewPlayerDescriptionHeaders"
-        android:layout_marginTop="32dp"
+        style="@style/PlayerTextViewDescriptionHeaders"
+        android:layout_marginBottom="16dp"
         android:text="@string/player_header_trackTime"
-        app:layout_constraintStart_toStartOf="@+id/guideLineSecondLeft"
-        app:layout_constraintTop_toBottomOf="@+id/tv_trackTimeCurrent" />
+        app:layout_constraintBottom_toTopOf="@+id/tv_collectionNameHeader"
+        app:layout_constraintStart_toStartOf="@+id/guideLineSecondLeft" />
 
     <TextView
         android:id="@+id/tv_collectionNameHeader"
-        style="@style/TextViewPlayerDescriptionHeaders"
-        android:layout_marginTop="16dp"
+        style="@style/PlayerTextViewDescriptionHeaders"
+        android:layout_marginBottom="16dp"
         android:text="@string/player_header_collectionName"
-        app:layout_constraintStart_toStartOf="@+id/guideLineSecondLeft"
-        app:layout_constraintTop_toBottomOf="@+id/tv_trackTimeHeader" />
+        app:layout_constraintBottom_toTopOf="@+id/tv_releaseDateHeader"
+        app:layout_constraintStart_toStartOf="@+id/guideLineSecondLeft" />
 
     <TextView
         android:id="@+id/tv_releaseDateHeader"
-        style="@style/TextViewPlayerDescriptionHeaders"
-        android:layout_marginTop="16dp"
+        style="@style/PlayerTextViewDescriptionHeaders"
+        android:layout_marginBottom="16dp"
         android:text="@string/player_header_releaseDate"
-        app:layout_constraintStart_toStartOf="@+id/guideLineSecondLeft"
-        app:layout_constraintTop_toBottomOf="@+id/tv_collectionNameHeader" />
+        app:layout_constraintBottom_toTopOf="@+id/tv_primaryGenreHeader"
+        app:layout_constraintStart_toStartOf="@+id/guideLineSecondLeft" />
 
     <TextView
         android:id="@+id/tv_primaryGenreHeader"
-        style="@style/TextViewPlayerDescriptionHeaders"
-        android:layout_marginTop="16dp"
+        style="@style/PlayerTextViewDescriptionHeaders"
+        android:layout_marginBottom="16dp"
         android:text="@string/player_header_primaryGenreName"
-        app:layout_constraintStart_toStartOf="@+id/guideLineSecondLeft"
-        app:layout_constraintTop_toBottomOf="@+id/tv_releaseDateHeader" />
+        app:layout_constraintBottom_toTopOf="@+id/tv_countryHeader"
+        app:layout_constraintStart_toStartOf="@+id/guideLineSecondLeft" />
 
     <TextView
         android:id="@+id/tv_countryHeader"
-        style="@style/TextViewPlayerDescriptionHeaders"
-        android:layout_marginTop="16dp"
+        style="@style/PlayerTextViewDescriptionHeaders"
+        android:layout_marginBottom="28dp"
         android:text="@string/player_header_country"
-        app:layout_constraintStart_toStartOf="@+id/guideLineSecondLeft"
-        app:layout_constraintTop_toBottomOf="@+id/tv_primaryGenreHeader" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideLineSecondLeft" />
 
     <TextView
         android:id="@+id/tv_trackTimeValue"
-        style="@style/TextViewPlayerDescriptionValues"
+        style="@style/PlayerTextViewDescriptionValues"
         android:text="@string/player_header_trackTime"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_trackTimeHeader"
         app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight"
@@ -195,38 +173,30 @@
 
     <TextView
         android:id="@+id/tv_collectionNameValue"
-        style="@style/TextViewPlayerDescriptionValues"
-        android:layout_marginTop="16dp"
+        style="@style/PlayerTextViewDescriptionValues"
         android:text="@string/player_header_collectionName"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_collectionNameHeader"
-        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight"
-        app:layout_constraintTop_toBottomOf="@+id/tv_trackTimeHeader" />
+        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight" />
 
     <TextView
         android:id="@+id/tv_releaseDateValue"
-        style="@style/TextViewPlayerDescriptionValues"
-        android:layout_marginTop="16dp"
+        style="@style/PlayerTextViewDescriptionValues"
         android:text="@string/player_header_releaseDate"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_releaseDateHeader"
-        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight"
-        app:layout_constraintTop_toBottomOf="@+id/tv_collectionNameValue" />
+        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight" />
 
     <TextView
         android:id="@+id/tv_primaryGenreValue"
-        style="@style/TextViewPlayerDescriptionValues"
-        android:layout_marginTop="16dp"
+        style="@style/PlayerTextViewDescriptionValues"
         android:text="@string/player_header_primaryGenreName"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_primaryGenreHeader"
-        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight"
-        app:layout_constraintTop_toBottomOf="@+id/tv_releaseDateValue" />
+        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight" />
 
     <TextView
         android:id="@+id/tv_countryValue"
-        style="@style/TextViewPlayerDescriptionValues"
-        android:layout_marginTop="16dp"
+        style="@style/PlayerTextViewDescriptionValues"
         android:text="@string/player_header_country"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_countryHeader"
-        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight"
-        app:layout_constraintTop_toBottomOf="@+id/tv_primaryGenreValue" />
+        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
