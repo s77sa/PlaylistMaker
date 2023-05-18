@@ -22,12 +22,12 @@ object Utils {
         return SimpleDateFormat("mm:ss", Locale.getDefault()).format(millis)
     }
 
-    fun glideBind(link: String, target: ImageView) {
+    fun glideBind(link: String, target: ImageView, roundedCornersValue: Int) {
         Glide.with(target)
             .load(link)
             .placeholder(R.drawable.ic_playlist_stub)
             .centerInside()
-            .transform(RoundedCorners(2))
+            .transform(RoundedCorners(roundedCornersValue))
             .into(target)
     }
 }

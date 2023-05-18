@@ -22,6 +22,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var countryValue: TextView
     private lateinit var artWorkBig: ImageView
     private val replaceLinkPattern: String = "512x512bb.jpg"
+    private var imageViewCorners: Int = 8
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -48,7 +49,7 @@ class PlayerActivity : AppCompatActivity() {
     }
     private fun writeArtWorkToImageView(link: String){
         val newLink = link.replaceAfterLast('/', replaceLinkPattern)
-        Utils.glideBind(newLink, this.artWorkBig)
+        Utils.glideBind(newLink, this.artWorkBig, imageViewCorners)
     }
 
     private fun getMessageFromIntent(){

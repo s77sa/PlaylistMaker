@@ -14,11 +14,13 @@ class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val trackName: TextView = itemView.findViewById((R.id.tv_trackName))
     private val artistName: TextView = itemView.findViewById((R.id.tv_artistName))
     private val trackTime: TextView = itemView.findViewById((R.id.tv_trackTime))
+    private val imageViewCorners: Int = 2
 
     fun bind(item: Track) {
         trackName.text = item.trackName
         artistName.text = item.artistName
         trackTime.text = Utils.millisToString(item.trackTimeMillis)
-        Utils.glideBind(item.artworkUrl100, artWork)
+        Utils.glideBind(item.artworkUrl100, artWork, imageViewCorners)
+
     }
 }
