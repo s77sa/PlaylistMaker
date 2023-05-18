@@ -3,17 +3,22 @@ package com.example.playlistmaker.models
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-//import android.content.ContextWrapper
 import android.net.Uri
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-//import androidx.core.content.ContextCompat.startActivity
 import com.example.playlistmaker.R
 
 
-class Intents {
+object Intents {
+
     fun intentCall(activity: Activity, activityClass: Class<out AppCompatActivity>){
         val intent = Intent(activity, activityClass)
+        activity.startActivity(intent)
+    }
+    fun intentCallWithKey(activity: Activity, activityClass: Class<out AppCompatActivity>, keyName: String, keyValue: String){
+        val intent = Intent(activity, activityClass).apply {
+            putExtra(keyName, keyValue)
+        }
         activity.startActivity(intent)
     }
 

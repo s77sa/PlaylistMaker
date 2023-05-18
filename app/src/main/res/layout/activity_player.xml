@@ -56,7 +56,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:contentDescription="@string/trackImage"
-        app:layout_constraintBottom_toTopOf="@+id/tv_TrackName"
+        app:layout_constraintBottom_toTopOf="@+id/tv_trackName"
         android:layout_marginTop="26dp"
         android:layout_marginBottom="24dp"
         android:scaleType="fitCenter"
@@ -66,17 +66,17 @@
         android:src="@drawable/ic_playlist_stub" />
 
     <TextView
-        android:id="@+id/tv_TrackName"
+        android:id="@+id/tv_trackName"
         style="@style/PlayerTextViewDescriptionValues"
         android:fontFamily="@font/ys_display_medium"
         android:text="@string/track_name"
         android:textSize="22sp"
         android:layout_marginBottom="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_ArtistName"
+        app:layout_constraintBottom_toTopOf="@+id/tv_artistName"
         app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft" />
 
     <TextView
-        android:id="@+id/tv_ArtistName"
+        android:id="@+id/tv_artistName"
         style="@style/PlayerTextViewDescriptionValues"
         android:fontFamily="@font/ys_display_medium"
         android:text="@string/artist_name"

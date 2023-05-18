@@ -15,7 +15,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.models.HISTORY_COUNT
-import com.example.playlistmaker.models.Intents2
+import com.example.playlistmaker.models.Intents
 import com.example.playlistmaker.models.PLAY_LIST_PREFERENCES
 import com.example.playlistmaker.models.Preferences
 import com.example.playlistmaker.retrofit.Track
@@ -90,7 +90,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun callPlayerActivity(trackValue: Track){
         val trackJson = convertTrackToJson(trackValue)
-        Intents2.intentCallWithKey(
+        Intents.intentCallWithKey(
             this,
             PlayerActivity::class.java,
             KEY_INTENT_PLAYER_ACTIVITY,
@@ -258,9 +258,9 @@ class SearchActivity : AppCompatActivity() {
                 searchText = inputEditText.text.toString()
                 Log.println(Log.INFO, "my_tag", "afterTextChanged")
 
-                if (searchText.isNotEmpty()) {
-                    //addSearchResultToRecycle() // Заполнение RecyclerView
-                }
+//                if (searchText.isNotEmpty()) {
+//                    //addSearchResultToRecycle() // Заполнение RecyclerView
+//                }
             }
         }
         inputEditText.addTextChangedListener(simpleTextWatcher) // init text watcher

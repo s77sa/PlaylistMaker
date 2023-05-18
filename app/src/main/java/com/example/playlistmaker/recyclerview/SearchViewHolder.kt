@@ -4,12 +4,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
+import com.example.playlistmaker.models.Utils
 import com.example.playlistmaker.retrofit.Track
-import java.text.SimpleDateFormat
-import java.util.*
 
 class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -21,16 +18,7 @@ class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(item: Track) {
         trackName.text = item.trackName
         artistName.text = item.artistName
-        trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(item.trackTimeMillis)
-        glideBind(item.artworkUrl100, artWork)
-    }
-
-    private fun glideBind(link: String, target: ImageView) {
-        Glide.with(target)
-            .load(link)
-            .placeholder(R.drawable.ic_playlist_stub)
-            .centerInside()
-            .transform(RoundedCorners(2))
-            .into(target)
+        trackTime.text = Utils.millisToString(item.trackTimeMillis)
+        Utils.glideBind(item.artworkUrl100, artWork)
     }
 }
