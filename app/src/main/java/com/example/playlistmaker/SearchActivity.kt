@@ -168,9 +168,12 @@ class SearchActivity : AppCompatActivity() {
     private fun queryInput(editText: EditText) {
         editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val query = editText.text.toString()
                 Toast.makeText(applicationContext, "Search run", Toast.LENGTH_SHORT).show()
-                retrofitCall(editText.text.toString())
+                clearRecycle()
+                retrofitCall(query)
                 showInvisibleLayout(State.HIDE_ALL)
+                Log.println(Log.INFO, "my_tag", "query Search: $query")
             }
             false
         }
@@ -236,7 +239,8 @@ class SearchActivity : AppCompatActivity() {
         Log.println(Log.INFO, "my_tag", "clearRecycle")
         val count = searchTrackList.size
         searchTrackList.clear()
-        rvItems.adapter?.notifyItemRangeRemoved(0, count)
+        //rvItems.adapter?.notifyItemRangeRemoved(0, count)
+        rvItems.adapter?.notifyDataSetChanged()
         Log.println(Log.INFO, "my_tag", "rvlist: ${searchTrackList.size}")
     }
 
