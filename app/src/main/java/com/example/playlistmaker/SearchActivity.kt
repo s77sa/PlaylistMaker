@@ -22,7 +22,7 @@ import com.example.playlistmaker.retrofit.Track
 import com.example.playlistmaker.retrofit.Tracks
 import com.example.playlistmaker.retrofit.TracksApi
 import com.example.playlistmaker.retrofit.TracksRetrofit
-import com.example.playlistmaker.models.Utils
+import com.example.playlistmaker.utils.Helpers
 import com.example.playlistmaker.recyclerview.SearchAdapter
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -193,6 +193,10 @@ class SearchActivity : AppCompatActivity() {
                         showInvisibleLayout(State.NOT_FOUND)
                     }
                 }
+                if (response.code() == 503){
+                    // Теперь появился этот код ошибки если ничего не нашлось
+                    showInvisibleLayout(State.NOT_FOUND)
+                }
             }
             override fun onFailure(call: Call<Tracks>, t: Throwable) {
                 Log.println(Log.INFO, "my_tag", "retrofitCall onFailure ${t.message}")
@@ -235,11 +239,10 @@ class SearchActivity : AppCompatActivity() {
     }
 
     // Очистка RecycleView
+    @SuppressLint("NotifyDataSetChanged")
     private fun clearRecycle() {
         Log.println(Log.INFO, "my_tag", "clearRecycle")
-        val count = searchTrackList.size
         searchTrackList.clear()
-        //rvItems.adapter?.notifyItemRangeRemoved(0, count)
         rvItems.adapter?.notifyDataSetChanged()
         Log.println(Log.INFO, "my_tag", "rvlist: ${searchTrackList.size}")
     }
@@ -258,16 +261,11 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                // Запись вводимого текста в глобальную переменную
                 searchText = inputEditText.text.toString()
                 Log.println(Log.INFO, "my_tag", "afterTextChanged")
-
-//                if (searchText.isNotEmpty()) {
-//                    //addSearchResultToRecycle() // Заполнение RecyclerView
-//                }
             }
         }
-        inputEditText.addTextChangedListener(simpleTextWatcher) // init text watcher
+        inputEditText.addTextChangedListener(simpleTextWatcher)
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int { // Изменение прозрачности кнопки (крестик)
@@ -342,7 +340,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun clearButtonListener() {
-        Utils.hideKeyboard(this) // Скрытие клавиатуры
+        Helpers.hideKeyboard(this) // Скрытие клавиатуры
         clearInputText() // Очистка текста в поле поиска
         clearRecycle() // Очистка RV
     }

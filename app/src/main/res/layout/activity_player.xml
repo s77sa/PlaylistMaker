@@ -51,7 +51,7 @@
         app:layout_constraintGuide_end="16dp"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_artWorkBig"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -59,7 +59,9 @@
         app:layout_constraintBottom_toTopOf="@+id/tv_trackName"
         android:layout_marginTop="26dp"
         android:layout_marginBottom="24dp"
-        android:scaleType="fitCenter"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="h,1:1"
+        app:shapeAppearanceOverlay="@style/PlayerCornerForMainImage"
         app:layout_constraintEnd_toEndOf="@+id/guideLineFirstRight"
         app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft"
         app:layout_constraintTop_toBottomOf="@+id/bottomView"
@@ -69,21 +71,28 @@
         android:id="@+id/tv_trackName"
         style="@style/PlayerTextViewDescriptionValues"
         android:fontFamily="@font/ys_display_medium"
+        app:layout_constrainedWidth="true"
         android:text="@string/track_name"
         android:textSize="22sp"
+        android:textAlignment="textStart"
         android:layout_marginBottom="12dp"
         app:layout_constraintBottom_toTopOf="@+id/tv_artistName"
-        app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft" />
+        app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft"
+        app:layout_constraintEnd_toEndOf="@+id/guideLineFirstRight"/>
+
 
     <TextView
         android:id="@+id/tv_artistName"
         style="@style/PlayerTextViewDescriptionValues"
         android:fontFamily="@font/ys_display_medium"
+        app:layout_constrainedWidth="true"
         android:text="@string/artist_name"
         android:textSize="14sp"
+        android:textAlignment="textStart"
         android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toTopOf="@+id/iv_play"
-        app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft" />
+        app:layout_constraintStart_toStartOf="@+id/guideLineFirstLeft"
+        app:layout_constraintEnd_toEndOf="@+id/guideLineFirstRight"/>
 
     <ImageView
         android:id="@+id/iv_queue"
@@ -118,6 +127,7 @@
         android:id="@+id/tv_trackTimeCurrent"
         style="@style/PlayerTextViewDescriptionValues"
         android:fontFamily="@font/ys_display_medium"
+        android:layout_width="wrap_content"
         android:text="@string/CurrentTime"
         android:textSize="14sp"
         android:layout_marginBottom="32dp"
@@ -138,6 +148,7 @@
         style="@style/PlayerTextViewDescriptionHeaders"
         android:layout_marginBottom="16dp"
         android:text="@string/player_header_collectionName"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/tv_releaseDateHeader"
         app:layout_constraintStart_toStartOf="@+id/guideLineSecondLeft" />
 
@@ -169,8 +180,10 @@
         android:id="@+id/tv_trackTimeValue"
         style="@style/PlayerTextViewDescriptionValues"
         android:text="@string/player_header_trackTime"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_trackTimeHeader"
         app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight"
+        app:layout_constraintStart_toEndOf="@+id/tv_trackTimeHeader"
         app:layout_constraintTop_toTopOf="@+id/tv_trackTimeHeader" />
 
 
@@ -178,28 +191,37 @@
         android:id="@+id/tv_collectionNameValue"
         style="@style/PlayerTextViewDescriptionValues"
         android:text="@string/player_header_collectionName"
+        android:visibility="gone"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_collectionNameHeader"
-        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight" />
+        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight"
+        app:layout_constraintStart_toEndOf="@+id/tv_collectionNameHeader" />
 
     <TextView
         android:id="@+id/tv_releaseDateValue"
         style="@style/PlayerTextViewDescriptionValues"
         android:text="@string/player_header_releaseDate"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_releaseDateHeader"
-        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight" />
+        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight"
+        app:layout_constraintStart_toEndOf="@+id/tv_releaseDateHeader" />
 
     <TextView
         android:id="@+id/tv_primaryGenreValue"
         style="@style/PlayerTextViewDescriptionValues"
         android:text="@string/player_header_primaryGenreName"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_primaryGenreHeader"
-        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight" />
+        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight"
+        app:layout_constraintStart_toEndOf="@+id/tv_primaryGenreHeader" />
 
     <TextView
         android:id="@+id/tv_countryValue"
         style="@style/PlayerTextViewDescriptionValues"
         android:text="@string/player_header_country"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_countryHeader"
-        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight" />
+        app:layout_constraintEnd_toStartOf="@+id/guideLineSecondRight"
+        app:layout_constraintStart_toEndOf="@+id/tv_countryHeader" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

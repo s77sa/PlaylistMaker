@@ -1,14 +1,18 @@
 package com.example.playlistmaker
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.playlistmaker.models.Utils
+import com.example.playlistmaker.utils.Helpers
 import com.example.playlistmaker.retrofit.Track
 import com.google.gson.GsonBuilder
+import java.text.SimpleDateFormat
+
+private const val REPLACE_LINK_PATTERN: String = "512x512bb.jpg"
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var buttonBack: ImageView
@@ -17,16 +21,15 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var artistName: TextView
     private lateinit var trackTimeValue: TextView
     private lateinit var collectionNameValue: TextView
+    private lateinit var collectionNameDescription: TextView
     private lateinit var releaseDateValue: TextView
     private lateinit var primaryGenreValue: TextView
     private lateinit var countryValue: TextView
     private lateinit var artWorkBig: ImageView
-    private val replaceLinkPattern: String = "512x512bb.jpg"
-    private var imageViewCorners: Int = 8
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
-        viewInit()
+        initView()
         clickListenersInit()
         getMessageFromIntent()
         writeTrackDataToView()
@@ -35,21 +38,31 @@ class PlayerActivity : AppCompatActivity() {
     private fun writeTrackDataToView() {
         trackName.text = track.trackName
         artistName.text = track.artistName
-        trackTimeValue.text = Utils.millisToString(track.trackTimeMillis)
-        collectionNameValue.text = track.collectionName
+        trackTimeValue.text = Helpers.millisToString(track.trackTimeMillis)
+        writeCollectionName(track.collectionName)
         releaseDateValue.text = shrinkReleaseDate(track.releaseDate)
         primaryGenreValue.text = track.primaryGenreName
         countryValue.text = track.country
         writeArtWorkToImageView(track.artworkUrl100)
     }
 
-    private fun shrinkReleaseDate(value: String): String{
-        val length = value.length - 4
-        return value.dropLast(length)
+    private fun writeCollectionName(value: String){
+        if (value.isNotEmpty()){
+            collectionNameValue.text = track.collectionName
+            collectionNameDescription.visibility = View.VISIBLE
+            collectionNameValue.visibility = View.VISIBLE
+        }
     }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun shrinkReleaseDate(value: String): String? {
+        val inputDate = SimpleDateFormat("yyyy-M-d").parse(value)
+        return inputDate?.let { SimpleDateFormat("yyyy").format(it) }
+    }
+
     private fun writeArtWorkToImageView(link: String){
-        val newLink = link.replaceAfterLast('/', replaceLinkPattern)
-        Utils.glideBind(newLink, this.artWorkBig, imageViewCorners)
+        val newLink = link.replaceAfterLast('/', REPLACE_LINK_PATTERN)
+        Helpers.glideBind(newLink, this.artWorkBig)
     }
 
     private fun getMessageFromIntent(){
@@ -64,7 +77,7 @@ class PlayerActivity : AppCompatActivity() {
         return gson.fromJson(value, Track::class.java)
     }
 
-    private fun viewInit(){
+    private fun initView(){
         buttonBack = findViewById(R.id.iv_player_back)
         trackName = findViewById(R.id.tv_trackName)
         artistName = findViewById(R.id.tv_artistName)
@@ -74,6 +87,7 @@ class PlayerActivity : AppCompatActivity() {
         primaryGenreValue = findViewById(R.id.tv_primaryGenreValue)
         countryValue = findViewById(R.id.tv_countryValue)
         artWorkBig = findViewById(R.id.iv_artWorkBig)
+        collectionNameDescription = findViewById(R.id.tv_collectionNameHeader)
     }
 
     private fun clickListenersInit(){
