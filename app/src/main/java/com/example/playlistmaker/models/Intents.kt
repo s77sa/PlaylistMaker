@@ -7,6 +7,8 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.R
+import com.example.playlistmaker.retrofit.Track
+import java.io.Serializable
 
 
 object Intents {
@@ -18,6 +20,12 @@ object Intents {
     fun intentCallWithKey(activity: Activity, activityClass: Class<out AppCompatActivity>, keyName: String, keyValue: String){
         val intent = Intent(activity, activityClass).apply {
             putExtra(keyName, keyValue)
+        }
+        activity.startActivity(intent)
+    }
+    fun intentCallWithKeySerializable(activity: Activity, activityClass: Class<out AppCompatActivity>, keyName: String, keyValue: Track){
+        val intent = Intent(activity, activityClass).apply {
+            putExtra(keyName, keyValue as Serializable)
         }
         activity.startActivity(intent)
     }

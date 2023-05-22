@@ -1,15 +1,15 @@
 package com.example.playlistmaker
 
 import android.annotation.SuppressLint
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import com.example.playlistmaker.utils.Helpers
 import com.example.playlistmaker.retrofit.Track
-import com.google.gson.GsonBuilder
 import java.text.SimpleDateFormat
 
 private const val REPLACE_LINK_PATTERN: String = "512x512bb.jpg"
@@ -26,6 +26,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var primaryGenreValue: TextView
     private lateinit var countryValue: TextView
     private lateinit var artWorkBig: ImageView
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -65,17 +66,10 @@ class PlayerActivity : AppCompatActivity() {
         Helpers.glideBind(newLink, this.artWorkBig)
     }
 
-    private fun getMessageFromIntent(){
-        val message = intent.getStringExtra(KEY_INTENT_PLAYER_ACTIVITY)
-        Log.println(Log.INFO, "my_tag", "intent player = $message")
-        if(message != null) track = writeMessageToTrackData(message)
-        Log.println(Log.INFO, "my_tag", "intent player = $track")
-    }
-
-    private fun writeMessageToTrackData(value: String): Track {
-        val gson = GsonBuilder().create()
-        return gson.fromJson(value, Track::class.java)
-    }
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+private fun getMessageFromIntent(){
+    track = intent.getSerializableExtra(KEY_INTENT_PLAYER_ACTIVITY, Track::class.java)!!
+}
 
     private fun initView(){
         buttonBack = findViewById(R.id.iv_player_back)

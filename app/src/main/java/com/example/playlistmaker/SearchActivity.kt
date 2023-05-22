@@ -24,8 +24,6 @@ import com.example.playlistmaker.retrofit.TracksApi
 import com.example.playlistmaker.retrofit.TracksRetrofit
 import com.example.playlistmaker.utils.Helpers
 import com.example.playlistmaker.recyclerview.SearchAdapter
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -88,19 +86,13 @@ class SearchActivity : AppCompatActivity() {
         saveHistoryToSharedPrefs()
     }
 
-    private fun callPlayerActivity(trackValue: Track){
-        val trackJson = convertTrackToJson(trackValue)
-        Intents.intentCallWithKey(
-            this,
-            PlayerActivity::class.java,
-            KEY_INTENT_PLAYER_ACTIVITY,
-            trackJson)
-    }
-
-    private fun convertTrackToJson(track: Track): String {
-        val gson: Gson = GsonBuilder().create()
-        return gson.toJson(track)
-    }
+private fun callPlayerActivity(trackValue: Track){
+    Intents.intentCallWithKeySerializable(
+        this,
+        PlayerActivity::class.java,
+        KEY_INTENT_PLAYER_ACTIVITY,
+        trackValue)
+}
 
     private fun saveHistoryToSharedPrefs() {
         preferences.saveUserHistory(Tracks(historyTrackList.size, historyTrackList))
