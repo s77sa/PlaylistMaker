@@ -7,13 +7,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import com.example.playlistmaker.utils.Helpers
 import com.example.playlistmaker.retrofit.Track
 import java.text.SimpleDateFormat
 
 private const val REPLACE_LINK_PATTERN: String = "512x512bb.jpg"
 
+@Suppress("DEPRECATION")
 class PlayerActivity : AppCompatActivity() {
     private lateinit var buttonBack: ImageView
     private lateinit var track: Track
@@ -26,7 +26,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var primaryGenreValue: TextView
     private lateinit var countryValue: TextView
     private lateinit var artWorkBig: ImageView
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -66,9 +66,12 @@ class PlayerActivity : AppCompatActivity() {
         Helpers.glideBind(newLink, this.artWorkBig)
     }
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 private fun getMessageFromIntent(){
-    track = intent.getSerializableExtra(KEY_INTENT_PLAYER_ACTIVITY, Track::class.java)!!
+    track = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        intent.getSerializableExtra(KEY_INTENT_PLAYER_ACTIVITY, Track::class.java)!!
+    }else {
+        intent.getSerializableExtra(KEY_INTENT_PLAYER_ACTIVITY)!! as Track
+    }
 }
 
     private fun initView(){
