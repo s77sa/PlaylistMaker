@@ -59,12 +59,12 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun clickListener() = View.OnClickListener { view ->
-        val intents = Intents()
+//        val intents = Intents()
         when (view.id) {
             R.id.iv_settings_back -> this.finish()
-            R.id.tv_share -> intents.intentSend(this, getString(R.string.link_practicum_ad))
-            R.id.tv_support -> intents.intentEmail(this, getString(R.string.email_dest), getString(R.string.email_subject) ,getString(R.string.email_text))
-            R.id.tv_terms -> intents.intentOpenLink(this, getString(R.string.link_terms))
+            R.id.tv_share -> Intents.intentSend(this, getString(R.string.link_practicum_ad))
+            R.id.tv_support -> Intents.intentEmail(this, getString(R.string.email_dest), getString(R.string.email_subject) ,getString(R.string.email_text))
+            R.id.tv_terms -> Intents.intentOpenLink(this, getString(R.string.link_terms))
         }
     }
 }

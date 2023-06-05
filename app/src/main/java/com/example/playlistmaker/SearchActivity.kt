@@ -3,7 +3,6 @@ package com.example.playlistmaker
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.BoringLayout
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -16,24 +15,24 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.models.HISTORY_COUNT
+import com.example.playlistmaker.models.Intents
 import com.example.playlistmaker.models.PLAY_LIST_PREFERENCES
 import com.example.playlistmaker.models.Preferences
 import com.example.playlistmaker.retrofit.Track
 import com.example.playlistmaker.retrofit.Tracks
 import com.example.playlistmaker.retrofit.TracksApi
 import com.example.playlistmaker.retrofit.TracksRetrofit
-import com.example.playlistmaker.models.Utils
+import com.example.playlistmaker.utils.Helpers
 import com.example.playlistmaker.recyclerview.SearchAdapter
-//import com.example.playlistmaker.recyclerview.SearchAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+const val KEY_INTENT_PLAYER_ACTIVITY: String = "track"
 class SearchActivity : AppCompatActivity() {
     private lateinit var tracksApi: TracksApi
     private lateinit var retrofit: TracksRetrofit
     private val interceptor: Boolean = true
-    private val utils: Utils = Utils()
     private lateinit var inputEditText: EditText
     private lateinit var rvItems: RecyclerView
     private lateinit var rvHistory: RecyclerView
@@ -56,15 +55,15 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         Log.println(Log.INFO, "my_tag", "onCreate_Search")
-        inputEditText = findViewById<EditText>(R.id.et_search)
-        buttonClear = findViewById<ImageView>(R.id.iv_search_clear)
-        rvItems = findViewById<RecyclerView>(R.id.rv_Search)
-        buttonRefresh = findViewById<Button>(R.id.btn_search_refresh)
-        layoutIsEmpty = findViewById<LinearLayout>(R.id.layout_is_empty)
-        layoutNoInternet = findViewById<LinearLayout>(R.id.layout_no_internet)
-        layoutHistory = findViewById<LinearLayout>(R.id.layout_history)
-        buttonClearHistory = findViewById<Button>(R.id.btn_clear_history)
-        rvHistory = findViewById<RecyclerView>(R.id.rv_history)
+        inputEditText = findViewById(R.id.et_search)
+        buttonClear = findViewById(R.id.iv_search_clear)
+        rvItems = findViewById(R.id.rv_Search)
+        buttonRefresh = findViewById(R.id.btn_search_refresh)
+        layoutIsEmpty = findViewById(R.id.layout_is_empty)
+        layoutNoInternet = findViewById(R.id.layout_no_internet)
+        layoutHistory = findViewById(R.id.layout_history)
+        buttonClearHistory = findViewById(R.id.btn_clear_history)
+        rvHistory = findViewById(R.id.rv_history)
         textWatcherInit()
         retrofitInit(getString(R.string.searchBaseUrl))
         rvSearchAdapter = SearchAdapter(searchTrackList) // Адаптер для RV
@@ -87,19 +86,34 @@ class SearchActivity : AppCompatActivity() {
         saveHistoryToSharedPrefs()
     }
 
+private fun callPlayerActivity(trackValue: Track){
+    Intents.intentCallWithKeySerializable(
+        this,
+        PlayerActivity::class.java,
+        KEY_INTENT_PLAYER_ACTIVITY,
+        trackValue)
+}
+
     private fun saveHistoryToSharedPrefs() {
         preferences.saveUserHistory(Tracks(historyTrackList.size, historyTrackList))
+        Log.println(Log.INFO, "my_tag", "saveHistoryToSharedPrefs: ${historyTrackList.size}")
     }
 
     private fun loadHistoryFromSharedPrefs() {
-        val trackList: MutableList<Track>? = preferences.restoreUserHistory()?.results
-        if (trackList != null) historyTrackList.addAll(trackList)
+        val newTrackList: MutableList<Track>? = preferences.restoreUserHistory()?.results
+        if (newTrackList != null){
+            if (historyTrackList.size > 0 && newTrackList.size > 0) historyTrackList.clear()
+            historyTrackList.addAll(newTrackList)
+        }
+        Log.println(Log.INFO, "my_tag", "loadHistoryFromSharedPrefs: ${historyTrackList.size}")
 
     }
 
     private fun clearHistory() {
         if (historyTrackList.size > 0) historyTrackList.clear()
         showInvisibleLayout(State.HIDE_ALL)
+        Log.println(Log.INFO, "my_tag", "clearHistory")
+
     }
 
     private fun showHistory() {
@@ -146,9 +160,12 @@ class SearchActivity : AppCompatActivity() {
     private fun queryInput(editText: EditText) {
         editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val query = editText.text.toString()
                 Toast.makeText(applicationContext, "Search run", Toast.LENGTH_SHORT).show()
-                retrofitCall(editText.text.toString())
+                clearRecycle()
+                retrofitCall(query)
                 showInvisibleLayout(State.HIDE_ALL)
+                Log.println(Log.INFO, "my_tag", "query Search: $query")
             }
             false
         }
@@ -168,11 +185,13 @@ class SearchActivity : AppCompatActivity() {
                         showInvisibleLayout(State.NOT_FOUND)
                     }
                 }
-
+                if (response.code() == 503){
+                    // Теперь появился этот код ошибки если ничего не нашлось
+                    showInvisibleLayout(State.NOT_FOUND)
+                }
             }
-
             override fun onFailure(call: Call<Tracks>, t: Throwable) {
-                Log.println(Log.INFO, "my_tag", "onFailure")
+                Log.println(Log.INFO, "my_tag", "retrofitCall onFailure ${t.message}")
                 showInvisibleLayout(State.ERROR)
             }
         })
@@ -212,11 +231,11 @@ class SearchActivity : AppCompatActivity() {
     }
 
     // Очистка RecycleView
+    @SuppressLint("NotifyDataSetChanged")
     private fun clearRecycle() {
         Log.println(Log.INFO, "my_tag", "clearRecycle")
-        val count = searchTrackList.size
         searchTrackList.clear()
-        rvItems.adapter?.notifyItemRangeRemoved(0, count)
+        rvItems.adapter?.notifyDataSetChanged()
         Log.println(Log.INFO, "my_tag", "rvlist: ${searchTrackList.size}")
     }
 
@@ -234,16 +253,11 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                // Запись вводимого текста в глобальную переменную
                 searchText = inputEditText.text.toString()
                 Log.println(Log.INFO, "my_tag", "afterTextChanged")
-
-                if (searchText.isNotEmpty()) {
-                    //addSearchResultToRecycle() // Заполнение RecyclerView
-                }
             }
         }
-        inputEditText.addTextChangedListener(simpleTextWatcher) // init text watcher
+        inputEditText.addTextChangedListener(simpleTextWatcher)
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int { // Изменение прозрачности кнопки (крестик)
@@ -256,13 +270,22 @@ class SearchActivity : AppCompatActivity() {
 
     private fun onClickListenersInit() {
         onClickReturn()
-        onClickSearchClear()
+        buttonClear.setOnClickListener(clickListener())
         onClickClear()
         onClickSearch()
         onClickRefresh()
         onClickRecyclerViewSearchItem()
+        onClickRecyclerViewHistoryItem()
         onFocusListenerSearchInit()
         onClickClearHistory()
+    }
+
+    private fun onClickRecyclerViewHistoryItem() {
+        rvHistoryAdapter.setOnClickListener(object : SearchAdapter.OnClickListener {
+            override fun onClick(position: Int, track: Track) {
+                callPlayerActivity(track)
+            }
+        })
     }
 
     private fun onClickRecyclerViewSearchItem() {
@@ -274,6 +297,7 @@ class SearchActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
                 addTrackToHistory(track)
+                callPlayerActivity(track)
             }
         })
     }
@@ -300,10 +324,6 @@ class SearchActivity : AppCompatActivity() {
         item.setOnClickListener(clickListener())
     }
 
-    private fun onClickSearchClear() { // Очистка ввода
-        buttonClear.setOnClickListener(clickListener())
-    }
-
     private fun clearInputText() { // Очистка поля ввода
         Log.println(Log.INFO, "my_tag", "clearInputText")
         // Очистка строки ввода
@@ -312,7 +332,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun clearButtonListener() {
-        utils.hideKeyboard(this) // Скрытие клавиатуры
+        Helpers.hideKeyboard(this) // Скрытие клавиатуры
         clearInputText() // Очистка текста в поле поиска
         clearRecycle() // Очистка RV
     }

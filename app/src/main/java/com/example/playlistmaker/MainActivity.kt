@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Button
 import com.example.playlistmaker.models.Intents
 
-@Suppress("DUPLICATE_LABEL_IN_WHEN")
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,11 +47,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun clickListener() = View.OnClickListener { view ->
-        val intents = Intents()
+        //val intents = Intents()
         when (view.id) {
-            R.id.btn_settings -> intents.intentCall(this, SettingsActivity::class.java)
-            R.id.btn_library -> intents.intentCall(this, LibraryActivity::class.java)
-            R.id.btn_search -> intents.intentCall(this, SearchActivity::class.java)
+            R.id.btn_settings -> Intents.intentCall(this, SettingsActivity::class.java)
+            R.id.btn_library -> Intents.intentCall(this, LibraryActivity::class.java)
+            R.id.btn_search -> Intents.intentCall(this, SearchActivity::class.java)
         }
     }
 }

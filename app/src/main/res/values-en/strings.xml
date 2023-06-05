@@ -9,13 +9,14 @@
     <string name="txt_support">Write to support</string>
     <string name="txt_terms">Terms of use</string>
     <string name="txt_return">Return</string>
-    <string name="library_hello">Library</string>
-    <string name="search_hello">Search</string>
     <string name="search_nothing">Nothing was found</string>
     <string name="search_no_internet_full">Communication problems\n\nDownload failed. Check your internet connection</string>
-    <string name="search_no_internet_up">Communication problems</string>
-    <string name="search_no_internet_down">Download failed. Check your internet connection</string>
     <string name="search_button_refresh">Refresh</string>
     <string name="search_history">You searched</string>
     <string name="search_button_clear_history">Clear the history</string>
+    <string name="player_header_trackTime">Duration</string>
+    <string name="player_header_collectionName">Collection name</string>
+    <string name="player_header_releaseDate">Release year</string>
+    <string name="player_header_primaryGenreName">Genre</string>
+    <string name="player_header_country">Country</string>
 </resources>

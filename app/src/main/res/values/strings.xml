@@ -8,8 +8,6 @@
     <string name="txt_support">Написать в поддержку</string>
     <string name="txt_terms">Пользовательское соглашение</string>
     <string name="txt_return">Веруться</string>
-    <string name="library_hello">Library</string>
-    <string name="search_hello">Search</string>
     <string name="link_practicum_ad" translatable="false">https://practicum.yandex.ru/android-developer/</string>
     <string name="email_dest" translatable="false">s77sa@yandex.ru</string>
     <string name="email_subject" translatable="false">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
@@ -20,10 +18,18 @@
     <string name="searchBaseUrl" translatable="false">http://itunes.apple.com</string>
     <string name="search_nothing">Ничего не нашлось</string>
     <string name="search_no_internet_full">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
-    <string name="search_no_internet_up">Проблемы со связью</string>
-    <string name="search_no_internet_down">Загрузка не удалась. Проверьте подключение к интернету</string>
     <string name="search_button_refresh">Обновить</string>
     <string name="search_history">Вы искали</string>
     <string name="search_button_clear_history">Очистить историю</string>
+    <string name="player_header_trackTime">Длительность</string>
+    <string name="player_header_collectionName">Альбом</string>
+    <string name="player_header_releaseDate">Год</string>
+    <string name="player_header_primaryGenreName">Жанр</string>
+    <string name="player_header_country">Страна</string>
+    <string name="trackImage" translatable="false">TrackImage</string>
+    <string name="track_name" translatable="false">Track Name</string>
+    <string name="artist_name" translatable="false">Artist Name</string>
+    <string name="CurrentTime" translatable="false">0:30</string>
+    <string name="buttonDescription" translatable="false">Button</string>
 
 </resources>

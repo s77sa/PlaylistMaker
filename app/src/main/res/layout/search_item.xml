@@ -11,11 +11,13 @@
     android:paddingTop="8dp"
     android:paddingBottom="8dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_artWork"
         android:layout_height="45dp"
         android:layout_width="45dp"
         android:scaleType="fitCenter"
+        app:layout_constraintDimensionRatio="h,1:1"
+        app:shapeAppearanceOverlay="@style/TracksItemCorner"
         android:src="@drawable/ic_playlist_stub"/>
 
     <LinearLayout
