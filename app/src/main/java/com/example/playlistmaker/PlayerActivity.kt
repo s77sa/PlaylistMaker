@@ -45,6 +45,7 @@ class PlayerActivity : AppCompatActivity() {
         primaryGenreValue.text = track.primaryGenreName
         countryValue.text = track.country
         writeArtWorkToImageView(track.artworkUrl100)
+
     }
 
     private fun writeCollectionName(value: String){

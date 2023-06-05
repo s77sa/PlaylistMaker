@@ -36,18 +36,16 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_marginStart">28dp</item>
+        <item name="android:layout_marginStart">8dp</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>
         <item name="android:textSize">22sp</item>
     </style>
     <style name="ImageViewHeaderStyle">
         <item name="android:fontFamily">@font/ys_display_regular</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">56dp</item>
+        <item name="android:layout_height">56dp</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_marginStart">20dp</item>
-        <item name="android:layout_marginTop">20dp</item>
-        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:scaleType">center</item>
         <item name="android:backgroundTint">?attr/colorPrimaryVariant</item>
         <item name="android:src">@drawable/ic_arrow</item>
         <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>

@@ -7,17 +7,16 @@
     android:orientation="vertical"
     android:background="?attr/colorSecondary">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
-        <ImageView style="@style/ImageViewHeaderStyle"
-            android:id="@+id/iv_library_back"
-            app:tint="?attr/colorOnSecondary"
-            android:contentDescription="@string/txt_return"/>
+                <ImageView style="@style/ImageViewHeaderStyle"
+                    android:id="@+id/iv_library_back"
+                    app:tint="?attr/colorOnSecondary"
+                    android:contentDescription="@string/txt_return"/>
 
         <TextView style="@style/TextViewHeaderStyle"
             android:id="@+id/tv_settings"
