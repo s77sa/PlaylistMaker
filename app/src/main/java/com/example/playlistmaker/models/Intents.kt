@@ -47,13 +47,14 @@ object Intents {
         shareIntent.data = Uri.parse("mailto:")
         shareIntent.putExtra(Intent.EXTRA_EMAIL, address)
         shareIntent.putExtra(Intent.EXTRA_SUBJECT,subject)
-        val putExtra = shareIntent.putExtra(Intent.EXTRA_TEXT, text)
-            if (putExtra.resolveActivity(activity.packageManager) != null) {
-                activity.startActivity(shareIntent)
-            }
-            else {
-                Toast.makeText(activity, R.string.error_no_email, Toast.LENGTH_SHORT).show()
-            }
+        activity.startActivity(shareIntent)
+//        val putExtra = shareIntent.putExtra(Intent.EXTRA_TEXT, text)
+//            if (putExtra.resolveActivity(activity.packageManager) != null) {
+//                activity.startActivity(shareIntent)
+//            }
+//            else {
+//                Toast.makeText(activity, R.string.error_no_email, Toast.LENGTH_SHORT).show()
+//            }
     }
 
     fun intentSend(activity: Activity, text: String){

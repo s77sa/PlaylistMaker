@@ -13,10 +13,11 @@
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
-                <ImageView style="@style/ImageViewHeaderStyle"
-                    android:id="@+id/iv_library_back"
-                    app:tint="?attr/colorOnSecondary"
-                    android:contentDescription="@string/txt_return"/>
+        <ImageView
+            android:id="@+id/iv_library_back"
+            style="@style/ImageViewHeaderStyle"
+            android:contentDescription="@string/txt_return"
+            app:tint="?attr/colorOnSecondary" />
 
         <TextView style="@style/TextViewHeaderStyle"
             android:id="@+id/tv_settings"

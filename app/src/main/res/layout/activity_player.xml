@@ -18,9 +18,10 @@
     <ImageView
         android:id="@+id/iv_player_back"
         style="@style/ImageViewHeaderStyle"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_marginStart="20dp"
+        android:layout_gravity="center"
+        android:scaleType="center"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:contentDescription="@string/txt_return"
         app:layout_constraintBottom_toBottomOf="@+id/bottomView"
         app:layout_constraintStart_toStartOf="@+id/bottomView"
