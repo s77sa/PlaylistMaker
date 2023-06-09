@@ -3,6 +3,8 @@ package com.example.playlistmaker
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -12,6 +14,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.models.HISTORY_COUNT
@@ -29,6 +32,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 const val KEY_INTENT_PLAYER_ACTIVITY: String = "track"
+
 class SearchActivity : AppCompatActivity() {
     private lateinit var tracksApi: TracksApi
     private lateinit var retrofit: TracksRetrofit
@@ -44,26 +48,20 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var layoutIsEmpty: LinearLayout
     private lateinit var layoutNoInternet: LinearLayout
     private lateinit var layoutHistory: LinearLayout
+    private lateinit var progressBar: ProgressBar
     private var searchTrackList: MutableList<Track> = mutableListOf()
     private var historyTrackList: MutableList<Track> = mutableListOf()
     private var searchText = ""
     private lateinit var preferences: Preferences
-
+    private val handler = Handler(Looper.getMainLooper())
+    private val searchRunnable = Runnable { searchRequest() }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         Log.println(Log.INFO, "my_tag", "onCreate_Search")
-        inputEditText = findViewById(R.id.et_search)
-        buttonClear = findViewById(R.id.iv_search_clear)
-        rvItems = findViewById(R.id.rv_Search)
-        buttonRefresh = findViewById(R.id.btn_search_refresh)
-        layoutIsEmpty = findViewById(R.id.layout_is_empty)
-        layoutNoInternet = findViewById(R.id.layout_no_internet)
-        layoutHistory = findViewById(R.id.layout_history)
-        buttonClearHistory = findViewById(R.id.btn_clear_history)
-        rvHistory = findViewById(R.id.rv_history)
+        initViews()
         textWatcherInit()
         retrofitInit(getString(R.string.searchBaseUrl))
         rvSearchAdapter = SearchAdapter(searchTrackList) // Адаптер для RV
@@ -86,13 +84,19 @@ class SearchActivity : AppCompatActivity() {
         saveHistoryToSharedPrefs()
     }
 
-private fun callPlayerActivity(trackValue: Track){
-    Intents.intentCallWithKeySerializable(
-        this,
-        PlayerActivity::class.java,
-        KEY_INTENT_PLAYER_ACTIVITY,
-        trackValue)
-}
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacksAndMessages(null)
+    }
+
+    private fun callPlayerActivity(trackValue: Track) {
+        Intents.intentCallWithKeySerializable(
+            this,
+            PlayerActivity::class.java,
+            KEY_INTENT_PLAYER_ACTIVITY,
+            trackValue
+        )
+    }
 
     private fun saveHistoryToSharedPrefs() {
         preferences.saveUserHistory(Tracks(historyTrackList.size, historyTrackList))
@@ -101,7 +105,7 @@ private fun callPlayerActivity(trackValue: Track){
 
     private fun loadHistoryFromSharedPrefs() {
         val newTrackList: MutableList<Track>? = preferences.restoreUserHistory()?.results
-        if (newTrackList != null){
+        if (newTrackList != null) {
             if (historyTrackList.size > 0 && newTrackList.size > 0) historyTrackList.clear()
             historyTrackList.addAll(newTrackList)
         }
@@ -146,11 +150,10 @@ private fun callPlayerActivity(trackValue: Track){
                 exist = history
             }
         }
-        if(exist != null) {
+        if (exist != null) {
             historyTrackList.remove(exist)
             historyTrackList.add(0, exist)
-        }
-        else{
+        } else {
             if (historyTrackList.size >= HISTORY_COUNT) historyTrackList.removeAt(HISTORY_COUNT - 1)
             historyTrackList.add(0, item)
         }
@@ -160,14 +163,18 @@ private fun callPlayerActivity(trackValue: Track){
     private fun queryInput(editText: EditText) {
         editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                val query = editText.text.toString()
-                Toast.makeText(applicationContext, "Search run", Toast.LENGTH_SHORT).show()
-                clearRecycle()
-                retrofitCall(query)
-                showInvisibleLayout(State.HIDE_ALL)
-                Log.println(Log.INFO, "my_tag", "query Search: $query")
+                Log.println(Log.INFO, "my_tag", "queryInput Search")
             }
             false
+        }
+    }
+
+    private fun searchRequest() {
+        if (searchText.isNotEmpty()) {
+            Toast.makeText(applicationContext, "Search run", Toast.LENGTH_SHORT).show()
+            clearRecycle()
+            retrofitCall(searchText)
+            showInvisibleLayout(State.PROGRESS_BAR)
         }
     }
 
@@ -185,11 +192,12 @@ private fun callPlayerActivity(trackValue: Track){
                         showInvisibleLayout(State.NOT_FOUND)
                     }
                 }
-                if (response.code() == 503){
+                if (response.code() == 503) {
                     // Теперь появился этот код ошибки если ничего не нашлось
                     showInvisibleLayout(State.NOT_FOUND)
                 }
             }
+
             override fun onFailure(call: Call<Tracks>, t: Throwable) {
                 Log.println(Log.INFO, "my_tag", "retrofitCall onFailure ${t.message}")
                 showInvisibleLayout(State.ERROR)
@@ -205,20 +213,6 @@ private fun callPlayerActivity(trackValue: Track){
     private fun searchRefresh() {
         showInvisibleLayout()
         retrofitCall(searchText)
-    }
-
-    private fun showInvisibleLayout(state: State = State.HIDE_ALL) {
-        rvItems.visibility = View.GONE
-        layoutNoInternet.visibility = View.GONE
-        layoutIsEmpty.visibility = View.GONE
-        layoutHistory.visibility = View.GONE
-        when (state) {
-            State.SUCCESS -> rvItems.visibility = View.VISIBLE
-            State.NOT_FOUND -> layoutIsEmpty.visibility = View.VISIBLE
-            State.ERROR -> layoutNoInternet.visibility = View.VISIBLE
-            State.SHOW_HISTORY -> layoutHistory.visibility = View.VISIBLE
-            else -> {}
-        }
     }
 
     // Заполнение RecyclerView
@@ -240,7 +234,6 @@ private fun callPlayerActivity(trackValue: Track){
     }
 
     private fun textWatcherInit() { // Инициализация TextWatcher
-
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // empty
@@ -248,16 +241,25 @@ private fun callPlayerActivity(trackValue: Track){
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 buttonClear.visibility = clearButtonVisibility(s)
-                showHistory()
+                searchText = inputEditText.text.toString()
+                searchDebounce()
+                //showHistory()
                 Log.println(Log.INFO, "my_tag", "onTextChanged")
             }
 
             override fun afterTextChanged(s: Editable?) {
-                searchText = inputEditText.text.toString()
+                //searchText = inputEditText.text.toString()
                 Log.println(Log.INFO, "my_tag", "afterTextChanged")
             }
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
+    }
+
+    private fun clearInputText() { // Очистка поля ввода
+        Log.println(Log.INFO, "my_tag", "clearInputText")
+        // Очистка строки ввода
+        inputEditText.setText("")
+        showHistory()
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int { // Изменение прозрачности кнопки (крестик)
@@ -266,18 +268,6 @@ private fun callPlayerActivity(trackValue: Track){
         } else {
             View.VISIBLE
         }
-    }
-
-    private fun onClickListenersInit() {
-        onClickReturn()
-        buttonClear.setOnClickListener(clickListener())
-        onClickClear()
-        onClickSearch()
-        onClickRefresh()
-        onClickRecyclerViewSearchItem()
-        onClickRecyclerViewHistoryItem()
-        onFocusListenerSearchInit()
-        onClickClearHistory()
     }
 
     private fun onClickRecyclerViewHistoryItem() {
@@ -324,38 +314,21 @@ private fun callPlayerActivity(trackValue: Track){
         item.setOnClickListener(clickListener())
     }
 
-    private fun clearInputText() { // Очистка поля ввода
-        Log.println(Log.INFO, "my_tag", "clearInputText")
-        // Очистка строки ввода
-        inputEditText.setText("")
-        showHistory()
-    }
-
     private fun clearButtonListener() {
         Helpers.hideKeyboard(this) // Скрытие клавиатуры
         clearInputText() // Очистка текста в поле поиска
         clearRecycle() // Очистка RV
     }
 
-    private fun clickListener() = View.OnClickListener { view ->
-        when (view.id) {
-            R.id.iv_search_back -> this.finish()
-            R.id.iv_search_clear -> clearButtonListener()
-            R.id.btn_search_refresh -> searchRefresh()
-            R.id.btn_clear_history -> clearHistory()
-        }
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         Log.println(Log.INFO, "my_tag", "onSave_Search")
         outState.putString(TEXT_SEARCH, searchText)
+        outState.putSerializable("search", Tracks(historyTrackList.size, historyTrackList))
         Log.println(Log.INFO, "my_tag", "onSave_Search: $searchText")
     }
 
-    override fun onRestoreInstanceState(
-        savedInstanceState: Bundle
-    ) {
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         Log.println(Log.INFO, "my_tag", "onRestore_Search")
         val txt = savedInstanceState.getString(TEXT_SEARCH)
@@ -367,16 +340,71 @@ private fun callPlayerActivity(trackValue: Track){
         }
     }
 
+    private fun onClickListenersInit() {
+        onClickReturn()
+        buttonClear.setOnClickListener(clickListener())
+        onClickClear()
+        onClickSearch()
+        onClickRefresh()
+        onClickRecyclerViewSearchItem()
+        onClickRecyclerViewHistoryItem()
+        onFocusListenerSearchInit()
+        onClickClearHistory()
+    }
+
+    private fun clickListener() = View.OnClickListener { view ->
+        when (view.id) {
+            R.id.iv_search_back -> this.finish()
+            R.id.iv_search_clear -> clearButtonListener()
+            R.id.btn_search_refresh -> searchRefresh()
+            R.id.btn_clear_history -> clearHistory()
+        }
+    }
+
+    private fun initViews() {
+        inputEditText = findViewById(R.id.et_search)
+        buttonClear = findViewById(R.id.iv_search_clear)
+        rvItems = findViewById(R.id.rv_Search)
+        buttonRefresh = findViewById(R.id.btn_search_refresh)
+        layoutIsEmpty = findViewById(R.id.layout_is_empty)
+        layoutNoInternet = findViewById(R.id.layout_no_internet)
+        layoutHistory = findViewById(R.id.layout_history)
+        buttonClearHistory = findViewById(R.id.btn_clear_history)
+        rvHistory = findViewById(R.id.rv_history)
+        progressBar = findViewById(R.id.progressBar)
+    }
+
+    private fun showInvisibleLayout(state: State = State.HIDE_ALL) {
+        rvItems.visibility = View.GONE
+        layoutNoInternet.visibility = View.GONE
+        layoutIsEmpty.visibility = View.GONE
+        layoutHistory.visibility = View.GONE
+        progressBar.visibility = View.GONE
+        when (state) {
+            State.SUCCESS -> rvItems.visibility = View.VISIBLE
+            State.NOT_FOUND -> layoutIsEmpty.visibility = View.VISIBLE
+            State.ERROR -> layoutNoInternet.visibility = View.VISIBLE
+            State.SHOW_HISTORY -> layoutHistory.visibility = View.VISIBLE
+            State.PROGRESS_BAR -> progressBar.visibility = View.VISIBLE
+            else -> {}
+        }
+    }
+
     enum class State {
         SUCCESS, // Show RV
         ERROR, // Show Layout NoInternet
         NOT_FOUND, // Show Layout Empty
         SHOW_HISTORY, // Show Layout History
+        PROGRESS_BAR, // Show progress bar
         HIDE_ALL // Hide all Layout and RV
+    }
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
     companion object {
-        const val TEXT_SEARCH = "first value"
+        private const val TEXT_SEARCH = "first value"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }
-

@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.example.playlistmaker.utils.Helpers
 import com.example.playlistmaker.retrofit.Track
 import java.text.SimpleDateFormat
@@ -58,6 +57,16 @@ class PlayerActivity : AppCompatActivity() {
         preparePlayer()
         mainThreadHandler = Handler(Looper.getMainLooper())
     }
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+        mainThreadHandler?.removeCallbacksAndMessages(null)
+    }
 
     private fun startThread() {
         Log.println(Log.INFO, "my_tag", "startThread")
@@ -65,7 +74,7 @@ class PlayerActivity : AppCompatActivity() {
             object : Runnable {
                 override fun run() {
                     if (playerState == STATE_PLAYING) {
-                        setTimeToTrackTime()
+                        setTimeToTrackTime(mediaPlayer.currentPosition)
                         mainThreadHandler?.postDelayed(this, REFRESH_TIME_HEADER_DELAY_MILLIS)
                     }
                     else{
@@ -76,9 +85,7 @@ class PlayerActivity : AppCompatActivity() {
         )
     }
 
-    private fun setTimeToTrackTime() {
-        val position: Int = mediaPlayer.currentPosition
-        //Log.println(Log.INFO, "my_tag", "Position: $position")
+    private fun setTimeToTrackTime(position: Int = 0) {
         trackTimeCurrent.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(position)
     }
 
@@ -87,14 +94,12 @@ class PlayerActivity : AppCompatActivity() {
             STATE_PLAYING -> {
                 pausePlayer()
             }
-
             STATE_PREPARED, STATE_PAUSED -> {
                 startPlayer()
                 startThread()
             }
         }
         setButtonPlayState()
-
     }
 
     private fun preparePlayer() {
@@ -105,6 +110,9 @@ class PlayerActivity : AppCompatActivity() {
         }
         mediaPlayer.setOnCompletionListener {
             playerState = STATE_PREPARED
+            Log.println(Log.INFO, "my_tag", "mediaPlayer End")
+            setTimeToTrackTime()
+            setButtonPlayState()
         }
     }
 
@@ -118,18 +126,11 @@ class PlayerActivity : AppCompatActivity() {
         playerState = STATE_PAUSED
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mediaPlayer.release()
-    }
-
     private fun setButtonPlayState() {
         if (playerState == STATE_PLAYING) {
             buttonPlay.setImageResource(R.drawable.ic_button_pause)
-            Toast.makeText(this, "Play", Toast.LENGTH_SHORT).show()
         } else {
             buttonPlay.setImageResource(R.drawable.ic_button_play)
-            Toast.makeText(this, "Pause", Toast.LENGTH_SHORT).show()
         }
     }
 

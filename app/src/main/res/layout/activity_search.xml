@@ -11,7 +11,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView style="@style/ImageViewHeaderStyle"
             android:id="@+id/iv_search_back"
@@ -62,7 +63,8 @@
             android:textColorHint="?attr/colorOnSecondaryContainer"
             android:textCursorDrawable="@color/blue"
             android:textSize="16sp"
-            tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
+            tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck"
+            android:autofillHints="text" />
 
         <ImageView
             android:id="@+id/iv_search_clear"
@@ -84,12 +86,15 @@
         android:layout_height="match_parent"
         android:layout_marginTop="24dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
-
     </androidx.recyclerview.widget.RecyclerView>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ProgressBar android:id="@+id/progressBar"
+            style="@style/ProgressBarSearch"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:id="@+id/layout_is_empty"
@@ -97,13 +102,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:contentDescription="@string/contentDescription"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_is_empty" />
+                android:src="@drawable/ic_is_empty"
+                android:contentDescription="@string/contentDescription" />
 
             <TextView style="@style/TextViewSearchStub"
                 android:layout_width="wrap_content"
@@ -124,7 +132,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_no_internet" />
+                android:src="@drawable/ic_no_internet"
+                android:contentDescription="@string/contentDescription" />
 
             <TextView
                 style="@style/TextViewSearchStub"
@@ -170,7 +179,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:visibility="visible"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"></androidx.recyclerview.widget.RecyclerView>
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 <Button
                     android:id="@+id/btn_clear_history"
