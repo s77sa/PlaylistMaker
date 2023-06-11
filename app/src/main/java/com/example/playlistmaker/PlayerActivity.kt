@@ -25,7 +25,7 @@ class PlayerActivity : AppCompatActivity() {
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
-        private const val REFRESH_TIME_HEADER_DELAY_MILLIS: Long = 1000L
+        private const val REFRESH_TIME_HEADER_DELAY_MILLIS: Long = 330L
     }
 
     private var playerState = STATE_DEFAULT
@@ -86,6 +86,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun setTimeToTrackTime(position: Int = 0) {
+        Log.println(Log.INFO, "my_tag", "position=$position")
         trackTimeCurrent.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(position)
     }
 
