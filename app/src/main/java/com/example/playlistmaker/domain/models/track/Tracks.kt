@@ -1,4 +1,4 @@
-package com.example.playlistmaker.retrofit
+package com.example.playlistmaker.domain.models.track
 
 import java.io.Serializable
 

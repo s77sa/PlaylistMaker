@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.search
 
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
@@ -17,16 +17,18 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.models.HISTORY_COUNT
-import com.example.playlistmaker.models.Intents
-import com.example.playlistmaker.models.PLAY_LIST_PREFERENCES
-import com.example.playlistmaker.models.Preferences
-import com.example.playlistmaker.retrofit.Track
-import com.example.playlistmaker.retrofit.Tracks
-import com.example.playlistmaker.retrofit.TracksApi
-import com.example.playlistmaker.retrofit.TracksRetrofit
-import com.example.playlistmaker.utils.Helpers
-import com.example.playlistmaker.recyclerview.SearchAdapter
+import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.HISTORY_COUNT
+import com.example.playlistmaker.presentation.Intents
+import com.example.playlistmaker.domain.PLAY_LIST_PREFERENCES
+import com.example.playlistmaker.data.sp.Preferences
+import com.example.playlistmaker.presentation.player.PlayerActivity
+import com.example.playlistmaker.domain.models.track.Track
+import com.example.playlistmaker.domain.models.track.Tracks
+import com.example.playlistmaker.data.network.TracksApi
+import com.example.playlistmaker.data.network.TracksRetrofit
+import com.example.playlistmaker.domain.helpers.Helpers
+import com.example.playlistmaker.presentation.search.recyclerview.SearchAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -1,7 +1,7 @@
-package com.example.playlistmaker.models
+package com.example.playlistmaker.data.sp
 
 import android.content.SharedPreferences
-import com.example.playlistmaker.retrofit.Tracks
+import com.example.playlistmaker.domain.models.track.Tracks
 import com.google.gson.Gson
 
 const val DARK_THEME = "dark_theme"

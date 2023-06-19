@@ -1,4 +1,4 @@
-package com.example.playlistmaker.models
+package com.example.playlistmaker.presentation
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -7,7 +7,7 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.R
-import com.example.playlistmaker.retrofit.Track
+import com.example.playlistmaker.domain.models.track.Track
 import java.io.Serializable
 
 

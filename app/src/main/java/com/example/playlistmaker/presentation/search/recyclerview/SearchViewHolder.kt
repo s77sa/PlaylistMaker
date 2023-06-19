@@ -1,12 +1,12 @@
-package com.example.playlistmaker.recyclerview
+package com.example.playlistmaker.presentation.search.recyclerview
 
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.utils.Helpers
-import com.example.playlistmaker.retrofit.Track
+import com.example.playlistmaker.domain.helpers.Helpers
+import com.example.playlistmaker.domain.models.track.Track
 
 class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
