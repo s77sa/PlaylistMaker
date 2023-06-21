@@ -14,7 +14,7 @@ import com.example.playlistmaker.presentation.search.KEY_INTENT_PLAYER_ACTIVITY
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.api.PlayerInteractor
 import com.example.playlistmaker.domain.models.track.Track
-import com.example.playlistmaker.domain.helpers.Helpers
+import com.example.playlistmaker.presentation.helpers.Helpers
 import com.example.playlistmaker.Creator
 import com.example.playlistmaker.domain.player.PlayerState
 import java.text.SimpleDateFormat

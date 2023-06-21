@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.helpers
+package com.example.playlistmaker.presentation.helpers
 
 import android.app.Activity
 import android.view.View

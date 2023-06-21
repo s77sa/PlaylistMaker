@@ -27,7 +27,7 @@ import com.example.playlistmaker.domain.models.track.Track
 import com.example.playlistmaker.domain.models.track.Tracks
 import com.example.playlistmaker.data.network.TracksApi
 import com.example.playlistmaker.data.network.TracksRetrofit
-import com.example.playlistmaker.domain.helpers.Helpers
+import com.example.playlistmaker.presentation.helpers.Helpers
 import com.example.playlistmaker.presentation.search.recyclerview.SearchAdapter
 import retrofit2.Call
 import retrofit2.Callback
