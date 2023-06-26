@@ -1,9 +1,10 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.library
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import com.example.playlistmaker.R
 
 class LibraryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

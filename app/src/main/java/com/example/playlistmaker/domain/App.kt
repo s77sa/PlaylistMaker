@@ -1,8 +1,9 @@
-package com.example.playlistmaker.models
+package com.example.playlistmaker.domain
 
 import android.app.Application
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmaker.data.sp.Preferences
 
 const val HISTORY_COUNT: Int = 10
 const val PLAY_LIST_PREFERENCES = "play_list_preferences"

@@ -1,4 +1,4 @@
-package com.example.playlistmaker.recyclerview
+package com.example.playlistmaker.presentation.search.recyclerview
 
 import android.os.Handler
 import android.os.Looper
@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.retrofit.Track
+import com.example.playlistmaker.domain.models.track.Track
 
 class SearchAdapter (private val data: List<Track>) : RecyclerView.Adapter<SearchViewHolder> (){
     companion object {

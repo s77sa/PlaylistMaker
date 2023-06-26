@@ -128,4 +128,3 @@
         <item name="android:indeterminateTint">@color/blue</item>
     </style>
 </resources>
-<!--<item name="android:layout_marginTop">140dp</item>-->
