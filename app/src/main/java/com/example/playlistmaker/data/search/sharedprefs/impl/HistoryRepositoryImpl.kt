@@ -32,14 +32,14 @@ class HistoryRepositoryImpl(context: Context) : HistoryRepository {
         return tracks
     }
 
-    override fun saveUserHistory2(tracks: Tracks) {
+    override fun saveUserHistoryTracks(tracks: Tracks) {
         val json = Gson().toJson(tracks)
         sharedPreferences.edit()
             .putString(TRACKS_HISTORY, json)
             .apply()
     }
 
-    override fun restoreUserHistory2(): Tracks? {
+    override fun restoreUserHistoryTracks(): Tracks? {
         var tracks: Tracks? = null
         val json = sharedPreferences.getString(TRACKS_HISTORY, null)
         if (json != null) {

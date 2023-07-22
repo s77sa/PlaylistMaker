@@ -9,7 +9,7 @@ interface HistoryRepository {
 
     fun restoreUserHistory(): List<Track>?
 
-    fun saveUserHistory2(tracks: Tracks)
+    fun saveUserHistoryTracks(tracks: Tracks)
 
-    fun restoreUserHistory2(): Tracks?
+    fun restoreUserHistoryTracks(): Tracks?
 }

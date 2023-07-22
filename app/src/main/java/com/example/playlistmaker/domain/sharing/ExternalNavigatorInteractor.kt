@@ -1,6 +1,5 @@
 package com.example.playlistmaker.domain.sharing
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 
 interface ExternalNavigatorInteractor {

@@ -26,9 +26,6 @@ class SearchViewModel(
     private val externalNavigator: ExternalNavigatorInteractor,
     private val historyInteractor: HistoryInteractor
 ) : ViewModel() {
-    init {
-        //loadHistoryFromSharedPrefs()
-    }
 
     private val handler = Handler(Looper.getMainLooper())
     private val searchRunnable = Runnable { searchRequest() }

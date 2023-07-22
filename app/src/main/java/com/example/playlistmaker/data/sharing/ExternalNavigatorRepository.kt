@@ -1,6 +1,5 @@
 package com.example.playlistmaker.data.sharing
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 
 interface ExternalNavigatorRepository {

@@ -1,6 +1,5 @@
 package com.example.playlistmaker.ui.search
 
-//import com.example.playlistmaker.HISTORY_COUNT
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
@@ -100,8 +99,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchRefresh() {
-        //showInvisibleLayout()
-        //retrofitCall(searchText)
         viewModel.searchRequest()
     }
 
@@ -118,7 +115,6 @@ class SearchActivity : AppCompatActivity() {
         }
         historyTrackList.clear()
         historyTrackList.addAll(list)
-        //rvHistory.adapter?.notifyItemRangeInserted(historyTrackList.size, list.size)
         rvHistory.adapter?.notifyDataSetChanged()
     }
 
@@ -131,7 +127,7 @@ class SearchActivity : AppCompatActivity() {
         viewModel.checkState()
     }
 
-    private fun initTextWatcher() { // Инициализация TextWatcher
+    private fun initTextWatcher() {
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // empty
@@ -157,7 +153,7 @@ class SearchActivity : AppCompatActivity() {
         viewModel.checkState()
     }
 
-    private fun clearButtonVisibility(s: CharSequence?): Int { // Изменение прозрачности кнопки (крестик)
+    private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
             View.GONE
         } else {
@@ -195,24 +191,24 @@ class SearchActivity : AppCompatActivity() {
         buttonRefresh.setOnClickListener(clickListener())
     }
 
-    private fun onClickSearch() { // Клик на строку поиска
+    private fun onClickSearch() {
         inputEditText.setOnClickListener(clickListener())
     }
 
-    private fun onClickClear() { // Очистка строки поиска
+    private fun onClickClear() {
         val item = findViewById<ImageView>(R.id.iv_search_clear)
         item.setOnClickListener(clickListener())
     }
 
-    private fun onClickReturn() { // Возврат на предыдущий экран
+    private fun onClickReturn() {
         val item = findViewById<ImageView>(R.id.iv_search_back)
         item.setOnClickListener(clickListener())
     }
 
     private fun clearButtonListener() {
-        Helpers.hideKeyboard(this) // Скрытие клавиатуры
-        clearInputText() // Очистка текста в поле поиска
-        clearSearchResult() // Очистка RV
+        Helpers.hideKeyboard(this)
+        clearInputText()
+        clearSearchResult()
     }
 
     private fun initOnClickListeners() {
