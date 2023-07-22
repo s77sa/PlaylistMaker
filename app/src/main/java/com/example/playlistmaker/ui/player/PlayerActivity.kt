@@ -8,14 +8,15 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.data.search.models.Track
-import com.example.playlistmaker.ui.search.KEY_INTENT_PLAYER_ACTIVITY
+import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.ui.Helpers
 import java.text.SimpleDateFormat
 
 
+const val KEY_INTENT_PLAYER_ACTIVITY = "player_intent"
 class PlayerActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var viewModel: PlayerViewModel
     private lateinit var track: Track
@@ -51,7 +52,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun initObserver() {
         viewModel.getLoadingValues().observe(this) { track ->
-            Log.d("my_tag", "init - Observer - ${track.trackName}")
+            Log.d("my_tag", "init - Player Observer - ${track.trackName}")
             writeTrackDataToView()
         }
         viewModel.getPlayingPositionLiveData().observe(this) { value ->

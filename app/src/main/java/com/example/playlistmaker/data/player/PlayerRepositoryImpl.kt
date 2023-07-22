@@ -42,8 +42,10 @@ class PlayerRepositoryImpl : PlayerRepository {
 
     override fun pausePlayer() {
         Log.println(Log.INFO, "my_tag", "mediaPlayer Pause")
-        mediaPlayer.pause()
-        playerState = PlayerState.STATE_PAUSED
+        if (playerState == PlayerState.STATE_PLAYING) {
+            mediaPlayer.pause()
+            playerState = PlayerState.STATE_PAUSED
+        }
     }
 
     override fun releasePlayer() {

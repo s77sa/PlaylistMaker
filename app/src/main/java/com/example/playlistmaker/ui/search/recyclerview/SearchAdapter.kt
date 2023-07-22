@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.search.models.Track
 
-class SearchAdapter (private val data: List<Track>) : RecyclerView.Adapter<SearchViewHolder> (){
+class SearchAdapter(private val data: MutableList<Track>) : RecyclerView.Adapter<SearchViewHolder> (){
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
