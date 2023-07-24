@@ -4,42 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.data.sharing.ExternalNavigatorRepository
-import java.io.Serializable
-
 
 class ExternalNavigatorRepositoryImpl(private val context: Context) : ExternalNavigatorRepository{
-
-    override fun intentCall(activityClass: Class<out AppCompatActivity>) {
-        val intent = Intent(context, activityClass)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
-    }
-
-    override fun intentCallWithKey(
-        activityClass: Class<out AppCompatActivity>,
-        keyName: String,
-        keyValue: String
-    ) {
-        val intent = Intent(context, activityClass).apply {
-            putExtra(keyName, keyValue)
-        }
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
-    }
-
-    override fun intentCallWithKeySerializable(
-        activityClass: Class<Any>,
-        keyName: String,
-        keyValue: Any
-    ) {
-        val intent = Intent(context, activityClass).apply {
-            putExtra(keyName, keyValue as Serializable)
-        }
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
-    }
 
     override fun intentOpenLink(link: String) {
         val shareIntent = Intent(Intent.ACTION_VIEW)

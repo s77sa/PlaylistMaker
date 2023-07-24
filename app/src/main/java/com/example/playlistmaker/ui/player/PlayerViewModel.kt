@@ -28,10 +28,10 @@ class PlayerViewModel(
     private val valuesLiveData = MutableLiveData<Track>()
     fun getLoadingValues(): LiveData<Track> = valuesLiveData
 
-    private var isPlayingLiveData = MutableLiveData(false)
+    private val isPlayingLiveData = MutableLiveData(false)
     fun getIsPlayingLiveData(): LiveData<Boolean> = isPlayingLiveData
 
-    private var playingPositionLiveData = MutableLiveData<String>()
+    private val playingPositionLiveData = MutableLiveData<String>()
     fun getPlayingPositionLiveData(): LiveData<String> = playingPositionLiveData
 
     private var mainThreadHandler: Handler? = null

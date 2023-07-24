@@ -17,13 +17,13 @@ import com.example.playlistmaker.data.search.models.Tracks
 import com.example.playlistmaker.data.search.network.retrofit.ConnectionStatus
 import com.example.playlistmaker.domain.search.TrackInteractor
 import com.example.playlistmaker.domain.settings.sharedprefs.HistoryInteractor
-import com.example.playlistmaker.domain.sharing.ExternalNavigatorInteractor
 import com.example.playlistmaker.ui.player.KEY_INTENT_PLAYER_ACTIVITY
 import com.example.playlistmaker.ui.player.PlayerActivity
+import com.example.playlistmaker.ui.sharing.ActivityNavigator
 
 class SearchViewModel(
-    private val trackInteractor: TrackInteractor,
-    private val externalNavigator: ExternalNavigatorInteractor,
+    private val trackInteractor: TrackInteractor?,
+    private val activityNavigator: ActivityNavigator,
     private val historyInteractor: HistoryInteractor
 ) : ViewModel() {
 
@@ -34,8 +34,8 @@ class SearchViewModel(
     val searchText: LiveData<String> = searchTextMutable
 
     private val searchActivityStateMutable =
-        MutableLiveData<StateActivity>().apply { StateActivity.HIDE_ALL }
-    val searchActivityState: LiveData<StateActivity> = searchActivityStateMutable
+        MutableLiveData<ActivityState>().apply { ActivityState.HIDE_ALL }
+    val searchActivityState: LiveData<ActivityState> = searchActivityStateMutable
 
     private val searchTrackListMutable = MutableLiveData<MutableList<Track>>()
     val searchTrackList: LiveData<MutableList<Track>> = searchTrackListMutable
@@ -51,7 +51,7 @@ class SearchViewModel(
     fun searchRequest() {
         if (searchTextMutable.value?.isNotEmpty() == true) {
             val queryText = searchTextMutable.value
-            searchActivityStateMutable.value = StateActivity.PROGRESS_BAR
+            searchActivityStateMutable.value = ActivityState.PROGRESS_BAR
             if (queryText != null) {
                 Log.d("my_tag", "Start search query = $queryText")
                 initSearch(queryText)
@@ -65,12 +65,12 @@ class SearchViewModel(
         Log.d("my_tag", "saveHistoryToSharedPrefs size: ${historyTrackList.value?.size}")
         //historyInteractor.saveUserHistory(historyTrackList.value as List<Track>)
         if (tracks != null) {
-            historyInteractor.saveUserHistory2(tracks)
+            historyInteractor.saveUserHistoryTracks(tracks)
         }
     }
 
     private fun loadHistoryFromSharedPrefs() {
-        val historyList: Tracks? = historyInteractor.restoreUserHistory2()
+        val historyList: Tracks? = historyInteractor.restoreUserHistoryTracks()
         if (historyList != null) {
             if (historyList.results.isNotEmpty()) {
                 historyTrackListMutable.value = historyList.results
@@ -106,7 +106,7 @@ class SearchViewModel(
 
     private fun showHistory(){
         if (!historyTrackListMutable.value.isNullOrEmpty()) {
-            searchActivityStateMutable.value = StateActivity.SHOW_HISTORY
+            searchActivityStateMutable.value = ActivityState.HISTORY_RESULT
             Log.d("my_tag", "checkHistory State = ${searchActivityStateMutable.value}")
             Log.d("my_tag", "checkHistory Size = ${historyTrackListMutable.value?.size}")
         }
@@ -153,7 +153,7 @@ class SearchViewModel(
 
     @Suppress("UNCHECKED_CAST")
     fun callPlayerActivity(item: Track) {
-        externalNavigator.intentCallWithKeySerializable(
+        activityNavigator.intentCallWithKeySerializable(
             PlayerActivity::class.java as Class<Any>,
             KEY_INTENT_PLAYER_ACTIVITY,
             item
@@ -163,22 +163,21 @@ class SearchViewModel(
     private fun initSearch(queryText: String) {
         if (queryText.isNotEmpty()) {
             Log.d("my_tag", "Search text = $queryText")
-            trackInteractor.searchTracks(queryText, object : TrackInteractor.TracksConsumer {
+            trackInteractor?.searchTracks(queryText, object : TrackInteractor.TracksConsumer {
                 override fun consume(foundMovies: List<Track>?, errorMessage: ConnectionStatus) {
                     handler.post {
                         if (foundMovies != null) {
                             Log.d("my_tag", "Found tracks = ${foundMovies.size}")
                             searchTrackListMutable.value?.clear()
-                            //searchTrackListMutable.value?.addAll(foundMovies)
                             searchTrackListMutable.value = foundMovies as MutableList<Track>?
                             if (foundMovies.isNotEmpty()) {
-                                searchActivityStateMutable.value = StateActivity.SUCCESS
+                                searchActivityStateMutable.value = ActivityState.SEARCH_RESULT
                             } else {
-                                searchActivityStateMutable.value = StateActivity.NOT_FOUND
+                                searchActivityStateMutable.value = ActivityState.NOT_FOUND
                             }
                         }
                         if (errorMessage != ConnectionStatus.SUCCESS) {
-                            searchActivityStateMutable.value = StateActivity.ERROR
+                            searchActivityStateMutable.value = ActivityState.NO_INTERNET
                         }
                         Log.d("my_tag", "VM State = ${searchActivityStateMutable.value}")
                         Log.d("my_tag", "VM Value size = ${searchTrackListMutable.value?.size}")
@@ -198,7 +197,7 @@ class SearchViewModel(
             initializer {
                 SearchViewModel(
                     trackInteractor = Creator.provideTrackInteractor(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application),
-                    externalNavigator = Creator.provideExternalNavigator(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application),
+                    activityNavigator = ActivityNavigator(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application),
                     historyInteractor = Creator.provideHistoryInteractor(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application)
                 )
             }

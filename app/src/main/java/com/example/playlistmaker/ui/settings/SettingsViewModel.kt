@@ -15,8 +15,8 @@ import com.example.playlistmaker.domain.sharing.ExternalNavigatorInteractor
 import com.example.playlistmaker.ui.ThemeSwitcher
 
 class SettingsViewModel(
-    private var themeInteractor: ThemeInteractor,
-    private val externalNavigator: ExternalNavigatorInteractor
+    private var themeInteractor: ThemeInteractor?,
+    private val externalNavigator: ExternalNavigatorInteractor?
 ) : ViewModel() {
     init {
         Log.d("my_tag", "init - Settings ViewModel}")
@@ -25,7 +25,7 @@ class SettingsViewModel(
     val darkTheme: LiveData<Boolean> = darkThemeMutable
 
     fun getThemeFromSharedPrefs(){
-        darkThemeMutable.value = themeInteractor.restoreTheme()
+        darkThemeMutable.value = themeInteractor?.restoreTheme()
     }
 
     fun saveAndApplyTheme(value: Boolean){
@@ -34,8 +34,10 @@ class SettingsViewModel(
     }
 
     private fun setThemeSharedPrefs(value: Boolean){
-        themeInteractor.saveTheme(value)
-        darkThemeMutable.value = value
+        if(themeInteractor != null) {
+            themeInteractor!!.saveTheme(value)
+            darkThemeMutable.value = value
+        }
     }
 
     private fun switchTheme(){
@@ -43,11 +45,11 @@ class SettingsViewModel(
     }
 
     fun callSendIntent(message: String){
-        externalNavigator.intentSend(message)
+        externalNavigator?.intentSend(message)
     }
 
     fun callEmailIntent(address: String, subject: String, text: String){
-        externalNavigator.intentEmail(
+        externalNavigator?.intentEmail(
             address = address,
             subject = subject,
             text = text
@@ -55,7 +57,7 @@ class SettingsViewModel(
     }
 
     fun callOpenLinkIntent(link: String){
-        externalNavigator.intentOpenLink(link)
+        externalNavigator?.intentOpenLink(link)
     }
 
     companion object {

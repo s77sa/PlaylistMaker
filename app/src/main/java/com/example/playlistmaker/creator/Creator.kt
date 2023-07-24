@@ -1,5 +1,6 @@
 package com.example.playlistmaker.creator
 
+import android.app.Application
 import android.content.Context
 import com.example.playlistmaker.data.player.PlayerRepositoryImpl
 import com.example.playlistmaker.domain.player.PlayerInteractor
@@ -17,7 +18,6 @@ import com.example.playlistmaker.data.sharing.impl.ExternalNavigatorRepositoryIm
 import com.example.playlistmaker.domain.search.TrackInteractor
 import com.example.playlistmaker.domain.search.impl.TrackInteractorImpl
 import com.example.playlistmaker.domain.settings.sharedprefs.HistoryInteractor
-import com.example.playlistmaker.domain.settings.sharedprefs.ThemeInteractor
 import com.example.playlistmaker.domain.settings.sharedprefs.impl.HistoryInteractorImpl
 import com.example.playlistmaker.domain.settings.sharedprefs.impl.ThemeInteractorImpl
 import com.example.playlistmaker.domain.sharing.ExternalNavigatorInteractor
@@ -32,8 +32,12 @@ object Creator {
         return PlayerRepositoryImpl()
     }
 
-    fun provideThemeInteractor(context: Context): ThemeInteractor {
-        return ThemeInteractorImpl(getThemeRepository(context = context))
+    fun provideThemeInteractor(context: Context): ThemeInteractorImpl? {
+        return if (context is Application) {
+            ThemeInteractorImpl(getThemeRepository(context = context))
+        } else {
+            null
+        }
     }
 
     private fun getThemeRepository(context: Context): ThemeRepository {
@@ -48,16 +52,24 @@ object Creator {
         return HistoryRepositoryImpl(context = context)
     }
 
-    fun provideExternalNavigator(context: Context): ExternalNavigatorInteractor{
-        return ExternalNavigatorInteractorImpl(getExternalNavigatorRepository(context = context))
+    fun provideExternalNavigator(context: Context): ExternalNavigatorInteractor?{
+        return if (context is Application) {
+            ExternalNavigatorInteractorImpl(getExternalNavigatorRepository(context = context))
+        } else {
+            null
+        }
     }
 
     private fun getExternalNavigatorRepository(context: Context): ExternalNavigatorRepository{
         return ExternalNavigatorRepositoryImpl(context = context)
     }
 
-    fun provideTrackInteractor(context: Context): TrackInteractor{
-        return TrackInteractorImpl(getTrackRepository(context = context))
+    fun provideTrackInteractor(context: Context): TrackInteractor?{
+        return if (context is Application) {
+            return TrackInteractorImpl(getTrackRepository(context = context))
+        } else {
+            null
+        }
     }
 
     private fun getTrackRepository(context: Context): TrackRepository{

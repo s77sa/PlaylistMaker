@@ -14,11 +14,11 @@ class HistoryInteractorImpl(private val repository: HistoryRepository ) : Histor
         return repository.restoreUserHistory()
     }
 
-    override fun saveUserHistory2(tracks: Tracks){
+    override fun saveUserHistoryTracks(tracks: Tracks){
         return repository.saveUserHistoryTracks(tracks)
     }
 
-    override fun restoreUserHistory2(): Tracks?{
+    override fun restoreUserHistoryTracks(): Tracks?{
         return repository.restoreUserHistoryTracks()
     }
 
