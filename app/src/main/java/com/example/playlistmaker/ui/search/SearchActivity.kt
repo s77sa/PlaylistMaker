@@ -35,18 +35,6 @@ class SearchActivity : AppCompatActivity() {
     private var layoutNoInternet: LinearLayout? = null
     private var layoutHistory: LinearLayout? = null
     private var progressBar: ProgressBar? = null
-//    private lateinit var inputEditText: EditText
-//    private lateinit var rvSearch: RecyclerView
-//    private lateinit var rvHistory: RecyclerView
-//    private lateinit var rvSearchAdapter: SearchAdapter
-//    private lateinit var rvHistoryAdapter: SearchAdapter
-//    private lateinit var buttonRefresh: Button
-//    private lateinit var buttonClear: ImageView
-//    private lateinit var buttonClearHistory: Button
-//    private lateinit var layoutIsEmpty: LinearLayout
-//    private lateinit var layoutNoInternet: LinearLayout
-//    private lateinit var layoutHistory: LinearLayout
-//    private lateinit var progressBar: ProgressBar
     private var searchTrackList: MutableList<Track> = mutableListOf()
     private var historyTrackList: MutableList<Track> = mutableListOf()
     private var searchText = ""
@@ -120,14 +108,13 @@ class SearchActivity : AppCompatActivity() {
         rvSearch?.adapter?.notifyItemRangeInserted(searchTrackList.size, list.size)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun addHistoryResultToRecycle(list: List<Track>) {
         for (item in list){
             Log.d("my_tag", "add To History Adapter: ${item.trackId}")
         }
         historyTrackList.clear()
         historyTrackList.addAll(list)
-        rvHistory?.adapter?.notifyDataSetChanged()
+        rvHistory?.adapter?.notifyItemRangeChanged(searchTrackList.size, list.size)
     }
 
     @SuppressLint("NotifyDataSetChanged")
