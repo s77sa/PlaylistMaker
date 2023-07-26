@@ -1,15 +1,9 @@
 package com.example.playlistmaker.ui.settings
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.settings.sharedprefs.ThemeInteractor
 import com.example.playlistmaker.domain.sharing.ExternalNavigatorInteractor
 import com.example.playlistmaker.ui.ThemeSwitcher
@@ -58,16 +52,5 @@ class SettingsViewModel(
 
     fun callOpenLinkIntent(link: String){
         externalNavigator?.intentOpenLink(link)
-    }
-
-    companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SettingsViewModel(
-                    themeInteractor = Creator.provideThemeInteractor(this[APPLICATION_KEY] as Application),
-                    externalNavigator = Creator.provideExternalNavigator(this[APPLICATION_KEY] as Application)
-                )
-            }
-        }
     }
 }

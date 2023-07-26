@@ -1,17 +1,12 @@
 package com.example.playlistmaker.ui.search
 
 
-import android.app.Application
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.data.search.models.Track
 import com.example.playlistmaker.data.search.models.Tracks
 import com.example.playlistmaker.data.search.network.retrofit.ConnectionStatus
@@ -22,11 +17,13 @@ import com.example.playlistmaker.ui.player.PlayerActivity
 import com.example.playlistmaker.ui.sharing.ActivityNavigator
 
 class SearchViewModel(
-    private val trackInteractor: TrackInteractor?,
+    private val trackInteractor: TrackInteractor,
     private val activityNavigator: ActivityNavigator,
     private val historyInteractor: HistoryInteractor
 ) : ViewModel() {
-
+    init {
+        Log.d("my_tag", "init - Search ViewModel}")
+    }
     private val handler = Handler(Looper.getMainLooper())
     private val searchRunnable = Runnable { searchRequest() }
 
@@ -163,7 +160,7 @@ class SearchViewModel(
     private fun initSearch(queryText: String) {
         if (queryText.isNotEmpty()) {
             Log.d("my_tag", "Search text = $queryText")
-            trackInteractor?.searchTracks(queryText, object : TrackInteractor.TracksConsumer {
+            trackInteractor.searchTracks(queryText, object : TrackInteractor.TracksConsumer {
                 override fun consume(foundMovies: List<Track>?, errorMessage: ConnectionStatus) {
                     handler.post {
                         if (foundMovies != null) {
@@ -193,15 +190,15 @@ class SearchViewModel(
     }
 
     companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SearchViewModel(
-                    trackInteractor = Creator.provideTrackInteractor(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application),
-                    activityNavigator = ActivityNavigator(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application),
-                    historyInteractor = Creator.provideHistoryInteractor(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application)
-                )
-            }
-        }
+//        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
+//            initializer {
+//                SearchViewModel(
+//                    trackInteractor = Creator.provideTrackInteractor(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application),
+//                    activityNavigator = ActivityNavigator(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application),
+//                    historyInteractor = Creator.provideHistoryInteractor(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application)
+//                )
+//            }
+//        }
 
         private const val HISTORY_COUNT = 10
         private const val SEARCH_DEBOUNCE_DELAY = 2000L

@@ -14,7 +14,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 
 class RetrofitNetworkClient(
     private val context: Context,
-    //private val searchBaseUrl: String
 ): NetworkClient {
 
     private val interceptorEnable: Boolean = true

@@ -13,15 +13,16 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.search.models.Track
 import com.example.playlistmaker.ui.Helpers
 import com.example.playlistmaker.ui.search.recyclerview.SearchAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
-    private lateinit var viewModel: SearchViewModel
+
+    private val viewModel by viewModel<SearchViewModel>()
 
     private var inputEditText: EditText? = null
     private var rvSearch: RecyclerView? = null
@@ -46,10 +47,6 @@ class SearchActivity : AppCompatActivity() {
         Log.println(Log.INFO, "my_tag", "onCreate Search")
         initViews()
         initTextWatcher()
-        viewModel = ViewModelProvider(
-            this,
-            SearchViewModel.getViewModelFactory()
-        )[SearchViewModel::class.java]
         initAdapters()
         initOnClickListeners()
         initObservers()
