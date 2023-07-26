@@ -2,8 +2,6 @@ package com.example.playlistmaker.data.player
 
 import android.media.MediaPlayer
 import android.util.Log
-import com.example.playlistmaker.domain.player.PlayerRepository
-import com.example.playlistmaker.domain.player.PlayerState
 
 
 class PlayerRepositoryImpl : PlayerRepository {
@@ -28,7 +26,7 @@ class PlayerRepositoryImpl : PlayerRepository {
         playerState = state
     }
 
-    override fun getPlayerState(): PlayerState{
+    override fun getPlayerState(): PlayerState {
         return playerState
     }
 
@@ -44,8 +42,10 @@ class PlayerRepositoryImpl : PlayerRepository {
 
     override fun pausePlayer() {
         Log.println(Log.INFO, "my_tag", "mediaPlayer Pause")
-        mediaPlayer.pause()
-        playerState = PlayerState.STATE_PAUSED
+        if (playerState == PlayerState.STATE_PLAYING) {
+            mediaPlayer.pause()
+            playerState = PlayerState.STATE_PAUSED
+        }
     }
 
     override fun releasePlayer() {
