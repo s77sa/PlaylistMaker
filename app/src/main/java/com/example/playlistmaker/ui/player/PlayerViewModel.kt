@@ -53,7 +53,6 @@ class PlayerViewModel(
     }
 
     private fun setTimeToTrackTime(position: Int = 0) {
-        Log.println(Log.INFO, "my_tag", "position=$position")
         saveCurrentPositionToLiveData(
             SimpleDateFormat(
                 "mm:ss",
@@ -84,7 +83,7 @@ class PlayerViewModel(
 
     fun preparePlayer() {
         mainThreadHandler = Handler(Looper.getMainLooper())
-        mediaPlayerInteractor.preparePlayer(track.previewUrl)
+        track.previewUrl?.let { mediaPlayerInteractor.preparePlayer(it) }
     }
 
     private fun startPlayer() {
@@ -124,14 +123,5 @@ class PlayerViewModel(
 
     companion object {
         private const val REFRESH_TIME_HEADER_DELAY_MILLIS: Long = 330L
-
-//        fun getViewModelFactory(track: Track): ViewModelProvider.Factory = viewModelFactory {
-//            initializer {
-//                PlayerViewModel(
-//                    track,
-//                    Creator.providePlayerInteractor()
-//                )
-//            }
-//        }
     }
 }

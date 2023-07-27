@@ -38,19 +38,19 @@ class SettingsViewModel(
         darkTheme.value?.let { ThemeSwitcher.switchTheme(it) }
     }
 
-    fun callSendIntent(message: String){
-        externalNavigator?.intentSend(message)
+    fun callSendIntent(message: String): String?{
+        return externalNavigator?.intentSend(message)
     }
 
-    fun callEmailIntent(address: String, subject: String, text: String){
-        externalNavigator?.intentEmail(
+    fun callEmailIntent(address: String, subject: String, text: String): String?{
+        return externalNavigator?.intentEmail(
             address = address,
             subject = subject,
             text = text
         )
     }
 
-    fun callOpenLinkIntent(link: String){
-        externalNavigator?.intentOpenLink(link)
+    fun callOpenLinkIntent(link: String): String?{
+        return externalNavigator?.intentOpenLink(link)
     }
 }

@@ -18,7 +18,7 @@ class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(item: Track) {
         trackName.text = item.trackName
         artistName.text = item.artistName
-        trackTime.text = Helpers.millisToString(item.trackTimeMillis)
-        Helpers.glideBind(item.artworkUrl100, artWork)
+        trackTime.text = item.trackTimeMillis?.let { Helpers.millisToString(it) }
+        item.artworkUrl100?.let { Helpers.glideBind(it, artWork) }
     }
 }

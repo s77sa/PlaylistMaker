@@ -22,10 +22,6 @@ val dataModule = module {
         ExternalNavigatorRepositoryImpl(context = get())
     }
 
-    single<ExternalNavigatorRepository> {
-        ExternalNavigatorRepositoryImpl(context = get())
-    }
-
     single<HistoryRepository>{
         HistoryRepositoryImpl(context = get())
     }

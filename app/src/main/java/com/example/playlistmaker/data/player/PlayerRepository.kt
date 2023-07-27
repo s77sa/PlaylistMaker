@@ -2,7 +2,7 @@ package com.example.playlistmaker.data.player
 
 interface PlayerRepository {
 
-    fun preparePlayer(streamUrl: String)
+    fun preparePlayer(streamUrl: String?)
 
     fun setPlayerState(state: PlayerState)
 
