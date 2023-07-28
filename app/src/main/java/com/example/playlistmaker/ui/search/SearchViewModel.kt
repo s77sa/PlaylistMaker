@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.data.search.models.Track
 import com.example.playlistmaker.data.search.models.Tracks
-import com.example.playlistmaker.data.search.network.retrofit.ConnectionStatus
+import com.example.playlistmaker.data.search.network.retrofit.models.ConnectionStatus
 import com.example.playlistmaker.domain.search.TrackInteractor
 import com.example.playlistmaker.domain.settings.sharedprefs.HistoryInteractor
 import com.example.playlistmaker.ui.player.KEY_INTENT_PLAYER_ACTIVITY

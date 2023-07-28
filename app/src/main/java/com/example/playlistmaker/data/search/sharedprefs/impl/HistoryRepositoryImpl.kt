@@ -1,49 +1,52 @@
 package com.example.playlistmaker.data.search.sharedprefs.impl
 
-import android.content.Context
+import com.example.playlistmaker.data.search.gson.GsonRepository
 import com.example.playlistmaker.data.search.models.Track
 import com.example.playlistmaker.data.search.models.Tracks
 import com.example.playlistmaker.data.search.sharedprefs.HistoryRepository
-import com.google.gson.Gson
+import com.example.playlistmaker.data.sharing.SharedPreferencesRepository
+
 
 const val TRACKS_HISTORY = "tracks_history"
-const val PLAY_LIST_PREFERENCES = "play_list_preferences"
 
-class HistoryRepositoryImpl(context: Context) : HistoryRepository {
-
-        private val sharedPreferences = context.getSharedPreferences(
-            PLAY_LIST_PREFERENCES,
-            Context.MODE_PRIVATE
-        )
+class HistoryRepositoryImpl(private val sharedPrefsRepository: SharedPreferencesRepository, private val gsonRepository: GsonRepository) : HistoryRepository {
 
  override fun saveUserHistory(tracks: List<Track>) {
-        val json = Gson().toJson(tracks)
+        val sharedPreferences = sharedPrefsRepository.getSharedPreferences()
+     val gson = gsonRepository.getGson()
+     val json = gson.toJson(tracks)
         sharedPreferences.edit()
             .putString(TRACKS_HISTORY, json)
             .apply()
     }
 
     override fun restoreUserHistory(): List<Track>? {
+        val sharedPreferences = sharedPrefsRepository.getSharedPreferences()
         var tracks: List<Track>? = null
+        val gson = gsonRepository.getGson()
         val json = sharedPreferences.getString(TRACKS_HISTORY, null)
         if (json != null) {
-            tracks = Gson().fromJson<List<Track>>(json, List::class.java)
+            tracks = gson.fromJson<List<Track>>(json, List::class.java)
         }
         return tracks
     }
 
     override fun saveUserHistoryTracks(tracks: Tracks) {
-        val json = Gson().toJson(tracks)
+        val sharedPreferences = sharedPrefsRepository.getSharedPreferences()
+        val gson = gsonRepository.getGson()
+        val json = gson.toJson(tracks)
         sharedPreferences.edit()
             .putString(TRACKS_HISTORY, json)
             .apply()
     }
 
     override fun restoreUserHistoryTracks(): Tracks? {
+        val sharedPreferences = sharedPrefsRepository.getSharedPreferences()
+        val gson = gsonRepository.getGson()
         var tracks: Tracks? = null
         val json = sharedPreferences.getString(TRACKS_HISTORY, null)
         if (json != null) {
-            tracks = Gson().fromJson(json, Tracks::class.java)
+            tracks = gson.fromJson(json, Tracks::class.java)
         }
         return tracks
     }

@@ -1,7 +1,7 @@
 package com.example.playlistmaker.domain.search
 
 import com.example.playlistmaker.data.search.models.Track
-import com.example.playlistmaker.data.search.network.retrofit.ConnectionStatus
+import com.example.playlistmaker.data.search.network.retrofit.models.ConnectionStatus
 
 interface TrackInteractor {
     fun searchTracks(expression: String, consumer: TracksConsumer)
