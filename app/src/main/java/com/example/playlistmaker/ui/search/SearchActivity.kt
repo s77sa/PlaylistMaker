@@ -96,6 +96,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchRefresh() {
+        Log.d("my_tag", "searchRefresh")
         viewModel.searchRequest()
     }
 
@@ -220,6 +221,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun clickListener() = View.OnClickListener { view ->
+        Log.d("my_tag", "clickListener")
         when (view.id) {
             R.id.iv_search_back -> this.finish()
             R.id.iv_search_clear -> clearButtonListener()
@@ -242,6 +244,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showInvisibleLayout(state: ActivityState = ActivityState.HIDE_ALL) {
+        Log.d("my_tag", "ActivityState = $state")
         rvSearch?.visibility = View.GONE
         layoutNoInternet?.visibility = View.GONE
         layoutIsEmpty?.visibility = View.GONE

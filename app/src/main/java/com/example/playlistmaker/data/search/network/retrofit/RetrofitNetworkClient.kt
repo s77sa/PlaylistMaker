@@ -14,7 +14,6 @@ class RetrofitNetworkClient(
 ) : NetworkClient {
 
     private val retrofit = retrofitRepository.getRetrofit()
-
     private val itunesService = retrofit.create(ItunesApiService::class.java)
 
     override fun doRequest(dto: Any): Response {

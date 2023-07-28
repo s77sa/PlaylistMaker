@@ -16,6 +16,8 @@ import com.example.playlistmaker.ui.player.KEY_INTENT_PLAYER_ACTIVITY
 import com.example.playlistmaker.ui.player.PlayerActivity
 import com.example.playlistmaker.ui.sharing.ActivityNavigator
 
+private const val MIN_LENGHT_SEARCH_QUERY: Int = 2
+
 class SearchViewModel(
     private val trackInteractor: TrackInteractor,
     private val activityNavigator: ActivityNavigator,
@@ -110,7 +112,7 @@ class SearchViewModel(
     }
 
     fun setSearchText(value: String) {
-        if (value.isNotEmpty()) {
+        if (value.length >= MIN_LENGHT_SEARCH_QUERY) {
             searchTextMutable.value = value
             searchDebounce()
         }
@@ -190,16 +192,6 @@ class SearchViewModel(
     }
 
     companion object {
-//        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-//            initializer {
-//                SearchViewModel(
-//                    trackInteractor = Creator.provideTrackInteractor(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application),
-//                    activityNavigator = ActivityNavigator(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application),
-//                    historyInteractor = Creator.provideHistoryInteractor(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application)
-//                )
-//            }
-//        }
-
         private const val HISTORY_COUNT = 10
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }

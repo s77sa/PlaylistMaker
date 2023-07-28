@@ -1,5 +1,6 @@
 package com.example.playlistmaker.data.search.sharedprefs.impl
 
+import android.annotation.SuppressLint
 import com.example.playlistmaker.data.search.gson.GsonRepository
 import com.example.playlistmaker.data.search.models.Track
 import com.example.playlistmaker.data.search.models.Tracks
@@ -11,6 +12,7 @@ const val TRACKS_HISTORY = "tracks_history"
 
 class HistoryRepositoryImpl(private val sharedPrefsRepository: SharedPreferencesRepository, private val gsonRepository: GsonRepository) : HistoryRepository {
 
+ @SuppressLint("SuspiciousIndentation")
  override fun saveUserHistory(tracks: List<Track>) {
         val sharedPreferences = sharedPrefsRepository.getSharedPreferences()
      val gson = gsonRepository.getGson()
