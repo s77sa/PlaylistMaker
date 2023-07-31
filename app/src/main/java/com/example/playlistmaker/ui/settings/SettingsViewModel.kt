@@ -15,34 +15,33 @@ class SettingsViewModel(
     init {
         Log.d("my_tag", "init - Settings ViewModel}")
     }
+
     private val darkThemeMutable = MutableLiveData<Boolean>()
     val darkTheme: LiveData<Boolean> = darkThemeMutable
 
-    fun getThemeFromSharedPrefs(){
+    fun getThemeFromSharedPrefs() {
         darkThemeMutable.value = themeInteractor?.restoreTheme()
     }
 
-    fun saveAndApplyTheme(value: Boolean){
+    fun saveAndApplyTheme(value: Boolean) {
         setThemeSharedPrefs(value)
         switchTheme()
     }
 
-    private fun setThemeSharedPrefs(value: Boolean){
-        if(themeInteractor != null) {
+    private fun setThemeSharedPrefs(value: Boolean) {
+        if (themeInteractor != null) {
             themeInteractor!!.saveTheme(value)
             darkThemeMutable.value = value
         }
     }
 
-    private fun switchTheme(){
+    private fun switchTheme() {
         darkTheme.value?.let { ThemeSwitcher.switchTheme(it) }
     }
 
-    fun callSendIntent(message: String): String?{
-        return externalNavigator?.intentSend(message)
-    }
+    fun callSendIntent(message: String): String? = externalNavigator?.intentSend(message)
 
-    fun callEmailIntent(address: String, subject: String, text: String): String?{
+    fun callEmailIntent(address: String, subject: String, text: String): String? {
         return externalNavigator?.intentEmail(
             address = address,
             subject = subject,
@@ -50,7 +49,7 @@ class SettingsViewModel(
         )
     }
 
-    fun callOpenLinkIntent(link: String): String?{
+    fun callOpenLinkIntent(link: String): String? {
         return externalNavigator?.intentOpenLink(link)
     }
 }

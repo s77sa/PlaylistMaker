@@ -7,13 +7,13 @@ import com.example.playlistmaker.data.search.network.retrofit.models.ItunesApiSe
 import com.example.playlistmaker.data.search.network.retrofit.models.NetworkClient
 import com.example.playlistmaker.data.search.network.retrofit.models.Response
 import com.example.playlistmaker.data.search.network.retrofit.models.TracksSearchRequest
+import retrofit2.Retrofit
 
 class RetrofitNetworkClient(
     private val context: Context,
-    private val retrofitRepository: RetrofitRepository
+    private val retrofit: Retrofit
 ) : NetworkClient {
 
-    private val retrofit = retrofitRepository.getRetrofit()
     private val itunesService = retrofit.create(ItunesApiService::class.java)
 
     override fun doRequest(dto: Any): Response {
