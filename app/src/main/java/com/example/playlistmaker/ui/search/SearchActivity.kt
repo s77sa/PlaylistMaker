@@ -133,8 +133,10 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 buttonClear?.visibility = clearButtonVisibility(s)
                 val text = inputEditText?.text.toString()
-                viewModel.setSearchText(text)
-                Log.d("my_tag", "onTextChanged=$text")
+                if(text.isNotEmpty()) {
+                    Log.d("my_tag", "onTextChanged=$text")
+                    viewModel.setSearchText(text)
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -221,7 +223,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun clickListener() = View.OnClickListener { view ->
-        Log.d("my_tag", "clickListener")
         when (view.id) {
             R.id.iv_search_back -> this.finish()
             R.id.iv_search_clear -> clearButtonListener()

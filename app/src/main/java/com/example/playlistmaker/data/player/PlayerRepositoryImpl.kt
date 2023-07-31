@@ -10,8 +10,10 @@ class PlayerRepositoryImpl(
 
 
     override fun preparePlayer(streamUrl: String?) {
-        Log.println(Log.INFO, "my_tag", "mediaPlayer prepare")
+        Log.d("my_tag", "mediaPlayer prepare")
         if (!streamUrl.isNullOrEmpty()) {
+            Log.d("my_tag", "mediaPlayer url = $streamUrl")
+            mediaPlayer.reset()
             mediaPlayer.setDataSource(streamUrl)
             mediaPlayer.prepareAsync()
             mediaPlayer.setOnPreparedListener {
@@ -39,22 +41,16 @@ class PlayerRepositoryImpl(
     }
 
     override fun startPlayer() {
-        Log.println(Log.INFO, "my_tag", "mediaPlayer Start in impl")
+        Log.d("my_tag", "mediaPlayer Start in impl")
         mediaPlayer.start()
         playerState = PlayerState.STATE_PLAYING
     }
 
     override fun pausePlayer() {
-        Log.println(Log.INFO, "my_tag", "mediaPlayer Pause")
+        Log.d("my_tag", "mediaPlayer Pause")
         if (playerState == PlayerState.STATE_PLAYING) {
             mediaPlayer.pause()
             playerState = PlayerState.STATE_PAUSED
-        }
-    }
-
-    override fun releasePlayer() {
-        if (playerState != PlayerState.STATE_DEFAULT) {
-            mediaPlayer.release()
         }
     }
 }

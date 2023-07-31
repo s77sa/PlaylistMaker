@@ -13,6 +13,4 @@ interface PlayerRepository {
     fun pausePlayer()
 
     fun startPlayer()
-
-    fun releasePlayer()
 }

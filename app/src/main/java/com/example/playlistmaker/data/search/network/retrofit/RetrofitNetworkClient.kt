@@ -14,8 +14,6 @@ class RetrofitNetworkClient(
     private val retrofit: Retrofit
 ) : NetworkClient {
 
-    private val itunesService = retrofit.create(ItunesApiService::class.java)
-
     override fun doRequest(dto: Any): Response {
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
@@ -23,7 +21,7 @@ class RetrofitNetworkClient(
         if (dto !is TracksSearchRequest) {
             return Response().apply { resultCode = 400 }
         }
-
+        val itunesService = retrofit.create(ItunesApiService::class.java)
         val response = itunesService.searchTracks(dto.expression).execute()
         val body = response.body()
         return if (body != null) {

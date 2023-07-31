@@ -12,7 +12,6 @@ import com.example.playlistmaker.data.search.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-
 class PlayerViewModel(
     private val track: Track,
     private var mediaPlayerInteractor: PlayerInteractor
@@ -117,7 +116,6 @@ class PlayerViewModel(
     }
 
     fun onDestroy() {
-        mediaPlayerInteractor.releasePlayer()
         mainThreadHandler?.removeCallbacksAndMessages(null)
     }
 

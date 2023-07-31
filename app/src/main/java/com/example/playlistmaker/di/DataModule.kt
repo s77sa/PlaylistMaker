@@ -69,7 +69,7 @@ val dataModule = module {
             .build()
     }
 
-    single<Retrofit>{
+    single<Retrofit> {
         Retrofit.Builder().apply {
             client(get())
             baseUrl(androidContext().getString(com.example.playlistmaker.R.string.searchBaseUrl))
@@ -77,7 +77,7 @@ val dataModule = module {
         }.build()
     }
 
-    single<MediaPlayer>{
+    factory <MediaPlayer> {
         MediaPlayer()
     }
 }

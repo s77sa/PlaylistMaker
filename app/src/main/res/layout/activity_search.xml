@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="?attr/colorSecondary">
-
+    android:background="?attr/colorSecondary"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,13 +13,15 @@
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
-        <ImageView style="@style/ImageViewHeaderStyle"
+        <ImageView
             android:id="@+id/iv_search_back"
-            app:tint="?attr/colorOnSecondary"
-            android:contentDescription="@string/txt_return" />
+            style="@style/ImageViewHeaderStyle"
+            android:contentDescription="@string/txt_return"
+            app:tint="?attr/colorOnSecondary" />
 
-        <TextView style="@style/TextViewHeaderStyle"
+        <TextView
             android:id="@+id/tv_settings"
+            style="@style/TextViewHeaderStyle"
             android:text="@string/txt_search" />
 
     </LinearLayout>
@@ -28,21 +29,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="36dp"
-        android:orientation="horizontal"
-        android:background="@drawable/et_search"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp">
+        android:background="@drawable/et_search"
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="18dp"
             android:layout_height="16dp"
             android:layout_gravity="center"
             android:layout_marginStart="14dp"
+            android:contentDescription="@string/txt_search"
             android:src="@drawable/ic_search"
-            app:tint="?attr/colorOnSecondaryContainer"
             app:iconPadding="50dp"
-            android:contentDescription="@string/txt_search" />
+            app:tint="?attr/colorOnSecondaryContainer" />
 
         <EditText
             android:id="@+id/et_search"
@@ -53,6 +54,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
+            android:autofillHints="text"
             android:background="@null"
             android:hint="@string/txt_search"
             android:imeOptions="actionDone"
@@ -63,8 +65,7 @@
             android:textColorHint="?attr/colorOnSecondaryContainer"
             android:textCursorDrawable="@color/blue"
             android:textSize="16sp"
-            tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck"
-            android:autofillHints="text" />
+            tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
         <ImageView
             android:id="@+id/iv_search_clear"
@@ -72,91 +73,31 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginEnd="16dp"
+            android:contentDescription="@string/txt_search"
             android:src="@drawable/ic_clear"
-            app:tint="?attr/colorOnSecondaryContainer"
-            app:iconPadding="50dp"
             android:visibility="gone"
-            android:contentDescription="@string/txt_search" />
+            app:iconPadding="50dp"
+            app:tint="?attr/colorOnSecondaryContainer" />
 
     </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
-        android:visibility="gone"
         android:id="@+id/rv_Search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="24dp"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
     </androidx.recyclerview.widget.RecyclerView>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ProgressBar android:id="@+id/progressBar"
-            style="@style/ProgressBarSearch"
-            android:visibility="gone"/>
-
-        <LinearLayout
-            android:id="@+id/layout_is_empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone"
-            android:contentDescription="@string/contentDescription"
-            tools:ignore="UseCompoundDrawables">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_is_empty"
-                android:contentDescription="@string/contentDescription" />
-
-            <TextView style="@style/TextViewSearchStub"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/search_nothing"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_no_internet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_no_internet"
-                android:contentDescription="@string/contentDescription" />
-
-            <TextView
-                style="@style/TextViewSearchStub"
-                android:layout_width="312dp"
-                android:layout_height="88dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/search_no_internet_full" />
-
-            <Button
-                android:id="@+id/btn_search_refresh"
-                style="@style/ButtonSearchRefresh"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="24dp"
-                android:text="@string/search_button_refresh"
-                app:cornerRadius="16dp"
-                tools:ignore="TouchTargetSizeCheck" />
-        </LinearLayout>
-
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/layout_history"
@@ -194,6 +135,69 @@
             </LinearLayout>
         </ScrollView>
 
-    </FrameLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/ProgressBarSearch"
+            android:visibility="gone" />
 
+        <LinearLayout
+            android:id="@+id/layout_is_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/contentDescription"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/contentDescription"
+                android:src="@drawable/ic_is_empty" />
+
+            <TextView
+                style="@style/TextViewSearchStub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/search_nothing" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_no_internet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/contentDescription"
+                android:src="@drawable/ic_no_internet" />
+
+            <TextView
+                style="@style/TextViewSearchStub"
+                android:layout_width="312dp"
+                android:layout_height="88dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/search_no_internet_full" />
+
+            <Button
+                android:id="@+id/btn_search_refresh"
+                style="@style/ButtonSearchRefresh"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:text="@string/search_button_refresh"
+                app:cornerRadius="16dp"
+                tools:ignore="TouchTargetSizeCheck" />
+
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>
