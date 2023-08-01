@@ -8,6 +8,8 @@ import com.example.playlistmaker.data.player.PlayerRepositoryImpl
 import com.example.playlistmaker.data.search.network.retrofit.RetrofitNetworkClient
 import com.example.playlistmaker.data.search.network.retrofit.TrackRepository
 import com.example.playlistmaker.data.search.network.retrofit.impl.TrackRepositoryImpl
+import com.example.playlistmaker.data.search.network.retrofit.models.ItunesApiService
+import com.example.playlistmaker.data.search.network.retrofit.models.NetworkClient
 import com.example.playlistmaker.data.search.sharedprefs.HistoryRepository
 import com.example.playlistmaker.data.search.sharedprefs.impl.HistoryRepositoryImpl
 import com.example.playlistmaker.data.settings.sharedprefs.ThemeRepository
@@ -43,7 +45,15 @@ val dataModule = module {
     }
 
     single<TrackRepository> {
-        TrackRepositoryImpl(RetrofitNetworkClient(context = get(), retrofit = get()))
+        TrackRepositoryImpl(get())
+    }
+
+    single<NetworkClient> {
+        RetrofitNetworkClient(get(), get())
+    }
+
+    single<ItunesApiService> {
+        get<Retrofit>().create(ItunesApiService::class.java)
     }
 
     single<PlayerRepository> {
@@ -57,7 +67,7 @@ val dataModule = module {
         )
     }
 
-    single<Gson> {
+    factory<Gson> {
         Gson()
     }
 
@@ -77,7 +87,7 @@ val dataModule = module {
         }.build()
     }
 
-    factory <MediaPlayer> {
+    factory<MediaPlayer> {
         MediaPlayer()
     }
 }
