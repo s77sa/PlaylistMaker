@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data.search.network.retrofit
+package com.example.playlistmaker.data.search.network.retrofit.models
 
 enum class ConnectionStatus {
     SERVER_ERROR,

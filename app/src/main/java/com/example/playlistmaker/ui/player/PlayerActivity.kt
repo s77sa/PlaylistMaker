@@ -6,11 +6,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.search.models.Track
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.ui.Helpers
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 
 
@@ -18,8 +19,8 @@ const val KEY_INTENT_PLAYER_ACTIVITY = "player_intent"
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
-    private lateinit var viewModel: PlayerViewModel
     private lateinit var track: Track
+    private val viewModel by viewModel<PlayerViewModel> { parametersOf(track) }
 
     companion object {
         private const val REPLACE_LINK_PATTERN: String = "512x512bb.jpg"
@@ -30,10 +31,6 @@ class PlayerActivity : AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         getMessageFromIntent()
-        viewModel = ViewModelProvider(
-            this,
-            PlayerViewModel.getViewModelFactory(track)
-        )[PlayerViewModel::class.java]
         initObserver()
         clickListenersInit()
         viewModel.saveValues()

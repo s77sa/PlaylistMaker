@@ -1,7 +1,6 @@
-package com.example.playlistmaker.data.search.network.retrofit
+package com.example.playlistmaker.data.search.network.retrofit.models
 
 import com.example.playlistmaker.data.search.models.Track
-import com.example.playlistmaker.data.search.network.Response
 
 class TracksSearchResponse(
     val results: MutableList<Track>

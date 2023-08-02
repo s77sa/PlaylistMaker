@@ -1,7 +1,7 @@
 package com.example.playlistmaker.domain.search.impl
 
-import com.example.playlistmaker.data.search.network.retrofit.ConnectionStatus
-import com.example.playlistmaker.data.search.network.retrofit.Resource
+import com.example.playlistmaker.data.search.network.retrofit.models.ConnectionStatus
+import com.example.playlistmaker.data.search.network.retrofit.models.Resource
 import com.example.playlistmaker.data.search.network.retrofit.TrackRepository
 import com.example.playlistmaker.domain.search.TrackInteractor
 import java.util.concurrent.Executors

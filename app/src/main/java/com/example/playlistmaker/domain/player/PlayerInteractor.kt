@@ -14,6 +14,4 @@ interface PlayerInteractor {
     fun pausePlayer()
 
     fun startPlayer()
-
-    fun releasePlayer()
 }

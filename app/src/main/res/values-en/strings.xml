@@ -19,4 +19,5 @@
     <string name="player_header_releaseDate">Release year</string>
     <string name="player_header_primaryGenreName">Genre</string>
     <string name="player_header_country">Country</string>
+    <string name="external_navigator_error">Error starting external application</string>
 </resources>

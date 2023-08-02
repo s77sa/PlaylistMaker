@@ -6,16 +6,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.player.PlayerInteractor
 import com.example.playlistmaker.data.player.PlayerState
 import com.example.playlistmaker.data.search.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
-
 
 class PlayerViewModel(
     private val track: Track,
@@ -57,7 +52,6 @@ class PlayerViewModel(
     }
 
     private fun setTimeToTrackTime(position: Int = 0) {
-        Log.println(Log.INFO, "my_tag", "position=$position")
         saveCurrentPositionToLiveData(
             SimpleDateFormat(
                 "mm:ss",
@@ -88,8 +82,7 @@ class PlayerViewModel(
 
     fun preparePlayer() {
         mainThreadHandler = Handler(Looper.getMainLooper())
-        mediaPlayerInteractor = Creator.providePlayerInteractor()
-        mediaPlayerInteractor.preparePlayer(track.previewUrl)
+        track.previewUrl?.let { mediaPlayerInteractor.preparePlayer(it) }
     }
 
     private fun startPlayer() {
@@ -123,20 +116,10 @@ class PlayerViewModel(
     }
 
     fun onDestroy() {
-        mediaPlayerInteractor.releasePlayer()
         mainThreadHandler?.removeCallbacksAndMessages(null)
     }
 
     companion object {
         private const val REFRESH_TIME_HEADER_DELAY_MILLIS: Long = 330L
-
-        fun getViewModelFactory(track: Track): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                PlayerViewModel(
-                    track,
-                    Creator.providePlayerInteractor()
-                )
-            }
-        }
     }
 }

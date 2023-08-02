@@ -27,8 +27,4 @@ class PlayerInteractorImpl(private val repository: PlayerRepository) : PlayerInt
     override fun pausePlayer() {
         repository.pausePlayer()
     }
-
-    override fun releasePlayer() {
-        repository.releasePlayer()
-    }
 }

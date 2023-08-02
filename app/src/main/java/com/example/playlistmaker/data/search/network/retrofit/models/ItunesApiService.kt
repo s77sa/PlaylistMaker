@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data.search.network.retrofit
+package com.example.playlistmaker.data.search.network.retrofit.models
 
 import retrofit2.Call
 import retrofit2.http.GET

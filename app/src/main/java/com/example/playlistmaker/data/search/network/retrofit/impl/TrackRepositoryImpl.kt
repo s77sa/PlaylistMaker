@@ -1,9 +1,14 @@
-package com.example.playlistmaker.data.search.network.retrofit
+package com.example.playlistmaker.data.search.network.retrofit.impl
 
 import com.example.playlistmaker.data.search.models.Track
-import com.example.playlistmaker.data.search.network.TracksSearchRequest
+import com.example.playlistmaker.data.search.network.retrofit.TrackRepository
+import com.example.playlistmaker.data.search.network.retrofit.models.ConnectionStatus
+import com.example.playlistmaker.data.search.network.retrofit.models.NetworkClient
+import com.example.playlistmaker.data.search.network.retrofit.models.Resource
+import com.example.playlistmaker.data.search.network.retrofit.models.TracksSearchRequest
+import com.example.playlistmaker.data.search.network.retrofit.models.TracksSearchResponse
 
-class TrackRepositoryImpl(private val networkClient: RetrofitNetworkClient) : TrackRepository {
+class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepository {
     override fun searchTracks(expression: String): Resource<List<Track>> {
 
         val response = networkClient.doRequest(TracksSearchRequest(expression))

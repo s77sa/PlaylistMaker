@@ -13,15 +13,16 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.search.models.Track
 import com.example.playlistmaker.ui.Helpers
 import com.example.playlistmaker.ui.search.recyclerview.SearchAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
-    private lateinit var viewModel: SearchViewModel
+
+    private val viewModel by viewModel<SearchViewModel>()
 
     private var inputEditText: EditText? = null
     private var rvSearch: RecyclerView? = null
@@ -46,10 +47,6 @@ class SearchActivity : AppCompatActivity() {
         Log.println(Log.INFO, "my_tag", "onCreate Search")
         initViews()
         initTextWatcher()
-        viewModel = ViewModelProvider(
-            this,
-            SearchViewModel.getViewModelFactory()
-        )[SearchViewModel::class.java]
         initAdapters()
         initOnClickListeners()
         initObservers()
@@ -99,6 +96,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchRefresh() {
+        Log.d("my_tag", "searchRefresh")
         viewModel.searchRequest()
     }
 
@@ -135,8 +133,10 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 buttonClear?.visibility = clearButtonVisibility(s)
                 val text = inputEditText?.text.toString()
-                viewModel.setSearchText(text)
-                Log.d("my_tag", "onTextChanged=$text")
+                if(text.isNotEmpty()) {
+                    Log.d("my_tag", "onTextChanged=$text")
+                    viewModel.setSearchText(text)
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -245,6 +245,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showInvisibleLayout(state: ActivityState = ActivityState.HIDE_ALL) {
+        Log.d("my_tag", "ActivityState = $state")
         rvSearch?.visibility = View.GONE
         layoutNoInternet?.visibility = View.GONE
         layoutIsEmpty?.visibility = View.GONE
