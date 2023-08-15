@@ -20,4 +20,9 @@
     <string name="player_header_primaryGenreName">Genre</string>
     <string name="player_header_country">Country</string>
     <string name="external_navigator_error">Error starting external application</string>
+    <string name="library_tabLayout_favoritesTracks">Featured tracks</string>
+    <string name="library_tabLayout_playLists">Playlists</string>
+    <string name="favorites_is_empty">Your library is empty</string>
+    <string name="playlists_is_empty">You have not created\nany playlist</string>
+    <string name="library_new_playlist">New playlist</string>
 </resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.library.fragments.LibraryFavoritesFragment">
+
+    <LinearLayout
+        android:id="@+id/favorites_is_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="106dp"
+        android:contentDescription="@string/contentDescription"
+        android:orientation="vertical"
+        android:visibility="visible"
+        tools:ignore="UseCompoundDrawables,UselessParent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/contentDescription"
+            android:src="@drawable/ic_is_empty" />
+
+        <TextView
+            style="@style/TextViewSearchStub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/favorites_is_empty" />
+    </LinearLayout>
+
+
+</FrameLayout>

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="?attr/colorSecondary">
+    android:background="?attr/colorSecondary"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,10 +19,39 @@
             android:contentDescription="@string/txt_return"
             app:tint="?attr/colorOnSecondary" />
 
-        <TextView style="@style/TextViewHeaderStyle"
+        <TextView
             android:id="@+id/tv_settings"
-            android:text="@string/txt_library"/>
+            style="@style/TextViewHeaderStyle"
+            android:text="@string/txt_library" />
 
     </LinearLayout>
+
+    <com.google.android.material.tabs.TabLayout style="@style/TabLayoutTabItem"
+        android:id="@+id/libraryLayout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:tabBackground="?attr/colorSecondary"
+        app:tabIndicatorColor="?attr/colorOnSecondary"
+        app:tabIndicatorFullWidth="true"
+        app:tabMode="fixed"
+        app:tabTextAppearance="@style/TabCustomTextAppearance"
+        app:tabTextColor="?attr/colorOnSecondary">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/library_tabLayout_favoritesTracks" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/library_tabLayout_playLists" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/libraryViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

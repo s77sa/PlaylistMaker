@@ -32,5 +32,11 @@
     <string name="CurrentTime" translatable="false">00:00</string>
     <string name="contentDescription" translatable="false">Description</string>
     <string name="external_navigator_error">Ошибка запуска внешнего приложения</string>
+    <string name="library_tabLayout_favoritesTracks">Избранные треки</string>
+    <string name="library_tabLayout_playLists">Плейлисты</string>
+    <string name="favorites_is_empty">Ваша медиатека пуста</string>
+    <string name="playlists_is_empty">Вы не создали\nни одного плейлиста</string>
+    <string name="library_new_playlist">Новый плейлист</string>
+
 
 </resources>
