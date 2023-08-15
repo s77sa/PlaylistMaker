@@ -17,14 +17,9 @@
         app:cornerRadius="54dp"
         tools:ignore="TouchTargetSizeCheck" />
 
-    <LinearLayout
+    <LinearLayout style="@style/LibraryFragmentLayoutStubs"
         android:id="@+id/favorites_is_empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_marginTop="106dp"
-        android:contentDescription="@string/contentDescription"
-        android:orientation="vertical"
         android:visibility="visible"
         tools:ignore="UseCompoundDrawables">
 
