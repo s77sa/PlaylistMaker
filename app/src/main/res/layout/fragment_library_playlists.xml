@@ -10,7 +10,7 @@
         android:id="@+id/btn_new_playlist"
         style="@style/ButtonNewPlayList"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="24dp"
         android:text="@string/library_new_playlist"
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:contentDescription="@string/contentDescription"
+            android:contentDescription="@string/content_description"
             android:src="@drawable/ic_is_empty" />
 
         <TextView

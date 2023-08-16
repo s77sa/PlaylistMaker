@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:contentDescription="@string/contentDescription"
+            android:contentDescription="@string/content_description"
             android:src="@drawable/ic_is_empty" />
 
         <TextView

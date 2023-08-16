@@ -30,7 +30,7 @@
     <string name="track_name" translatable="false">Track Name</string>
     <string name="artist_name" translatable="false">Artist Name</string>
     <string name="CurrentTime" translatable="false">00:00</string>
-    <string name="contentDescription" translatable="false">Description</string>
+    <string name="content_description" translatable="false">Description</string>
     <string name="external_navigator_error">Ошибка запуска внешнего приложения</string>
     <string name="library_tabLayout_favoritesTracks">Избранные треки</string>
     <string name="library_tabLayout_playLists">Плейлисты</string>
