@@ -126,7 +126,7 @@
                     android:id="@+id/btn_clear_history"
                     style="@style/ButtonSearchRefresh"
                     android:layout_width="wrap_content"
-                    android:layout_height="36dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="24dp"
                     android:text="@string/search_button_clear_history"
@@ -145,7 +145,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:contentDescription="@string/contentDescription"
+            android:contentDescription="@string/content_description"
             android:orientation="vertical"
             android:visibility="gone"
             tools:ignore="UseCompoundDrawables">
@@ -154,7 +154,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:contentDescription="@string/contentDescription"
+                android:contentDescription="@string/content_description"
                 android:src="@drawable/ic_is_empty" />
 
             <TextView
@@ -177,7 +177,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:contentDescription="@string/contentDescription"
+                android:contentDescription="@string/content_description"
                 android:src="@drawable/ic_no_internet" />
 
             <TextView

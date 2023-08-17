@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.library.fragments.LibraryPlaylistsFragment">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_new_playlist"
+        style="@style/ButtonNewPlayList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:text="@string/library_new_playlist"
+        app:cornerRadius="54dp"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <LinearLayout style="@style/LibraryFragmentLayoutStubs"
+        android:id="@+id/favorites_is_empty"
+        android:layout_marginTop="106dp"
+        android:visibility="visible"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/content_description"
+            android:src="@drawable/ic_is_empty" />
+
+        <TextView
+            style="@style/TextViewSearchStub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/playlists_is_empty" />
+    </LinearLayout>
+
+</FrameLayout>
