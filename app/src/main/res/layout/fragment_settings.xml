@@ -57,10 +57,4 @@
         app:drawableRightCompat="@drawable/ic_forward"
         app:drawableTint="?attr/colorSecondaryVariant" />
 
-<!--    &lt;!&ndash;    Без этой заглушки у меня не работает анимация нажатия на последнем элементе&ndash;&gt;-->
-<!--    <TextView-->
-<!--        android:id="@+id/tv_stub"-->
-<!--        style="@style/TextViewSearchStyle"-->
-<!--        android:layout_height="0dp" />-->
-
 </LinearLayout>

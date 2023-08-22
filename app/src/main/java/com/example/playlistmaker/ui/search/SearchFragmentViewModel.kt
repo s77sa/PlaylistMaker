@@ -23,6 +23,7 @@ class SearchFragmentViewModel(
     init {
         Log.d("my_tag", "init - Search ViewModel}")
     }
+
     private val handler = Handler(Looper.getMainLooper())
     private val searchRunnable = Runnable { searchRequest() }
 
@@ -88,19 +89,18 @@ class SearchFragmentViewModel(
         if (searchTextMutable.value?.isEmpty() == true || searchTextMutable.value == null) {
             Log.d("my_tag", "checkState2")
             showHistory()
-        }
-        else {
+        } else {
             showHistory()
         }
     }
 
-    fun clearHistory(){
+    fun clearHistory() {
         Log.d("my_tag", "VM ClearHistory")
         historyTrackListMutable.value?.clear()
         saveHistoryToSharedPrefs()
     }
 
-    private fun showHistory(){
+    private fun showHistory() {
         if (!historyTrackListMutable.value.isNullOrEmpty()) {
             searchActivityStateMutable.value = ActivityState.HISTORY_RESULT
             Log.d("my_tag", "checkHistory State = ${searchActivityStateMutable.value}")
