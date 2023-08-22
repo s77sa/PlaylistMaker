@@ -5,6 +5,7 @@ import com.example.playlistmaker.ui.library.fragments.FragmentFavoritesViewModel
 import com.example.playlistmaker.ui.library.fragments.FragmentPlaylistsViewModel
 import com.example.playlistmaker.ui.main.MainViewModel
 import com.example.playlistmaker.ui.player.PlayerViewModel
+import com.example.playlistmaker.ui.search.SearchFragmentViewModel
 import com.example.playlistmaker.ui.search.SearchViewModel
 import com.example.playlistmaker.ui.settings.SettingsViewModel
 import com.example.playlistmaker.ui.sharing.ActivityNavigator
@@ -28,6 +29,13 @@ val appModule = module {
 
     viewModel<SearchViewModel> {
         SearchViewModel(
+            trackInteractor = get(),
+            activityNavigator = get(),
+            historyInteractor = get()
+        )
+    }
+    viewModel<SearchFragmentViewModel> {
+        SearchFragmentViewModel(
             trackInteractor = get(),
             activityNavigator = get(),
             historyInteractor = get()
