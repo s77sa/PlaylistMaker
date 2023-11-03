@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.search.SearchFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSecondary"
@@ -13,15 +15,9 @@
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
-        <ImageView
-            android:id="@+id/iv_search_back"
-            style="@style/ImageViewHeaderStyle"
-            android:contentDescription="@string/txt_return"
-            app:tint="?attr/colorOnSecondary" />
-
-        <TextView
+        <TextView style="@style/TextViewHeaderStyle"
             android:id="@+id/tv_settings"
-            style="@style/TextViewHeaderStyle"
+            android:layout_marginStart="14dp"
             android:text="@string/txt_search" />
 
     </LinearLayout>
@@ -97,7 +93,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:contentDescription="@string/content_description">
 
             <LinearLayout
                 android:id="@+id/layout_history"
@@ -200,4 +197,5 @@
 
         </LinearLayout>
     </FrameLayout>
+
 </LinearLayout>

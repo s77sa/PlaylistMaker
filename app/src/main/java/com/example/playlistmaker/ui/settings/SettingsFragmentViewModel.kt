@@ -8,7 +8,7 @@ import com.example.playlistmaker.domain.settings.sharedprefs.ThemeInteractor
 import com.example.playlistmaker.domain.sharing.ExternalNavigatorInteractor
 import com.example.playlistmaker.ui.ThemeSwitcher
 
-class SettingsViewModel(
+class SettingsFragmentViewModel(
     private var themeInteractor: ThemeInteractor?,
     private val externalNavigator: ExternalNavigatorInteractor?
 ) : ViewModel() {

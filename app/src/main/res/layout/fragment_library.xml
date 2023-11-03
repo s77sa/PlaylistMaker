@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSecondary"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.library.LibraryFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,21 +14,17 @@
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
-        <ImageView
-            android:id="@+id/iv_library_back"
-            style="@style/ImageViewHeaderStyle"
-            android:contentDescription="@string/txt_return"
-            app:tint="?attr/colorOnSecondary" />
-
         <TextView
             android:id="@+id/tv_settings"
             style="@style/TextViewHeaderStyle"
+            android:layout_marginStart="14dp"
             android:text="@string/txt_library" />
 
     </LinearLayout>
 
-    <com.google.android.material.tabs.TabLayout style="@style/TabLayoutTabItem"
+    <com.google.android.material.tabs.TabLayout
         android:id="@+id/libraryLayout"
+        style="@style/TabLayoutTabItem"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         app:tabBackground="?attr/colorSecondary"

@@ -1,6 +1,5 @@
 package com.example.playlistmaker.ui.search
 
-
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -16,9 +15,7 @@ import com.example.playlistmaker.ui.player.KEY_INTENT_PLAYER_ACTIVITY
 import com.example.playlistmaker.ui.player.PlayerActivity
 import com.example.playlistmaker.ui.sharing.ActivityNavigator
 
-private const val MIN_LENGHT_SEARCH_QUERY: Int = 2
-
-class SearchViewModel(
+class SearchFragmentViewModel(
     private val trackInteractor: TrackInteractor,
     private val activityNavigator: ActivityNavigator,
     private val historyInteractor: HistoryInteractor
@@ -26,6 +23,7 @@ class SearchViewModel(
     init {
         Log.d("my_tag", "init - Search ViewModel}")
     }
+
     private val handler = Handler(Looper.getMainLooper())
     private val searchRunnable = Runnable { searchRequest() }
 
@@ -91,19 +89,18 @@ class SearchViewModel(
         if (searchTextMutable.value?.isEmpty() == true || searchTextMutable.value == null) {
             Log.d("my_tag", "checkState2")
             showHistory()
-        }
-        else {
+        } else {
             showHistory()
         }
     }
 
-    fun clearHistory(){
+    fun clearHistory() {
         Log.d("my_tag", "VM ClearHistory")
         historyTrackListMutable.value?.clear()
         saveHistoryToSharedPrefs()
     }
 
-    private fun showHistory(){
+    private fun showHistory() {
         if (!historyTrackListMutable.value.isNullOrEmpty()) {
             searchActivityStateMutable.value = ActivityState.HISTORY_RESULT
             Log.d("my_tag", "checkHistory State = ${searchActivityStateMutable.value}")
@@ -192,6 +189,7 @@ class SearchViewModel(
     }
 
     companion object {
+        private const val MIN_LENGHT_SEARCH_QUERY: Int = 2
         private const val HISTORY_COUNT = 10
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }

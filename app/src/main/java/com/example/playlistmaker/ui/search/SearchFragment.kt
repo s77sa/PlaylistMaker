@@ -5,47 +5,38 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ProgressBar
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.R
+import androidx.fragment.app.Fragment
 import com.example.playlistmaker.data.search.models.Track
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.ui.Helpers
 import com.example.playlistmaker.ui.search.recyclerview.SearchAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
 
-    private val viewModel by viewModel<SearchViewModel>()
+    private lateinit var binding: FragmentSearchBinding
+    private val viewModel by viewModel<SearchFragmentViewModel>()
 
-    private var inputEditText: EditText? = null
-    private var rvSearch: RecyclerView? = null
-    private var rvHistory: RecyclerView? = null
     private var rvSearchAdapter: SearchAdapter? = null
     private var rvHistoryAdapter: SearchAdapter? = null
-    private var buttonRefresh: Button? = null
-    private var buttonClear: ImageView? = null
-    private var buttonClearHistory: Button? = null
-    private var layoutIsEmpty: LinearLayout? = null
-    private var layoutNoInternet: LinearLayout? = null
-    private var layoutHistory: LinearLayout? = null
-    private var progressBar: ProgressBar? = null
     private var searchTrackList: MutableList<Track> = mutableListOf()
     private var historyTrackList: MutableList<Track> = mutableListOf()
     private var searchText = ""
 
-    @SuppressLint("MissingInflatedId")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
-        Log.println(Log.INFO, "my_tag", "onCreate Search")
-        initViews()
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initTextWatcher()
         initAdapters()
         initOnClickListeners()
@@ -56,24 +47,25 @@ class SearchActivity : AppCompatActivity() {
     private fun initAdapters() {
         rvSearchAdapter = SearchAdapter(searchTrackList)
         rvHistoryAdapter = SearchAdapter(historyTrackList)
-        rvSearch?.adapter = rvSearchAdapter
-        rvHistory?.adapter = rvHistoryAdapter
+        binding.rvSearch.adapter = rvSearchAdapter
+        binding.rvHistory.adapter = rvHistoryAdapter
     }
 
     private fun initObservers() {
-        viewModel.searchText.observe(this) {
+
+        viewModel.searchText.observe(viewLifecycleOwner) {
             searchText = it
             Log.d("my_tag", "observe searchText = $it")
         }
-        viewModel.searchTrackList.observe(this) {
+        viewModel.searchTrackList.observe(viewLifecycleOwner) {
             addSearchResultToRecycle(it)
             Log.d("my_tag", "observe searchTrackList = ${it.size}")
         }
-        viewModel.historyTrackList.observe(this) {
+        viewModel.historyTrackList.observe(viewLifecycleOwner) {
             addHistoryResultToRecycle(it)
             Log.d("my_tag", "observe historyTrackList = ${it.size}")
         }
-        viewModel.searchActivityState.observe(this) {
+        viewModel.searchActivityState.observe(viewLifecycleOwner) {
             showInvisibleLayout(it)
             Log.d("my_tag", "observe ActivityState = $it")
         }
@@ -87,7 +79,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun onFocusListenerSearchInit() {
-        inputEditText?.setOnFocusChangeListener { _, hasFocus ->
+        binding.etSearch.setOnFocusChangeListener { _, hasFocus ->
             Log.println(Log.INFO, "my_tag", "onFocusListenerInit")
             if (hasFocus) {
                 viewModel.checkState()
@@ -103,23 +95,23 @@ class SearchActivity : AppCompatActivity() {
     private fun addSearchResultToRecycle(list: List<Track>) {
         searchTrackList.clear()
         searchTrackList.addAll(list)
-        rvSearch?.adapter?.notifyItemRangeInserted(searchTrackList.size, list.size)
+        binding.rvSearch.adapter?.notifyItemRangeInserted(searchTrackList.size, list.size)
     }
 
     private fun addHistoryResultToRecycle(list: List<Track>) {
-        for (item in list){
+        for (item in list) {
             Log.d("my_tag", "add To History Adapter: ${item.trackId}")
         }
         historyTrackList.clear()
         historyTrackList.addAll(list)
-        rvHistory?.adapter?.notifyItemRangeChanged(searchTrackList.size, list.size)
+        binding.rvHistory.adapter?.notifyItemRangeChanged(searchTrackList.size, list.size)
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun clearSearchResult() {
         Log.println(Log.INFO, "my_tag", "clearRecycle")
         searchTrackList.clear()
-        rvSearch?.adapter?.notifyDataSetChanged()
+        binding.rvHistory.adapter?.notifyDataSetChanged()
         viewModel.clearSearchTrackList()
         viewModel.checkState()
     }
@@ -131,9 +123,9 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                buttonClear?.visibility = clearButtonVisibility(s)
-                val text = inputEditText?.text.toString()
-                if(text.isNotEmpty()) {
+                binding.ivSearchClear.visibility = clearButtonVisibility(s)
+                val text = binding.etSearch.text.toString()
+                if (text.isNotEmpty()) {
                     Log.d("my_tag", "onTextChanged=$text")
                     viewModel.setSearchText(text)
                 }
@@ -143,12 +135,12 @@ class SearchActivity : AppCompatActivity() {
                 Log.d("my_tag", "afterTextChanged")
             }
         }
-        inputEditText?.addTextChangedListener(simpleTextWatcher)
+        binding.etSearch.addTextChangedListener(simpleTextWatcher)
     }
 
     private fun clearInputText() {
         Log.println(Log.INFO, "my_tag", "clearInputText")
-        inputEditText?.setText("")
+        binding.etSearch.setText("")
         viewModel.checkState()
     }
 
@@ -172,7 +164,7 @@ class SearchActivity : AppCompatActivity() {
         rvSearchAdapter?.setOnClickListener(object : SearchAdapter.OnClickListener {
             override fun onClick(position: Int, track: Track) {
                 Toast.makeText(
-                    applicationContext,
+                    requireContext(),
                     "Add to history: ${track.trackName}",
                     Toast.LENGTH_SHORT
                 ).show()
@@ -182,82 +174,37 @@ class SearchActivity : AppCompatActivity() {
         })
     }
 
-    private fun onClickClearHistory() {
-        buttonClearHistory?.setOnClickListener(clickListener())
-    }
-
-    private fun onClickRefresh() {
-        buttonRefresh?.setOnClickListener(clickListener())
-    }
-
-    private fun onClickSearch() {
-        inputEditText?.setOnClickListener(clickListener())
-    }
-
-    private fun onClickClear() {
-        val item = findViewById<ImageView>(R.id.iv_search_clear)
-        item.setOnClickListener(clickListener())
-    }
-
-    private fun onClickReturn() {
-        val item = findViewById<ImageView>(R.id.iv_search_back)
-        item.setOnClickListener(clickListener())
-    }
-
     private fun clearButtonListener() {
-        Helpers.hideKeyboard(this)
+        Helpers.hideKeyboard(requireActivity())
         clearInputText()
         clearSearchResult()
     }
 
     private fun initOnClickListeners() {
-        onClickReturn()
-        buttonClear?.setOnClickListener(clickListener())
-        onClickClear()
-        onClickSearch()
-        onClickRefresh()
+        binding.ivSearchClear.setOnClickListener { clearButtonListener() }
+        binding.etSearch.setOnClickListener { }
+        binding.btnSearchRefresh.setOnClickListener { searchRefresh() }
+        binding.btnClearHistory.setOnClickListener { clearHistory() }
         onClickRecyclerViewSearchItem()
         onClickRecyclerViewHistoryItem()
         onFocusListenerSearchInit()
-        onClickClearHistory()
-    }
-
-    private fun clickListener() = View.OnClickListener { view ->
-        when (view.id) {
-            R.id.iv_search_back -> this.finish()
-            R.id.iv_search_clear -> clearButtonListener()
-            R.id.btn_search_refresh -> searchRefresh()
-            R.id.btn_clear_history -> clearHistory()
-        }
-    }
-
-    private fun initViews() {
-        inputEditText = findViewById(R.id.et_search)
-        buttonClear = findViewById(R.id.iv_search_clear)
-        rvSearch = findViewById(R.id.rv_Search)
-        buttonRefresh = findViewById(R.id.btn_search_refresh)
-        layoutIsEmpty = findViewById(R.id.layout_is_empty)
-        layoutNoInternet = findViewById(R.id.layout_no_internet)
-        layoutHistory = findViewById(R.id.layout_history)
-        buttonClearHistory = findViewById(R.id.btn_clear_history)
-        rvHistory = findViewById(R.id.rv_history)
-        progressBar = findViewById(R.id.progressBar)
     }
 
     private fun showInvisibleLayout(state: ActivityState = ActivityState.HIDE_ALL) {
         Log.d("my_tag", "ActivityState = $state")
-        rvSearch?.visibility = View.GONE
-        layoutNoInternet?.visibility = View.GONE
-        layoutIsEmpty?.visibility = View.GONE
-        layoutHistory?.visibility = View.GONE
-        progressBar?.visibility = View.GONE
+        binding.rvSearch.visibility = View.GONE
+        binding.layoutNoInternet.visibility = View.GONE
+        binding.layoutIsEmpty.visibility = View.GONE
+        binding.layoutHistory.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
         when (state) {
-            ActivityState.SEARCH_RESULT -> rvSearch?.visibility = View.VISIBLE
-            ActivityState.NOT_FOUND -> layoutIsEmpty?.visibility = View.VISIBLE
-            ActivityState.NO_INTERNET -> layoutNoInternet?.visibility = View.VISIBLE
-            ActivityState.HISTORY_RESULT -> layoutHistory?.visibility = View.VISIBLE
-            ActivityState.PROGRESS_BAR -> progressBar?.visibility = View.VISIBLE
+            ActivityState.SEARCH_RESULT -> binding.rvSearch.visibility = View.VISIBLE
+            ActivityState.NOT_FOUND -> binding.layoutIsEmpty.visibility = View.VISIBLE
+            ActivityState.NO_INTERNET -> binding.layoutNoInternet.visibility = View.VISIBLE
+            ActivityState.HISTORY_RESULT -> binding.layoutHistory.visibility = View.VISIBLE
+            ActivityState.PROGRESS_BAR -> binding.progressBar.visibility = View.VISIBLE
             else -> {}
         }
     }
+
 }

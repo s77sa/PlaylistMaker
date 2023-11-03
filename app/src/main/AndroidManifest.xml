@@ -19,24 +19,16 @@
         <activity
             android:name=".ui.player.PlayerActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.search.SearchActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.library.LibraryActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.settings.SettingsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.main.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <activity
+                    android:name=".ui.root.RootActivity"
+                    android:exported="true"
+                    android:windowSoftInputMode="adjustNothing">
+                    <intent-filter>
+                        <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+                        <category android:name="android.intent.category.LAUNCHER" />
+                    </intent-filter>
+                </activity>
     </application>
 
 </manifest>
