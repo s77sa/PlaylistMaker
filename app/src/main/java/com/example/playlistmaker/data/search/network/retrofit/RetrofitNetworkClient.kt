@@ -7,6 +7,9 @@ import com.example.playlistmaker.data.search.network.retrofit.models.ItunesApiSe
 import com.example.playlistmaker.data.search.network.retrofit.models.NetworkClient
 import com.example.playlistmaker.data.search.network.retrofit.models.Response
 import com.example.playlistmaker.data.search.network.retrofit.models.TracksSearchRequest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import okhttp3.Dispatcher
 
 class RetrofitNetworkClient(
     private val context: Context,
@@ -26,6 +29,23 @@ class RetrofitNetworkClient(
             body.apply { resultCode = response.code() }
         } else {
             Response().apply { resultCode = response.code() }
+        }
+    }
+
+    override suspend fun doRequestSuspend(dto: Any): Response {
+        if (!isConnected()) {
+            return Response().apply { resultCode = -1 }
+        }
+        if (dto !is TracksSearchRequest) {
+            return Response().apply { resultCode = 400 }
+        }
+        return withContext(Dispatchers.IO){
+            try {
+                val response = itunesService.searchTracksSuspend(dto.expression)
+                response.apply { resultCode = 200 }
+            } catch(e: Throwable){
+                Response().apply { resultCode = 500 }
+            }
         }
     }
 

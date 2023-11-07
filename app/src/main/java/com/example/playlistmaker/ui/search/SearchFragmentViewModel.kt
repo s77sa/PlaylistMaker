@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.data.search.models.Track
 import com.example.playlistmaker.data.search.models.Tracks
 import com.example.playlistmaker.data.search.network.retrofit.models.ConnectionStatus
@@ -14,6 +15,9 @@ import com.example.playlistmaker.domain.settings.sharedprefs.HistoryInteractor
 import com.example.playlistmaker.ui.player.KEY_INTENT_PLAYER_ACTIVITY
 import com.example.playlistmaker.ui.player.PlayerActivity
 import com.example.playlistmaker.ui.sharing.ActivityNavigator
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchFragmentViewModel(
     private val trackInteractor: TrackInteractor,
@@ -25,7 +29,7 @@ class SearchFragmentViewModel(
     }
 
     private val handler = Handler(Looper.getMainLooper())
-    private val searchRunnable = Runnable { searchRequest() }
+    private var searchJob: Job? = null
 
     private val searchTextMutable = MutableLiveData<String>().apply { }
     val searchText: LiveData<String> = searchTextMutable
@@ -40,9 +44,19 @@ class SearchFragmentViewModel(
     private val historyTrackListMutable = MutableLiveData<MutableList<Track>>()
     val historyTrackList: LiveData<MutableList<Track>> = historyTrackListMutable
 
-    private fun searchDebounce() {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    private fun searchDebounce(){
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_DELAY)
+            searchRequest()
+        }
+    }
+
+    fun setSearchText(value: String) {
+        if (value.length >= MIN_LENGHT_SEARCH_QUERY) {
+            searchTextMutable.value = value
+            searchDebounce()
+        }
     }
 
     fun searchRequest() {
@@ -105,13 +119,6 @@ class SearchFragmentViewModel(
             searchActivityStateMutable.value = ActivityState.HISTORY_RESULT
             Log.d("my_tag", "checkHistory State = ${searchActivityStateMutable.value}")
             Log.d("my_tag", "checkHistory Size = ${historyTrackListMutable.value?.size}")
-        }
-    }
-
-    fun setSearchText(value: String) {
-        if (value.length >= MIN_LENGHT_SEARCH_QUERY) {
-            searchTextMutable.value = value
-            searchDebounce()
         }
     }
 

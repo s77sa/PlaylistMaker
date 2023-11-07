@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.domain.settings.sharedprefs.ThemeInteractor
 import com.example.playlistmaker.domain.sharing.ExternalNavigatorInteractor
-import com.example.playlistmaker.ui.ThemeSwitcher
+import com.example.playlistmaker.ui.utils.ThemeSwitcher
 
 class SettingsFragmentViewModel(
     private var themeInteractor: ThemeInteractor?,
