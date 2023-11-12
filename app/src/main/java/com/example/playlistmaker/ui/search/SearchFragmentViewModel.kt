@@ -1,7 +1,5 @@
 package com.example.playlistmaker.ui.search
 
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -28,7 +26,13 @@ class SearchFragmentViewModel(
         Log.d("my_tag", "init - Search ViewModel}")
     }
 
-    private val handler = Handler(Looper.getMainLooper())
+    companion object {
+        private const val MIN_LENGTH_SEARCH_QUERY: Int = 2
+        private const val HISTORY_COUNT = 10
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+    }
+
+    //private val handler = Handler(Looper.getMainLooper())
     private var searchJob: Job? = null
 
     private val searchTextMutable = MutableLiveData<String>().apply { }
@@ -44,7 +48,7 @@ class SearchFragmentViewModel(
     private val historyTrackListMutable = MutableLiveData<MutableList<Track>>()
     val historyTrackList: LiveData<MutableList<Track>> = historyTrackListMutable
 
-    private fun searchDebounce(){
+    private fun searchDebounce() {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY)
@@ -53,7 +57,7 @@ class SearchFragmentViewModel(
     }
 
     fun setSearchText(value: String) {
-        if (value.length >= MIN_LENGHT_SEARCH_QUERY) {
+        if (value.length >= MIN_LENGTH_SEARCH_QUERY) {
             searchTextMutable.value = value
             searchDebounce()
         }
@@ -163,41 +167,66 @@ class SearchFragmentViewModel(
         )
     }
 
+    //    private fun initSearch(queryText: String) {
+//        if (queryText.isNotEmpty()) {
+//            Log.d("my_tag", "Search text = $queryText")
+//            trackInteractor.searchTracks(queryText, object : TrackInteractor.TracksConsumer {
+//                override fun consume(foundMovies: List<Track>?, errorMessage: ConnectionStatus) {
+//                    handler.post {
+//                        if (foundMovies != null) {
+//                            Log.d("my_tag", "Found tracks = ${foundMovies.size}")
+//                            searchTrackListMutable.value?.clear()
+//                            searchTrackListMutable.value = foundMovies as MutableList<Track>?
+//                            if (foundMovies.isNotEmpty()) {
+//                                searchActivityStateMutable.value = ActivityState.SEARCH_RESULT
+//                            } else {
+//                                searchActivityStateMutable.value = ActivityState.NOT_FOUND
+//                            }
+//                        }
+//                        if (errorMessage != ConnectionStatus.SUCCESS) {
+//                            searchActivityStateMutable.value = ActivityState.NO_INTERNET
+//                        }
+//                        Log.d("my_tag", "VM State = ${searchActivityStateMutable.value}")
+//                        Log.d("my_tag", "VM Value size = ${searchTrackListMutable.value?.size}")
+//                    }
+//                }
+//            })
+//        }
+//    }
     private fun initSearch(queryText: String) {
         if (queryText.isNotEmpty()) {
-            Log.d("my_tag", "Search text = $queryText")
-            trackInteractor.searchTracks(queryText, object : TrackInteractor.TracksConsumer {
-                override fun consume(foundMovies: List<Track>?, errorMessage: ConnectionStatus) {
-                    handler.post {
-                        if (foundMovies != null) {
-                            Log.d("my_tag", "Found tracks = ${foundMovies.size}")
-                            searchTrackListMutable.value?.clear()
-                            searchTrackListMutable.value = foundMovies as MutableList<Track>?
-                            if (foundMovies.isNotEmpty()) {
-                                searchActivityStateMutable.value = ActivityState.SEARCH_RESULT
-                            } else {
-                                searchActivityStateMutable.value = ActivityState.NOT_FOUND
-                            }
-                        }
-                        if (errorMessage != ConnectionStatus.SUCCESS) {
-                            searchActivityStateMutable.value = ActivityState.NO_INTERNET
-                        }
-                        Log.d("my_tag", "VM State = ${searchActivityStateMutable.value}")
-                        Log.d("my_tag", "VM Value size = ${searchTrackListMutable.value?.size}")
+            viewModelScope.launch {
+                trackInteractor
+                    .searchTracks(queryText)
+                    .collect { pair ->
+                        processResult(pair.first, pair.second)
                     }
-                }
-            })
+            }
         }
+    }
+
+    private fun processResult(foundMovies: List<Track>?, errorMessage: ConnectionStatus) {
+        if (foundMovies != null) {
+            Log.d("my_tag", "Found tracks = ${foundMovies.size}")
+            searchTrackListMutable.value?.clear()
+            searchTrackListMutable.value = foundMovies as MutableList<Track>?
+            if (foundMovies.isNotEmpty()) {
+                searchActivityStateMutable.value = ActivityState.SEARCH_RESULT
+            } else {
+                searchActivityStateMutable.value = ActivityState.NOT_FOUND
+            }
+        }
+        if (errorMessage != ConnectionStatus.SUCCESS) {
+            searchActivityStateMutable.value = ActivityState.NO_INTERNET
+        }
+        Log.d("my_tag", "VM State = ${searchActivityStateMutable.value}")
+        Log.d("my_tag", "VM Value size = ${searchTrackListMutable.value?.size}")
     }
 
     override fun onCleared() {
         super.onCleared()
-        handler.removeCallbacksAndMessages(null)
+        //handler.removeCallbacksAndMessages(null)
     }
 
-    companion object {
-        private const val MIN_LENGHT_SEARCH_QUERY: Int = 2
-        private const val HISTORY_COUNT = 10
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
-    }
+
 }
