@@ -3,6 +3,7 @@ package com.example.playlistmaker.di
 import android.content.Context
 import android.content.SharedPreferences
 import android.media.MediaPlayer
+import com.example.playlistmaker.BuildConfig
 import com.example.playlistmaker.data.player.PlayerRepository
 import com.example.playlistmaker.data.player.PlayerRepositoryImpl
 import com.example.playlistmaker.data.search.network.retrofit.RetrofitNetworkClient
@@ -20,7 +21,6 @@ import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
-import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -80,9 +80,10 @@ val dataModule = module {
     }
 
     single<Retrofit> {
+        val baseUrl = BuildConfig.SEARCH_BASE_URL
         Retrofit.Builder().apply {
             client(get())
-            baseUrl(androidContext().getString(com.example.playlistmaker.R.string.searchBaseUrl))
+            baseUrl(baseUrl)
             addConverterFactory(GsonConverterFactory.create())
         }.build()
     }
