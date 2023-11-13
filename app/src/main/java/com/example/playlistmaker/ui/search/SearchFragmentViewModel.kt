@@ -31,8 +31,7 @@ class SearchFragmentViewModel(
         private const val HISTORY_COUNT = 10
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
-
-    //private val handler = Handler(Looper.getMainLooper())
+    
     private var searchJob: Job? = null
 
     private val searchTextMutable = MutableLiveData<String>().apply { }
@@ -57,8 +56,8 @@ class SearchFragmentViewModel(
     }
 
     fun setSearchText(value: String) {
+        searchTextMutable.value = value
         if (value.length >= MIN_LENGTH_SEARCH_QUERY) {
-            searchTextMutable.value = value
             searchDebounce()
         }
     }
@@ -167,32 +166,6 @@ class SearchFragmentViewModel(
         )
     }
 
-    //    private fun initSearch(queryText: String) {
-//        if (queryText.isNotEmpty()) {
-//            Log.d("my_tag", "Search text = $queryText")
-//            trackInteractor.searchTracks(queryText, object : TrackInteractor.TracksConsumer {
-//                override fun consume(foundMovies: List<Track>?, errorMessage: ConnectionStatus) {
-//                    handler.post {
-//                        if (foundMovies != null) {
-//                            Log.d("my_tag", "Found tracks = ${foundMovies.size}")
-//                            searchTrackListMutable.value?.clear()
-//                            searchTrackListMutable.value = foundMovies as MutableList<Track>?
-//                            if (foundMovies.isNotEmpty()) {
-//                                searchActivityStateMutable.value = ActivityState.SEARCH_RESULT
-//                            } else {
-//                                searchActivityStateMutable.value = ActivityState.NOT_FOUND
-//                            }
-//                        }
-//                        if (errorMessage != ConnectionStatus.SUCCESS) {
-//                            searchActivityStateMutable.value = ActivityState.NO_INTERNET
-//                        }
-//                        Log.d("my_tag", "VM State = ${searchActivityStateMutable.value}")
-//                        Log.d("my_tag", "VM Value size = ${searchTrackListMutable.value?.size}")
-//                    }
-//                }
-//            })
-//        }
-//    }
     private fun initSearch(queryText: String) {
         if (queryText.isNotEmpty()) {
             viewModelScope.launch {
@@ -221,11 +194,6 @@ class SearchFragmentViewModel(
         }
         Log.d("my_tag", "VM State = ${searchActivityStateMutable.value}")
         Log.d("my_tag", "VM Value size = ${searchTrackListMutable.value?.size}")
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        //handler.removeCallbacksAndMessages(null)
     }
 
 

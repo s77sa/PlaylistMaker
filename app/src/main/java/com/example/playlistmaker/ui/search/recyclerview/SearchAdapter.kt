@@ -1,7 +1,5 @@
 package com.example.playlistmaker.ui.search.recyclerview
 
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView

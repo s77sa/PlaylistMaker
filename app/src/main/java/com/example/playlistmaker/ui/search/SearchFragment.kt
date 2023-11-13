@@ -1,6 +1,5 @@
 package com.example.playlistmaker.ui.search
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,8 +11,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.playlistmaker.data.search.models.Track
 import com.example.playlistmaker.databinding.FragmentSearchBinding
-import com.example.playlistmaker.ui.utils.Helpers
 import com.example.playlistmaker.ui.search.recyclerview.SearchAdapter
+import com.example.playlistmaker.ui.utils.Helpers
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
@@ -25,8 +24,6 @@ class SearchFragment : Fragment() {
     private var historyTrackList: MutableList<Track> = mutableListOf()
     private var rvSearchAdapter: SearchAdapter? = null
     private var rvHistoryAdapter: SearchAdapter? = null
-//    private val rvSearchAdapter: SearchAdapter by lazy { SearchAdapter(searchTrackList) }
-//    private val rvHistoryAdapter: SearchAdapter by lazy { SearchAdapter(historyTrackList) }
     private var searchText = ""
 
     override fun onCreateView(
@@ -102,9 +99,11 @@ class SearchFragment : Fragment() {
     private fun addSearchResultToRecycle(list: List<Track>) {
         searchTrackList.clear()
         searchTrackList.addAll(list)
-        binding?.rvSearch?.adapter?.notifyItemRangeInserted(searchTrackList.size, list.size)
-        //rvSearchAdapter?.notifyItemRangeChanged(searchTrackList.size, list.size)
-//        binding?.rvSearch?.adapter?.
+        val itemCount = binding?.rvSearch?.adapter?.itemCount
+        if (itemCount != null) {
+            binding?.rvSearch?.adapter?.notifyItemRangeRemoved(0, itemCount)
+        }
+        binding?.rvSearch?.adapter?.notifyItemRangeInserted(0, searchTrackList.size)
     }
 
     private fun addHistoryResultToRecycle(list: List<Track>) {
@@ -113,14 +112,16 @@ class SearchFragment : Fragment() {
         }
         historyTrackList.clear()
         historyTrackList.addAll(list)
-        binding?.rvHistory?.adapter?.notifyItemRangeChanged(searchTrackList.size, list.size)
+        binding?.rvHistory?.adapter?.notifyItemRangeChanged(0, list.size)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun clearSearchResult() {
-        Log.println(Log.INFO, "my_tag", "clearRecycle")
+        Log.println(Log.INFO, "my_tag", "clearSearchRecycle")
         searchTrackList.clear()
-        binding?.rvHistory?.adapter?.notifyDataSetChanged()
+        val itemCount = binding?.rvSearch?.adapter?.itemCount
+        if (itemCount != null) {
+            binding?.rvSearch?.adapter?.notifyItemRangeChanged(0, itemCount)
+        }
         viewModel.clearSearchTrackList()
         viewModel.checkState()
     }

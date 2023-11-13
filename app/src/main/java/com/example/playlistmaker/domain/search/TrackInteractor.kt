@@ -6,9 +6,4 @@ import kotlinx.coroutines.flow.Flow
 
 interface TrackInteractor {
     fun searchTracks(expression: String): Flow<Pair<List<Track>?, ConnectionStatus>>
-//    fun searchTracks(expression: String, consumer: TracksConsumer)
-//
-//    interface TracksConsumer {
-//        fun consume(foundMovies: List<Track>?, errorMessage: ConnectionStatus)
-//    }
 }

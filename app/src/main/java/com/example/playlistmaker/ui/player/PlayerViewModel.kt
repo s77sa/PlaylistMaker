@@ -1,7 +1,5 @@
 package com.example.playlistmaker.ui.player
 
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -95,7 +93,7 @@ class PlayerViewModel(
         mediaPlayerInteractor.pausePlayer()
     }
 
-    fun setPlayerState() {
+    private fun setPlayerState() {
         when (mediaPlayerInteractor.getPlayerState()) {
             PlayerState.STATE_PLAYING -> {
                 isPlayingLiveData.value = true
@@ -118,7 +116,7 @@ class PlayerViewModel(
     }
 
     fun onDestroy() {
-        //mainThreadHandler?.removeCallbacksAndMessages(null)
+
     }
 
     companion object {
