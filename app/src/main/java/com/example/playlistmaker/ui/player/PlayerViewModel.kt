@@ -31,8 +31,6 @@ class PlayerViewModel(
     private val playingPositionLiveData = MutableLiveData<String>()
     fun getPlayingPositionLiveData(): LiveData<String> = playingPositionLiveData
 
-    //private var mainThreadHandler: Handler? = null
-
     private var timerJob: Job? = null
 
     fun saveValues() {
