@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.BuildConfig
 import com.example.playlistmaker.data.search.models.Track
 import com.example.playlistmaker.databinding.FragmentSearchBinding
@@ -51,8 +52,8 @@ class SearchFragment : Fragment() {
     }
 
     private fun initAdapters() {
-        rvSearchAdapter = SearchAdapter(searchTrackList)
-        rvHistoryAdapter = SearchAdapter(historyTrackList)
+        rvSearchAdapter = SearchAdapter(searchTrackList, viewModel.viewModelScope)
+        rvHistoryAdapter = SearchAdapter(historyTrackList, viewModel.viewModelScope)
         binding.rvSearch.adapter = rvSearchAdapter
         binding.rvHistory.adapter = rvHistoryAdapter
     }

@@ -5,19 +5,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.search.models.Track
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class SearchAdapter(private val data: MutableList<Track>) :
+class SearchAdapter(private val data: MutableList<Track>, private val coroutineScope: CoroutineScope) :
     RecyclerView.Adapter<SearchViewHolder>() {
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
     private var isClickAllowed = true
-
     private var onClickJob: Job? = null
     private var onClickListener: OnClickListener? = null
 
@@ -53,7 +52,7 @@ class SearchAdapter(private val data: MutableList<Track>) :
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            onClickJob = MainScope().launch {
+            onClickJob = coroutineScope.launch {
                 delay(CLICK_DEBOUNCE_DELAY)
                 isClickAllowed = true
             }
