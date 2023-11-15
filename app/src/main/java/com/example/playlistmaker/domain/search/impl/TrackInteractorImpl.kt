@@ -11,14 +11,14 @@ import kotlinx.coroutines.flow.map
 class TrackInteractorImpl(private val repository: TrackRepository) : TrackInteractor {
 
     override fun searchTracks(expression: String): Flow<Pair<List<Track>?, ConnectionStatus>> {
-        return repository.searchTracks(expression).map { result ->
-            when (result) {
+        return repository.searchTracks(expression).map { trackResult ->
+            when (trackResult) {
                 is Resource.Success -> {
-                    Pair(result.data, ConnectionStatus.SUCCESS)
+                    Pair(trackResult.data, trackResult.message)
                 }
 
                 is Resource.Error -> {
-                    Pair(null, ConnectionStatus.CONNECTION_ERROR)
+                    Pair(null, trackResult.message)
                 }
             }
         }
