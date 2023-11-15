@@ -141,6 +141,8 @@ class SearchFragment : Fragment() {
                 if (text.isNotEmpty()) {
                     Log.d(BuildConfig.LOG_TAG, "onTextChanged=$text")
                     viewModel.setSearchText(text)
+                } else {
+                    showInvisibleLayout(ActivityState.HISTORY_RESULT)
                 }
             }
 
