@@ -1,20 +1,23 @@
 package com.example.playlistmaker.ui.search.recyclerview
 
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.search.models.Track
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class SearchAdapter(private val data: MutableList<Track>) : RecyclerView.Adapter<SearchViewHolder> (){
+class SearchAdapter(private val data: MutableList<Track>, private val coroutineScope: CoroutineScope) :
+    RecyclerView.Adapter<SearchViewHolder>() {
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
     private var isClickAllowed = true
-    private val handler = Handler(Looper.getMainLooper())
+    private var onClickJob: Job? = null
     private var onClickListener: OnClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
@@ -26,7 +29,7 @@ class SearchAdapter(private val data: MutableList<Track>) : RecyclerView.Adapter
         val item: Track = data[position]
         holder.bind(item)
         holder.itemView.setOnClickListener {
-            if (onClickListener != null && clickDebounce()){
+            if (onClickListener != null && clickDebounce()) {
                 onClickListener!!.onClick(position, item)
             }
         }
@@ -36,19 +39,23 @@ class SearchAdapter(private val data: MutableList<Track>) : RecyclerView.Adapter
         return data.size
     }
 
-    fun setOnClickListener(onClickListener: OnClickListener){
+    fun setOnClickListener(onClickListener: OnClickListener) {
         this.onClickListener = onClickListener
     }
 
-    interface  OnClickListener{
+    interface OnClickListener {
         fun onClick(position: Int, track: Track)
     }
 
-    private fun clickDebounce() : Boolean {
+    private fun clickDebounce(): Boolean {
+        onClickJob?.cancel()
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            onClickJob = coroutineScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
         }
         return current
     }

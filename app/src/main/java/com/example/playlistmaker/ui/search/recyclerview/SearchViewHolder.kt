@@ -5,7 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.ui.Helpers
+import com.example.playlistmaker.ui.utils.Helpers
 import com.example.playlistmaker.data.search.models.Track
 
 class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

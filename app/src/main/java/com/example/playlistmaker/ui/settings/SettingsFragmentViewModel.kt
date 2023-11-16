@@ -4,16 +4,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.playlistmaker.BuildConfig
 import com.example.playlistmaker.domain.settings.sharedprefs.ThemeInteractor
 import com.example.playlistmaker.domain.sharing.ExternalNavigatorInteractor
-import com.example.playlistmaker.ui.ThemeSwitcher
+import com.example.playlistmaker.ui.utils.ThemeSwitcher
 
 class SettingsFragmentViewModel(
     private var themeInteractor: ThemeInteractor?,
     private val externalNavigator: ExternalNavigatorInteractor?
 ) : ViewModel() {
     init {
-        Log.d("my_tag", "init - Settings ViewModel}")
+        Log.d(BuildConfig.LOG_TAG, "init - Settings ViewModel}")
     }
 
     private val darkThemeMutable = MutableLiveData<Boolean>()

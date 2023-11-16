@@ -1,14 +1,17 @@
 package com.example.playlistmaker.ui.player
 
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.BuildConfig
 import com.example.playlistmaker.domain.player.PlayerInteractor
 import com.example.playlistmaker.data.player.PlayerState
 import com.example.playlistmaker.data.search.models.Track
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -17,7 +20,7 @@ class PlayerViewModel(
     private var mediaPlayerInteractor: PlayerInteractor
 ) : ViewModel() {
     init {
-        Log.d("my_tag", "init - PlayerViewModel - ${track.trackName}")
+        Log.d(BuildConfig.LOG_TAG, "init - PlayerViewModel - ${track.trackName}")
     }
 
     private val valuesLiveData = MutableLiveData<Track>()
@@ -29,26 +32,20 @@ class PlayerViewModel(
     private val playingPositionLiveData = MutableLiveData<String>()
     fun getPlayingPositionLiveData(): LiveData<String> = playingPositionLiveData
 
-    private var mainThreadHandler: Handler? = null
+    private var timerJob: Job? = null
 
     fun saveValues() {
         valuesLiveData.value = track
     }
 
-    private fun startThread() {
-        Log.println(Log.INFO, "my_tag", "startThread")
-        mainThreadHandler?.post(
-            object : Runnable {
-                override fun run() {
-                    if (mediaPlayerInteractor.getPlayerState() == PlayerState.STATE_PLAYING) {
-                        setTimeToTrackTime(mediaPlayerInteractor.getCurrentPosition())
-                        mainThreadHandler?.postDelayed(this, REFRESH_TIME_HEADER_DELAY_MILLIS)
-                    } else {
-                        setPlayerState()
-                    }
-                }
+    private fun startTimer() {
+        Log.d(BuildConfig.LOG_TAG, "startJob")
+        timerJob = viewModelScope.launch {
+            while (mediaPlayerInteractor.getPlayerState() == PlayerState.STATE_PLAYING) {
+                delay(REFRESH_TIME_HEADER_DELAY_MILLIS)
+                setPlayerState()
             }
-        )
+        }
     }
 
     private fun setTimeToTrackTime(position: Int = 0) {
@@ -72,7 +69,7 @@ class PlayerViewModel(
 
             PlayerState.STATE_PREPARED, PlayerState.STATE_PAUSED -> {
                 startPlayer()
-                startThread()
+                startTimer()
             }
 
             else -> {}
@@ -81,23 +78,23 @@ class PlayerViewModel(
     }
 
     fun preparePlayer() {
-        mainThreadHandler = Handler(Looper.getMainLooper())
         track.previewUrl?.let { mediaPlayerInteractor.preparePlayer(it) }
     }
 
     private fun startPlayer() {
         mediaPlayerInteractor.startPlayer()
-        startThread()
+        startTimer()
     }
 
     private fun pausePlayer() {
         mediaPlayerInteractor.pausePlayer()
     }
 
-    fun setPlayerState() {
+    private fun setPlayerState() {
         when (mediaPlayerInteractor.getPlayerState()) {
             PlayerState.STATE_PLAYING -> {
                 isPlayingLiveData.value = true
+                setTimeToTrackTime(mediaPlayerInteractor.getCurrentPosition())
             }
 
             PlayerState.STATE_PAUSED -> {
@@ -116,10 +113,10 @@ class PlayerViewModel(
     }
 
     fun onDestroy() {
-        mainThreadHandler?.removeCallbacksAndMessages(null)
+
     }
 
     companion object {
-        private const val REFRESH_TIME_HEADER_DELAY_MILLIS: Long = 330L
+        private const val REFRESH_TIME_HEADER_DELAY_MILLIS: Long = 300L
     }
 }

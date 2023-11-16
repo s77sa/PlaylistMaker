@@ -2,6 +2,7 @@ package com.example.playlistmaker.data.player
 
 import android.media.MediaPlayer
 import android.util.Log
+import com.example.playlistmaker.BuildConfig
 
 class PlayerRepositoryImpl(
     private var mediaPlayer: MediaPlayer
@@ -10,9 +11,9 @@ class PlayerRepositoryImpl(
 
 
     override fun preparePlayer(streamUrl: String?) {
-        Log.d("my_tag", "mediaPlayer prepare")
+        Log.d(BuildConfig.LOG_TAG, "mediaPlayer prepare")
         if (!streamUrl.isNullOrEmpty()) {
-            Log.d("my_tag", "mediaPlayer url = $streamUrl")
+            Log.d(BuildConfig.LOG_TAG, "mediaPlayer url = $streamUrl")
             mediaPlayer.reset()
             mediaPlayer.setDataSource(streamUrl)
             mediaPlayer.prepareAsync()
@@ -21,10 +22,10 @@ class PlayerRepositoryImpl(
             }
             mediaPlayer.setOnCompletionListener {
                 playerState = PlayerState.STATE_PREPARED
-                Log.d("my_tag", "mediaPlayer End")
+                Log.d(BuildConfig.LOG_TAG, "mediaPlayer End")
             }
         } else (
-                Log.d("my_tag", "Input url empty or null")
+                Log.d(BuildConfig.LOG_TAG, "Input url empty or null")
                 )
     }
 
@@ -41,13 +42,13 @@ class PlayerRepositoryImpl(
     }
 
     override fun startPlayer() {
-        Log.d("my_tag", "mediaPlayer Start in impl")
+        Log.d(BuildConfig.LOG_TAG, "mediaPlayer Start in impl")
         mediaPlayer.start()
         playerState = PlayerState.STATE_PLAYING
     }
 
     override fun pausePlayer() {
-        Log.d("my_tag", "mediaPlayer Pause")
+        Log.d(BuildConfig.LOG_TAG, "mediaPlayer Pause")
         if (playerState == PlayerState.STATE_PLAYING) {
             mediaPlayer.pause()
             playerState = PlayerState.STATE_PAUSED
