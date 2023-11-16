@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmaker.BuildConfig
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.search.models.Track
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
@@ -25,6 +24,7 @@ class PlayerActivity : AppCompatActivity() {
 
     companion object {
         private const val REPLACE_LINK_PATTERN: String = "512x512bb.jpg"
+        private val TAG = PlayerActivity::class.simpleName
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +50,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun initObserver() {
         viewModel.getLoadingValues().observe(this) { track ->
-            Log.d(BuildConfig.LOG_TAG, "init - Player Observer - ${track.trackName}")
+            Log.d(TAG, "init - Player Observer - ${track.trackName}")
             writeTrackDataToView()
         }
         viewModel.getPlayingPositionLiveData().observe(this) { value ->

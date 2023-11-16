@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.BuildConfig
 import com.example.playlistmaker.domain.player.PlayerInteractor
 import com.example.playlistmaker.data.player.PlayerState
 import com.example.playlistmaker.data.search.models.Track
@@ -20,7 +19,7 @@ class PlayerViewModel(
     private var mediaPlayerInteractor: PlayerInteractor
 ) : ViewModel() {
     init {
-        Log.d(BuildConfig.LOG_TAG, "init - PlayerViewModel - ${track.trackName}")
+        Log.d(TAG, "init - PlayerViewModel - ${track.trackName}")
     }
 
     private val valuesLiveData = MutableLiveData<Track>()
@@ -39,7 +38,7 @@ class PlayerViewModel(
     }
 
     private fun startTimer() {
-        Log.d(BuildConfig.LOG_TAG, "startJob")
+        Log.d(TAG, "startJob")
         timerJob = viewModelScope.launch {
             while (mediaPlayerInteractor.getPlayerState() == PlayerState.STATE_PLAYING) {
                 delay(REFRESH_TIME_HEADER_DELAY_MILLIS)
@@ -118,5 +117,6 @@ class PlayerViewModel(
 
     companion object {
         private const val REFRESH_TIME_HEADER_DELAY_MILLIS: Long = 300L
+        private val TAG = PlayerActivity::class.simpleName
     }
 }

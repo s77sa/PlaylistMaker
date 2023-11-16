@@ -37,7 +37,6 @@ android {
 
     defaultConfig {
         buildConfigField("String", "SEARCH_BASE_URL", "\"http://itunes.apple.com\";")
-        buildConfigField("String", "LOG_TAG", "\"my_tag\";")
     }
 }
 
