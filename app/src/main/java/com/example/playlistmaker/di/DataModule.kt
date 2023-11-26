@@ -3,7 +3,10 @@ package com.example.playlistmaker.di
 import android.content.Context
 import android.content.SharedPreferences
 import android.media.MediaPlayer
+import androidx.room.Room
 import com.example.playlistmaker.BuildConfig
+import com.example.playlistmaker.data.db.AppDatabase
+import com.example.playlistmaker.data.db.converters.HistoryTrackDbConvertor
 import com.example.playlistmaker.data.player.PlayerRepository
 import com.example.playlistmaker.data.player.PlayerRepositoryImpl
 import com.example.playlistmaker.data.search.network.retrofit.RetrofitNetworkClient
@@ -21,11 +24,13 @@ import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 const val PLAY_LIST_SHARED_PREFERENCES = "play_list_preferences"
+const val PLAY_LIST_DATABASE_NAME = "playListDb.db"
 
 val dataModule = module {
 
@@ -91,4 +96,11 @@ val dataModule = module {
     factory<MediaPlayer> {
         MediaPlayer()
     }
+
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, PLAY_LIST_DATABASE_NAME)
+            .build()
+    }
+
+    factory { HistoryTrackDbConvertor() }
 }
