@@ -95,10 +95,6 @@ class SearchFragmentViewModel(
         }
     }
 
-    fun clearSearchTrackList() {
-        //searchTrackListMutable.value?.clear()
-    }
-
     fun checkState() {
         loadHistoryFromSharedPrefs()
         Log.d(TAG, "checkState")

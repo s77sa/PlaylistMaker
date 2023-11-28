@@ -1,12 +1,12 @@
 package com.example.playlistmaker.data.db.converters
 
-import com.example.playlistmaker.data.db.entity.HistoryTrackEntity
+import com.example.playlistmaker.data.db.entity.FavoritesTrackEntity
 import com.example.playlistmaker.data.search.models.Track
 
-class HistoryTrackDbConvertor {
+class FavoritesTrackDbConvertor {
 
-    fun map(track: Track): HistoryTrackEntity {
-        return HistoryTrackEntity(
+    fun map(track: Track): FavoritesTrackEntity {
+        return FavoritesTrackEntity(
             trackId = track.trackId!!,
             artistName = track.artistName!!,
             artworkUrl100 = track.artworkUrl100!!,
@@ -20,7 +20,7 @@ class HistoryTrackDbConvertor {
         )
     }
 
-    fun map(track: HistoryTrackEntity): Track {
+    fun map(track: FavoritesTrackEntity): Track {
         return Track(
             trackId = track.trackId,
             artistName = track.artistName,

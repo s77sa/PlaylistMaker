@@ -10,8 +10,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class SearchAdapter(private val data: MutableList<Track>, private val coroutineScope: CoroutineScope) :
-    RecyclerView.Adapter<SearchViewHolder>() {
+class TrackListAdapter(private val data: MutableList<Track>, private val coroutineScope: CoroutineScope) :
+    RecyclerView.Adapter<TrackListViewHolder>() {
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
@@ -20,12 +20,12 @@ class SearchAdapter(private val data: MutableList<Track>, private val coroutineS
     private var onClickJob: Job? = null
     private var onClickListener: OnClickListener? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.search_item, parent, false)
-        return SearchViewHolder(view)
+        return TrackListViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TrackListViewHolder, position: Int) {
         val item: Track = data[position]
         holder.bind(item)
         holder.itemView.setOnClickListener {

@@ -6,12 +6,12 @@ import android.media.MediaPlayer
 import androidx.room.Room
 import com.example.playlistmaker.BuildConfig
 import com.example.playlistmaker.data.db.AppDatabase
-import com.example.playlistmaker.data.db.converters.HistoryTrackDbConvertor
+import com.example.playlistmaker.data.db.converters.FavoritesTrackDbConvertor
 import com.example.playlistmaker.data.player.PlayerRepository
 import com.example.playlistmaker.data.player.PlayerRepositoryImpl
 import com.example.playlistmaker.data.search.network.retrofit.RetrofitNetworkClient
-import com.example.playlistmaker.data.search.network.retrofit.TrackRepository
-import com.example.playlistmaker.data.search.network.retrofit.impl.TrackRepositoryImpl
+import com.example.playlistmaker.domain.search.TrackRepository
+import com.example.playlistmaker.domain.search.impl.TrackRepositoryImpl
 import com.example.playlistmaker.data.search.network.retrofit.models.ItunesApiService
 import com.example.playlistmaker.data.search.network.retrofit.models.NetworkClient
 import com.example.playlistmaker.data.search.sharedprefs.HistoryRepository
@@ -102,5 +102,5 @@ val dataModule = module {
             .build()
     }
 
-    factory { HistoryTrackDbConvertor() }
+    factory { FavoritesTrackDbConvertor() }
 }

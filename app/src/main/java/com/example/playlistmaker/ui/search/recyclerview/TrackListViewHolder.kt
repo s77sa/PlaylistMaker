@@ -8,7 +8,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.ui.utils.Helpers
 import com.example.playlistmaker.data.search.models.Track
 
-class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class TrackListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val artWork: ImageView = itemView.findViewById((R.id.iv_artWork))
     private val trackName: TextView = itemView.findViewById((R.id.tv_trackName))

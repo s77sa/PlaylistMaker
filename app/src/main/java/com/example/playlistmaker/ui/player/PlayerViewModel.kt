@@ -5,9 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.data.db.AppDatabase
+import com.example.playlistmaker.data.db.converters.FavoritesTrackDbConvertor
+import com.example.playlistmaker.data.db.entity.FavoritesTrackEntity
 import com.example.playlistmaker.domain.player.PlayerInteractor
 import com.example.playlistmaker.data.player.PlayerState
 import com.example.playlistmaker.data.search.models.Track
+import com.example.playlistmaker.ui.search.SearchFragmentViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -16,10 +20,13 @@ import java.util.Locale
 
 class PlayerViewModel(
     private val track: Track,
-    private var mediaPlayerInteractor: PlayerInteractor
+    private var mediaPlayerInteractor: PlayerInteractor,
+    private val appDatabase: AppDatabase,
+    private val trackDbConvertor: FavoritesTrackDbConvertor
 ) : ViewModel() {
     init {
         Log.d(TAG, "init - PlayerViewModel - ${track.trackName}")
+        saveFavoriteTrackJob(track)
     }
 
     private val valuesLiveData = MutableLiveData<Track>()
@@ -31,7 +38,20 @@ class PlayerViewModel(
     private val playingPositionLiveData = MutableLiveData<String>()
     fun getPlayingPositionLiveData(): LiveData<String> = playingPositionLiveData
 
+    private var coroutineJob: Job? = null
     private var timerJob: Job? = null
+
+    private fun saveFavoriteTrackJob(track: Track) {
+        coroutineJob?.cancel()
+        coroutineJob = viewModelScope.launch {
+            saveFavoriteTrack(track)
+            Log.d(TAG, "Saved to Favorites: ${track.trackName}")
+        }
+    }
+    private suspend fun saveFavoriteTrack(track: Track){
+        val trackEntity: FavoritesTrackEntity = trackDbConvertor.map(track)
+        appDatabase.favoritesTrackDao().insertFavoritesTrack(trackEntity)
+    }
 
     fun saveValues() {
         valuesLiveData.value = track

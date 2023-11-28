@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.playlistmaker.data.search.models.Track
 import com.example.playlistmaker.databinding.FragmentSearchBinding
-import com.example.playlistmaker.ui.search.recyclerview.SearchAdapter
+import com.example.playlistmaker.ui.search.recyclerview.TrackListAdapter
 import com.example.playlistmaker.ui.utils.Helpers
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -28,8 +28,8 @@ class SearchFragment : Fragment() {
 
     private var searchTrackList: MutableList<Track> = mutableListOf()
     private var historyTrackList: MutableList<Track> = mutableListOf()
-    private var rvSearchAdapter: SearchAdapter? = null
-    private var rvHistoryAdapter: SearchAdapter? = null
+    private var rvTrackListAdapter: TrackListAdapter? = null
+    private var rvHistoryAdapter: TrackListAdapter? = null
     private var searchText = ""
 
     override fun onCreateView(
@@ -55,9 +55,9 @@ class SearchFragment : Fragment() {
     }
 
     private fun initAdapters() {
-        rvSearchAdapter = SearchAdapter(searchTrackList, viewLifecycleOwner.lifecycleScope)
-        rvHistoryAdapter = SearchAdapter(historyTrackList, viewLifecycleOwner.lifecycleScope)
-        binding.rvSearch.adapter = rvSearchAdapter
+        rvTrackListAdapter = TrackListAdapter(searchTrackList, viewLifecycleOwner.lifecycleScope)
+        rvHistoryAdapter = TrackListAdapter(historyTrackList, viewLifecycleOwner.lifecycleScope)
+        binding.rvSearch.adapter = rvTrackListAdapter
         binding.rvHistory.adapter = rvHistoryAdapter
     }
 
@@ -128,7 +128,6 @@ class SearchFragment : Fragment() {
         if (itemCount != null) {
             binding.rvSearch.adapter?.notifyItemRangeChanged(0, itemCount)
         }
-        viewModel.clearSearchTrackList()
         viewModel.checkState()
     }
 
@@ -171,7 +170,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun onClickRecyclerViewHistoryItem() {
-        rvHistoryAdapter?.setOnClickListener(object : SearchAdapter.OnClickListener {
+        rvHistoryAdapter?.setOnClickListener(object : TrackListAdapter.OnClickListener {
             override fun onClick(position: Int, track: Track) {
                 viewModel.callPlayerActivity(track)
             }
@@ -179,7 +178,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun onClickRecyclerViewSearchItem() {
-        rvSearchAdapter?.setOnClickListener(object : SearchAdapter.OnClickListener {
+        rvTrackListAdapter?.setOnClickListener(object : TrackListAdapter.OnClickListener {
             override fun onClick(position: Int, track: Track) {
                 Toast.makeText(
                     requireContext(),

@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.library.fragments.LibraryFavoritesFragment">
+    tools:context=".ui.library.fragments.favorites.LibraryFavoritesFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_Favorites"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="24dp"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <LinearLayout style="@style/LibraryFragmentLayoutStubs"
-        android:id="@+id/favorites_is_empty"
+        android:id="@+id/layout_is_empty"
         android:layout_marginTop="106dp"
-        android:visibility="visible"
+        android:visibility="gone"
         tools:ignore="UseCompoundDrawables,UselessParent">
 
         <ImageView
