@@ -16,10 +16,12 @@ import java.text.SimpleDateFormat
 
 
 const val KEY_INTENT_PLAYER_ACTIVITY = "player_intent"
+
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var track: Track
+    private var trackIsFavorites: Boolean = false
     private val viewModel by viewModel<PlayerViewModel> { parametersOf(track) }
 
     companion object {
@@ -36,6 +38,7 @@ class PlayerActivity : AppCompatActivity() {
         clickListenersInit()
         viewModel.saveValues()
         viewModel.preparePlayer()
+        viewModel.checkFavoriteTrackJob()
     }
 
     override fun onPause() {
@@ -59,6 +62,11 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.getIsPlayingLiveData().observe(this) {
             setButtonPlayState(it)
         }
+        viewModel.getIsFavorites().observe(this) {
+            trackIsFavorites = it
+            changeIconFavorites()
+            Log.d(TAG, "Observe Favorites: $it")
+        }
     }
 
     private fun setButtonPlayState(status: Boolean) {
@@ -72,6 +80,20 @@ class PlayerActivity : AppCompatActivity() {
     private fun clickListenersInit() {
         binding.ivPlayerBack.setOnClickListener { finishActivity() }
         binding.ivPlay.setOnClickListener { startPlaying() }
+        binding.ivFavoriteBorder.setOnClickListener { onClickFavorites() }
+    }
+
+    private fun onClickFavorites() {
+        viewModel.changeTrackStatus()
+    }
+
+    private fun changeIconFavorites(){
+        if(trackIsFavorites){
+            binding.ivFavoriteBorder.setImageResource(R.drawable.ic_button_favorite_red)
+        }
+        else{
+            binding.ivFavoriteBorder.setImageResource(R.drawable.ic_button_favorite_border)
+        }
     }
 
     private fun startPlaying() {

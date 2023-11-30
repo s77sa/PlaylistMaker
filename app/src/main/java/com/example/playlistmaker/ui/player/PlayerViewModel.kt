@@ -8,10 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.data.db.converters.FavoritesTrackDbConvertor
 import com.example.playlistmaker.data.db.entity.FavoritesTrackEntity
-import com.example.playlistmaker.domain.player.PlayerInteractor
 import com.example.playlistmaker.data.player.PlayerState
 import com.example.playlistmaker.data.search.models.Track
-import com.example.playlistmaker.ui.search.SearchFragmentViewModel
+import com.example.playlistmaker.domain.player.PlayerInteractor
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -26,8 +25,10 @@ class PlayerViewModel(
 ) : ViewModel() {
     init {
         Log.d(TAG, "init - PlayerViewModel - ${track.trackName}")
-        saveFavoriteTrackJob(track)
     }
+
+    private val isFavoritesMutableLiveData = MutableLiveData<Boolean>()
+    fun getIsFavorites(): LiveData<Boolean> = isFavoritesMutableLiveData
 
     private val valuesLiveData = MutableLiveData<Track>()
     fun getLoadingValues(): LiveData<Track> = valuesLiveData
@@ -41,14 +42,59 @@ class PlayerViewModel(
     private var coroutineJob: Job? = null
     private var timerJob: Job? = null
 
-    private fun saveFavoriteTrackJob(track: Track) {
+    fun changeTrackStatus() {
+        Log.d(TAG, "Track Status: ${isFavoritesMutableLiveData.value}")
+        if (getIsFavorites().value == true) {
+            Log.d(TAG, "Enter to true")
+            deleteFavoriteTrackJob()
+        } else {
+            Log.d(TAG, "Enter to false")
+            saveFavoriteTrackJob()
+        }
+        Log.d(TAG, "Change Track Status to: ${isFavoritesMutableLiveData.value}")
+
+    }
+
+    private fun deleteFavoriteTrackJob() {
         coroutineJob?.cancel()
         coroutineJob = viewModelScope.launch {
-            saveFavoriteTrack(track)
+            deleteFavoriteTrack()
+            Log.d(TAG, "Drop from Favorites: ${track.trackName}")
+            isFavoritesMutableLiveData.value = checkFavoriteTrack()
+        }
+        //sFavoritesMutableLiveData.value = false
+    }
+
+    private fun saveFavoriteTrackJob() {
+        coroutineJob?.cancel()
+        coroutineJob = viewModelScope.launch {
+            saveFavoriteTrack()
             Log.d(TAG, "Saved to Favorites: ${track.trackName}")
+            isFavoritesMutableLiveData.value = checkFavoriteTrack()
+        }
+        //isFavoritesMutableLiveData.value = true
+    }
+
+    fun checkFavoriteTrackJob() {
+        coroutineJob?.cancel()
+        coroutineJob = viewModelScope.launch {
+            val result = checkFavoriteTrack()
+            Log.d(TAG, "Check Favorites: $result")
+            isFavoritesMutableLiveData.value = result
         }
     }
-    private suspend fun saveFavoriteTrack(track: Track){
+
+    private suspend fun checkFavoriteTrack(): Boolean {
+        val trackEntity: FavoritesTrackEntity = trackDbConvertor.map(track)
+        return appDatabase.favoritesTrackDao().checkFavoritesTrack(trackEntity.trackId) > 0
+    }
+
+    private suspend fun deleteFavoriteTrack() {
+        val trackEntity: FavoritesTrackEntity = trackDbConvertor.map(track)
+        appDatabase.favoritesTrackDao().deleteFavoritesTrack(trackEntity)
+    }
+
+    private suspend fun saveFavoriteTrack() {
         val trackEntity: FavoritesTrackEntity = trackDbConvertor.map(track)
         appDatabase.favoritesTrackDao().insertFavoritesTrack(trackEntity)
     }

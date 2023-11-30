@@ -118,11 +118,12 @@
     <ImageView
         android:id="@+id/iv_favorite_border"
         style="@style/PlayerButtonsRound"
+        android:contentDescription="@string/content_description"
         app:layout_constraintBottom_toBottomOf="@+id/iv_play"
         app:layout_constraintEnd_toStartOf="@+id/guideLineFirstRight"
         app:layout_constraintTop_toTopOf="@+id/iv_play"
-        app:srcCompat="@drawable/ic_button_favorite_border"
-        android:contentDescription="@string/content_description"/>
+        app:layout_constraintVertical_bias="0.51"
+        app:srcCompat="@drawable/ic_button_favorite_red" />
 
     <TextView
         android:id="@+id/tv_trackTimeCurrent"
