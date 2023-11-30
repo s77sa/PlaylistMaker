@@ -65,13 +65,15 @@ class LibraryFavoritesFragment : Fragment() {
     }
 
     private fun addFavoritesListToRecycle(list: List<Track>) {
-        trackList.clear()
-        trackList.addAll(list)
-        val itemCount = binding.rvFavorites.adapter?.itemCount
-        if (itemCount != null) {
-            binding.rvFavorites.adapter?.notifyItemRangeRemoved(0, itemCount)
+        if (list != trackList) {
+            trackList.clear()
+            trackList.addAll(list)
+            val itemCount = binding.rvFavorites.adapter?.itemCount
+            if (itemCount != null) {
+                binding.rvFavorites.adapter?.notifyItemRangeRemoved(0, itemCount)
+            }
+            binding.rvFavorites.adapter?.notifyItemRangeChanged(0, trackList.size)
         }
-        binding.rvFavorites.adapter?.notifyItemRangeChanged(0, trackList.size)
     }
 
     private fun initObservers() {

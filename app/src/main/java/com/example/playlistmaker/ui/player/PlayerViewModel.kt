@@ -89,7 +89,6 @@ class PlayerViewModel(
 
     private suspend fun deleteFavoriteTrack() {
         val trackEntity: FavoritesTrackEntity = trackDbConvertor.map(track)
-        //appDatabase.favoritesTrackDao().deleteFavoritesTrack(trackEntity)
         appDatabase.favoritesTrackDao().deleteFavoritesTrack(trackEntity.trackId)
     }
 

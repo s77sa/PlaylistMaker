@@ -8,5 +8,5 @@ import com.example.playlistmaker.data.db.entity.FavoritesTrackEntity
 @Database(version = 1, entities = [FavoritesTrackEntity::class])
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun favoritesTrackDao() : FavoritesTrackDao
+    abstract fun favoritesTrackDao(): FavoritesTrackDao
 }
