@@ -11,7 +11,7 @@ import com.example.playlistmaker.data.player.PlayerRepository
 import com.example.playlistmaker.data.player.PlayerRepositoryImpl
 import com.example.playlistmaker.data.search.network.retrofit.RetrofitNetworkClient
 import com.example.playlistmaker.domain.search.TrackRepository
-import com.example.playlistmaker.domain.search.impl.TrackRepositoryImpl
+import com.example.playlistmaker.data.search.network.retrofit.impl.TrackRepositoryImpl
 import com.example.playlistmaker.data.search.network.retrofit.models.ItunesApiService
 import com.example.playlistmaker.data.search.network.retrofit.models.NetworkClient
 import com.example.playlistmaker.data.search.sharedprefs.HistoryRepository

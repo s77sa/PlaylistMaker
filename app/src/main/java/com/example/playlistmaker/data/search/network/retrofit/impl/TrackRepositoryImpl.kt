@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.search.impl
+package com.example.playlistmaker.data.search.network.retrofit.impl
 
 import com.example.playlistmaker.data.search.models.Track
 import com.example.playlistmaker.domain.search.TrackRepository
