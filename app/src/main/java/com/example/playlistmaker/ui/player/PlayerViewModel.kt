@@ -62,7 +62,6 @@ class PlayerViewModel(
             Log.d(TAG, "Drop from Favorites: ${track.trackName}")
             isFavoritesMutableLiveData.value = checkFavoriteTrack()
         }
-        //sFavoritesMutableLiveData.value = false
     }
 
     private fun saveFavoriteTrackJob() {
@@ -72,7 +71,6 @@ class PlayerViewModel(
             Log.d(TAG, "Saved to Favorites: ${track.trackName}")
             isFavoritesMutableLiveData.value = checkFavoriteTrack()
         }
-        //isFavoritesMutableLiveData.value = true
     }
 
     fun checkFavoriteTrackJob() {
@@ -91,7 +89,8 @@ class PlayerViewModel(
 
     private suspend fun deleteFavoriteTrack() {
         val trackEntity: FavoritesTrackEntity = trackDbConvertor.map(track)
-        appDatabase.favoritesTrackDao().deleteFavoritesTrack(trackEntity)
+        //appDatabase.favoritesTrackDao().deleteFavoritesTrack(trackEntity)
+        appDatabase.favoritesTrackDao().deleteFavoritesTrack(trackEntity.trackId)
     }
 
     private suspend fun saveFavoriteTrack() {

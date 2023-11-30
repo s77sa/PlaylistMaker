@@ -7,6 +7,7 @@ class FavoritesTrackDbConvertor {
 
     fun map(track: Track): FavoritesTrackEntity {
         return FavoritesTrackEntity(
+            sequenceId = 0L,
             trackId = track.trackId!!,
             artistName = track.artistName!!,
             artworkUrl100 = track.artworkUrl100!!,

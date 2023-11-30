@@ -14,7 +14,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 
-
 const val KEY_INTENT_PLAYER_ACTIVITY = "player_intent"
 
 class PlayerActivity : AppCompatActivity() {

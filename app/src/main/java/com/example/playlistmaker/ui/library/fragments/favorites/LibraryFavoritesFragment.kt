@@ -34,6 +34,11 @@ class LibraryFavoritesFragment : Fragment() {
         initListeners()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadFavoriteTracks()
+    }
+
     private fun initListeners() {
         onClickRVItem()
     }
@@ -66,7 +71,7 @@ class LibraryFavoritesFragment : Fragment() {
         if (itemCount != null) {
             binding.rvFavorites.adapter?.notifyItemRangeRemoved(0, itemCount)
         }
-        binding.rvFavorites.adapter?.notifyItemRangeInserted(0, trackList.size)
+        binding.rvFavorites.adapter?.notifyItemRangeChanged(0, trackList.size)
     }
 
     private fun initObservers() {

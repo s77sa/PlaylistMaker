@@ -16,14 +16,11 @@ class FragmentFavoritesViewModel(
     private val activityNavigator: ActivityNavigator,
     private val favoritesInteractor: FavoritesInteractor
 ) : ViewModel() {
-    init {
-        loadFavoriteTracks()
-    }
 
     private var trackListMutable = MutableLiveData<List<Track>>()
     val trackList: LiveData<List<Track>> = trackListMutable
 
-    private fun loadFavoriteTracks() {
+    fun loadFavoriteTracks() {
         viewModelScope.launch {
             favoritesInteractor
                 .favoritesTracks()
