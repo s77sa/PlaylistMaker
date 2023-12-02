@@ -1,7 +1,9 @@
-package com.example.playlistmaker.data.player
+package com.example.playlistmaker.data.player.impl
 
 import android.media.MediaPlayer
 import android.util.Log
+import com.example.playlistmaker.data.player.PlayerRepository
+import com.example.playlistmaker.data.player.PlayerState
 
 class PlayerRepositoryImpl(
     private var mediaPlayer: MediaPlayer

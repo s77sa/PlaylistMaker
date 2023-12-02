@@ -1,7 +1,7 @@
 package com.example.playlistmaker.data.settings.sharedprefs.impl
 
 import android.content.SharedPreferences
-import com.example.playlistmaker.data.settings.sharedprefs.ThemeRepository
+import com.example.playlistmaker.domain.settings.sharedprefs.ThemeRepository
 
 const val DARK_THEME = "dark_theme"
 

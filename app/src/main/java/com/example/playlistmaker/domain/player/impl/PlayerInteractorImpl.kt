@@ -1,7 +1,8 @@
-package com.example.playlistmaker.domain.player
+package com.example.playlistmaker.domain.player.impl
 
 import com.example.playlistmaker.data.player.PlayerRepository
 import com.example.playlistmaker.data.player.PlayerState
+import com.example.playlistmaker.domain.player.PlayerInteractor
 
 class PlayerInteractorImpl(private val repository: PlayerRepository) : PlayerInteractor {
     override fun preparePlayer(streamUrl: String) {

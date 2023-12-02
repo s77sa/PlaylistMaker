@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data.settings.sharedprefs
+package com.example.playlistmaker.domain.settings.sharedprefs
 
 interface ThemeRepository {
     fun saveTheme(status: Boolean)

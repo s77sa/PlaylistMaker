@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data.search.sharedprefs
+package com.example.playlistmaker.domain.search.sharedprefs
 
 import com.example.playlistmaker.data.search.models.Track
 import com.example.playlistmaker.data.search.models.Tracks

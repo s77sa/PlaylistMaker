@@ -1,11 +1,11 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.domain.db.FavoritesInteractor
-import com.example.playlistmaker.domain.db.FavoritesInteractorImpl
+import com.example.playlistmaker.domain.db.impl.FavoritesInteractorImpl
 import com.example.playlistmaker.domain.db.FavoritesRepository
-import com.example.playlistmaker.data.db.FavoritesRepositoryImpl
+import com.example.playlistmaker.data.db.impl.FavoritesRepositoryImpl
 import com.example.playlistmaker.domain.player.PlayerInteractor
-import com.example.playlistmaker.domain.player.PlayerInteractorImpl
+import com.example.playlistmaker.domain.player.impl.PlayerInteractorImpl
 import com.example.playlistmaker.domain.search.TrackInteractor
 import com.example.playlistmaker.domain.search.impl.TrackInteractorImpl
 import com.example.playlistmaker.domain.settings.sharedprefs.HistoryInteractor
