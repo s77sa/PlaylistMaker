@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.BuildConfig
 import com.example.playlistmaker.data.search.models.Track
 import com.example.playlistmaker.data.search.models.Tracks
 import com.example.playlistmaker.data.search.network.retrofit.models.ConnectionStatus
@@ -24,12 +23,13 @@ class SearchFragmentViewModel(
     private val historyInteractor: HistoryInteractor
 ) : ViewModel() {
     init {
-        Log.d(BuildConfig.LOG_TAG, "init - Search ViewModel}")
+        Log.d(TAG, "init - Search ViewModel}")
     }
 
     companion object {
         private const val HISTORY_COUNT = 10
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private val TAG = SearchFragment::class.simpleName!!
     }
 
     private var searchJob: Job? = null
@@ -41,8 +41,8 @@ class SearchFragmentViewModel(
         MutableLiveData<ActivityState>().apply { ActivityState.HIDE_ALL }
     val searchActivityState: LiveData<ActivityState> = searchActivityStateMutable
 
-    private val searchTrackListMutable = MutableLiveData<MutableList<Track>>()
-    val searchTrackList: LiveData<MutableList<Track>> = searchTrackListMutable
+    private val searchTrackListMutable = MutableLiveData<List<Track>>()
+    val searchTrackList: LiveData<List<Track>> = searchTrackListMutable
 
     private val historyTrackListMutable = MutableLiveData<MutableList<Track>>()
     val historyTrackList: LiveData<MutableList<Track>> = historyTrackListMutable
@@ -67,7 +67,7 @@ class SearchFragmentViewModel(
             val queryText = searchTextMutable.value
             searchActivityStateMutable.value = ActivityState.PROGRESS_BAR
             if (queryText != null) {
-                Log.d(BuildConfig.LOG_TAG, "Start search query = $queryText")
+                Log.d(TAG, "Start search query = $queryText")
                 initSearch(queryText)
             }
         }
@@ -76,7 +76,7 @@ class SearchFragmentViewModel(
     private fun saveHistoryToSharedPrefs() {
         val tracks: Tracks? =
             historyTrackListMutable.value?.let { Tracks(historyTrackListMutable.value!!.size, it) }
-        Log.d(BuildConfig.LOG_TAG, "saveHistoryToSharedPrefs size: ${historyTrackList.value?.size}")
+        Log.d(TAG, "saveHistoryToSharedPrefs size: ${historyTrackList.value?.size}")
         if (tracks != null) {
             historyInteractor.saveUserHistoryTracks(tracks)
         }
@@ -88,22 +88,18 @@ class SearchFragmentViewModel(
             if (historyList.results.isNotEmpty()) {
                 historyTrackListMutable.value = historyList.results
                 Log.d(
-                    BuildConfig.LOG_TAG,
+                    TAG,
                     "loadHistoryFromSharedPrefs size: ${historyTrackListMutable.value!!.size}"
                 )
             }
         }
     }
 
-    fun clearSearchTrackList() {
-        searchTrackListMutable.value?.clear()
-    }
-
     fun checkState() {
         loadHistoryFromSharedPrefs()
-        Log.d(BuildConfig.LOG_TAG, "checkState")
+        Log.d(TAG, "checkState")
         if (searchTextMutable.value?.isEmpty() == true || searchTextMutable.value == null) {
-            Log.d(BuildConfig.LOG_TAG, "checkState2")
+            Log.d(TAG, "checkState2")
             showHistory()
         } else {
             showHistory()
@@ -111,7 +107,7 @@ class SearchFragmentViewModel(
     }
 
     fun clearHistory() {
-        Log.d(BuildConfig.LOG_TAG, "VM ClearHistory")
+        Log.d(TAG, "VM ClearHistory")
         historyTrackListMutable.value?.clear()
         saveHistoryToSharedPrefs()
     }
@@ -119,13 +115,13 @@ class SearchFragmentViewModel(
     private fun showHistory() {
         if (!historyTrackListMutable.value.isNullOrEmpty()) {
             searchActivityStateMutable.value = ActivityState.HISTORY_RESULT
-            Log.d(BuildConfig.LOG_TAG, "checkHistory State = ${searchActivityStateMutable.value}")
-            Log.d(BuildConfig.LOG_TAG, "checkHistory Size = ${historyTrackListMutable.value?.size}")
+            Log.d(TAG, "checkHistory State = ${searchActivityStateMutable.value}")
+            Log.d(TAG, "checkHistory Size = ${historyTrackListMutable.value?.size}")
         }
     }
 
     fun addTrackToHistory(item: Track) {
-        Log.d(BuildConfig.LOG_TAG, "addTrackToHistory: ${item.trackName}")
+        Log.d(TAG, "addTrackToHistory: ${item.trackName}")
         val fullList: MutableList<Track> = mutableListOf()
         if (!historyTrackListMutable.value.isNullOrEmpty()) {
             fullList.addAll(historyTrackListMutable.value!!)
@@ -145,12 +141,12 @@ class SearchFragmentViewModel(
             historyTrackListMutable.value = fullList
         } else {
             fullList.addAll(listOf(item))
-            Log.d(BuildConfig.LOG_TAG, "addTrackToHistory is null")
+            Log.d(TAG, "addTrackToHistory is null")
         }
         historyTrackListMutable.value = fullList
-        Log.d(BuildConfig.LOG_TAG, "trackHistorySize: ${historyTrackListMutable.value?.size}")
+        Log.d(TAG, "trackHistorySize: ${historyTrackListMutable.value?.size}")
         for (value in historyTrackListMutable.value!!) {
-            Log.d(BuildConfig.LOG_TAG, "trackHistoryValues : ${value.trackId}")
+            Log.d(TAG, "trackHistoryValues : ${value.trackId}")
         }
         saveHistoryToSharedPrefs()
     }
@@ -180,8 +176,7 @@ class SearchFragmentViewModel(
         when (errorMessage) {
             ConnectionStatus.SUCCESS -> {
                 if (foundMovies != null) {
-                    searchTrackListMutable.value?.clear()
-                    searchTrackListMutable.value = foundMovies as MutableList<Track>?
+                    searchTrackListMutable.value = foundMovies as List<Track>
                     if (foundMovies.isNotEmpty()) {
                         searchActivityStateMutable.value = ActivityState.SEARCH_RESULT
                     } else {

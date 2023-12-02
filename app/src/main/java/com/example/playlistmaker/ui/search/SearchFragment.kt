@@ -9,24 +9,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.BuildConfig
+import androidx.lifecycle.lifecycleScope
 import com.example.playlistmaker.data.search.models.Track
 import com.example.playlistmaker.databinding.FragmentSearchBinding
-import com.example.playlistmaker.ui.search.recyclerview.SearchAdapter
+import com.example.playlistmaker.ui.search.recyclerview.TrackListAdapter
 import com.example.playlistmaker.ui.utils.Helpers
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
 
+    companion object{
+        private val TAG = SearchFragment::class.simpleName!!
+    }
+    
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchFragmentViewModel>()
 
     private var searchTrackList: MutableList<Track> = mutableListOf()
     private var historyTrackList: MutableList<Track> = mutableListOf()
-    private var rvSearchAdapter: SearchAdapter? = null
-    private var rvHistoryAdapter: SearchAdapter? = null
+    private var rvTrackListAdapter: TrackListAdapter? = null
+    private var rvHistoryAdapter: TrackListAdapter? = null
     private var searchText = ""
 
     override fun onCreateView(
@@ -52,9 +55,9 @@ class SearchFragment : Fragment() {
     }
 
     private fun initAdapters() {
-        rvSearchAdapter = SearchAdapter(searchTrackList, viewModel.viewModelScope)
-        rvHistoryAdapter = SearchAdapter(historyTrackList, viewModel.viewModelScope)
-        binding.rvSearch.adapter = rvSearchAdapter
+        rvTrackListAdapter = TrackListAdapter(searchTrackList, viewLifecycleOwner.lifecycleScope)
+        rvHistoryAdapter = TrackListAdapter(historyTrackList, viewLifecycleOwner.lifecycleScope)
+        binding.rvSearch.adapter = rvTrackListAdapter
         binding.rvHistory.adapter = rvHistoryAdapter
     }
 
@@ -62,19 +65,19 @@ class SearchFragment : Fragment() {
 
         viewModel.searchText.observe(viewLifecycleOwner) {
             searchText = it
-            Log.d(BuildConfig.LOG_TAG, "observe searchText = $it")
+            Log.d(TAG, "observe searchText = $it")
         }
         viewModel.searchTrackList.observe(viewLifecycleOwner) {
             addSearchResultToRecycle(it)
-            Log.d(BuildConfig.LOG_TAG, "observe searchTrackList = ${it.size}")
+            Log.d(TAG, "observe searchTrackList = ${it.size}")
         }
         viewModel.historyTrackList.observe(viewLifecycleOwner) {
             addHistoryResultToRecycle(it)
-            Log.d(BuildConfig.LOG_TAG, "observe historyTrackList = ${it.size}")
+            Log.d(TAG, "observe historyTrackList = ${it.size}")
         }
         viewModel.searchActivityState.observe(viewLifecycleOwner) {
             showInvisibleLayout(it)
-            Log.d(BuildConfig.LOG_TAG, "observe ActivityState = $it")
+            Log.d(TAG, "observe ActivityState = $it")
         }
     }
 
@@ -82,12 +85,12 @@ class SearchFragment : Fragment() {
         if (historyTrackList.size > 0) historyTrackList.clear()
         showInvisibleLayout(ActivityState.HIDE_ALL)
         viewModel.clearHistory()
-        Log.println(Log.INFO, BuildConfig.LOG_TAG, "clearHistory")
+        Log.println(Log.INFO, TAG, "clearHistory")
     }
 
     private fun onFocusListenerSearchInit() {
         binding.etSearch.setOnFocusChangeListener { _, hasFocus ->
-            Log.println(Log.INFO, BuildConfig.LOG_TAG, "onFocusListenerInit")
+            Log.println(Log.INFO, TAG, "onFocusListenerInit")
             if (hasFocus) {
                 viewModel.checkState()
             }
@@ -95,7 +98,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun searchRefresh() {
-        Log.d(BuildConfig.LOG_TAG, "searchRefresh")
+        Log.d(TAG, "searchRefresh")
         viewModel.searchRequest()
     }
 
@@ -111,7 +114,7 @@ class SearchFragment : Fragment() {
 
     private fun addHistoryResultToRecycle(list: List<Track>) {
         for (item in list) {
-            Log.d(BuildConfig.LOG_TAG, "add To History Adapter: ${item.trackId}")
+            Log.d(TAG, "add To History Adapter: ${item.trackId}")
         }
         historyTrackList.clear()
         historyTrackList.addAll(list)
@@ -119,13 +122,12 @@ class SearchFragment : Fragment() {
     }
 
     private fun clearSearchResult() {
-        Log.println(Log.INFO, BuildConfig.LOG_TAG, "clearSearchRecycle")
+        Log.println(Log.INFO, TAG, "clearSearchRecycle")
         searchTrackList.clear()
         val itemCount = binding.rvSearch.adapter?.itemCount
         if (itemCount != null) {
             binding.rvSearch.adapter?.notifyItemRangeChanged(0, itemCount)
         }
-        viewModel.clearSearchTrackList()
         viewModel.checkState()
     }
 
@@ -139,7 +141,7 @@ class SearchFragment : Fragment() {
                 binding.ivSearchClear.visibility = clearButtonVisibility(s)
                 val text = binding.etSearch.text.toString()
                 if (text.isNotEmpty()) {
-                    Log.d(BuildConfig.LOG_TAG, "onTextChanged=$text")
+                    Log.d(TAG, "onTextChanged=$text")
                     viewModel.setSearchText(text)
                 } else {
                     showInvisibleLayout(ActivityState.HISTORY_RESULT)
@@ -147,14 +149,14 @@ class SearchFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                Log.d(BuildConfig.LOG_TAG, "afterTextChanged")
+                Log.d(TAG, "afterTextChanged")
             }
         }
         binding.etSearch.addTextChangedListener(simpleTextWatcher)
     }
 
     private fun clearInputText() {
-        Log.println(Log.INFO, BuildConfig.LOG_TAG, "clearInputText")
+        Log.println(Log.INFO, TAG, "clearInputText")
         binding.etSearch.setText("")
         viewModel.checkState()
     }
@@ -168,7 +170,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun onClickRecyclerViewHistoryItem() {
-        rvHistoryAdapter?.setOnClickListener(object : SearchAdapter.OnClickListener {
+        rvHistoryAdapter?.setOnClickListener(object : TrackListAdapter.OnClickListener {
             override fun onClick(position: Int, track: Track) {
                 viewModel.callPlayerActivity(track)
             }
@@ -176,7 +178,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun onClickRecyclerViewSearchItem() {
-        rvSearchAdapter?.setOnClickListener(object : SearchAdapter.OnClickListener {
+        rvTrackListAdapter?.setOnClickListener(object : TrackListAdapter.OnClickListener {
             override fun onClick(position: Int, track: Track) {
                 Toast.makeText(
                     requireContext(),
@@ -206,7 +208,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun showInvisibleLayout(state: ActivityState = ActivityState.HIDE_ALL) {
-        Log.d(BuildConfig.LOG_TAG, "ActivityState = $state")
+        Log.d(TAG, "ActivityState = $state")
         binding.rvSearch.visibility = View.GONE
         binding.layoutNoInternet.visibility = View.GONE
         binding.layoutIsEmpty.visibility = View.GONE
@@ -221,5 +223,4 @@ class SearchFragment : Fragment() {
             else -> {}
         }
     }
-
 }

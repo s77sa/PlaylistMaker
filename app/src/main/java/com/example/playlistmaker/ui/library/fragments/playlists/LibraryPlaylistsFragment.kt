@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.library.fragments
+package com.example.playlistmaker.ui.library.fragments.playlists
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,10 +8,9 @@ import androidx.fragment.app.Fragment
 import com.example.playlistmaker.R
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+class LibraryPlaylistsFragment : Fragment() {
 
-class LibraryFavoritesFragment : Fragment() {
-
-    private val viewModel: FragmentFavoritesViewModel by viewModel<FragmentFavoritesViewModel>()
+    private val viewModel: FragmentPlaylistsViewModel by viewModel<FragmentPlaylistsViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -22,7 +21,7 @@ class LibraryFavoritesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_library_favorites, container, false)
+        return inflater.inflate(R.layout.fragment_library_playlists, container, false)
     }
 
     private fun initObservers() {
@@ -32,7 +31,7 @@ class LibraryFavoritesFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = LibraryFavoritesFragment().apply {
+        fun newInstance() = LibraryPlaylistsFragment().apply {
             arguments = Bundle()
         }
     }

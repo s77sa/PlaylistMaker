@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmaker.BuildConfig
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.search.models.Track
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
@@ -15,16 +14,18 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 
-
 const val KEY_INTENT_PLAYER_ACTIVITY = "player_intent"
+
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var track: Track
+    private var trackIsFavorites: Boolean = false
     private val viewModel by viewModel<PlayerViewModel> { parametersOf(track) }
 
     companion object {
         private const val REPLACE_LINK_PATTERN: String = "512x512bb.jpg"
+        private val TAG = PlayerActivity::class.simpleName
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +37,7 @@ class PlayerActivity : AppCompatActivity() {
         clickListenersInit()
         viewModel.saveValues()
         viewModel.preparePlayer()
+        viewModel.checkFavoriteTrackJob()
     }
 
     override fun onPause() {
@@ -50,7 +52,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun initObserver() {
         viewModel.getLoadingValues().observe(this) { track ->
-            Log.d(BuildConfig.LOG_TAG, "init - Player Observer - ${track.trackName}")
+            Log.d(TAG, "init - Player Observer - ${track.trackName}")
             writeTrackDataToView()
         }
         viewModel.getPlayingPositionLiveData().observe(this) { value ->
@@ -58,6 +60,11 @@ class PlayerActivity : AppCompatActivity() {
         }
         viewModel.getIsPlayingLiveData().observe(this) {
             setButtonPlayState(it)
+        }
+        viewModel.getIsFavorites().observe(this) {
+            trackIsFavorites = it
+            changeIconFavorites()
+            Log.d(TAG, "Observe Favorites: $it")
         }
     }
 
@@ -72,6 +79,20 @@ class PlayerActivity : AppCompatActivity() {
     private fun clickListenersInit() {
         binding.ivPlayerBack.setOnClickListener { finishActivity() }
         binding.ivPlay.setOnClickListener { startPlaying() }
+        binding.ivFavoriteBorder.setOnClickListener { onClickFavorites() }
+    }
+
+    private fun onClickFavorites() {
+        viewModel.changeTrackStatus()
+    }
+
+    private fun changeIconFavorites(){
+        if(trackIsFavorites){
+            binding.ivFavoriteBorder.setImageResource(R.drawable.ic_button_favorite_red)
+        }
+        else{
+            binding.ivFavoriteBorder.setImageResource(R.drawable.ic_button_favorite_border)
+        }
     }
 
     private fun startPlaying() {

@@ -5,10 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.BuildConfig
-import com.example.playlistmaker.domain.player.PlayerInteractor
+import com.example.playlistmaker.data.db.AppDatabase
+import com.example.playlistmaker.data.db.converters.FavoritesTrackDbConvertor
+import com.example.playlistmaker.data.db.entity.FavoritesTrackEntity
 import com.example.playlistmaker.data.player.PlayerState
 import com.example.playlistmaker.data.search.models.Track
+import com.example.playlistmaker.domain.player.PlayerInteractor
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -17,11 +19,16 @@ import java.util.Locale
 
 class PlayerViewModel(
     private val track: Track,
-    private var mediaPlayerInteractor: PlayerInteractor
+    private var mediaPlayerInteractor: PlayerInteractor,
+    private val appDatabase: AppDatabase,
+    private val trackDbConvertor: FavoritesTrackDbConvertor
 ) : ViewModel() {
     init {
-        Log.d(BuildConfig.LOG_TAG, "init - PlayerViewModel - ${track.trackName}")
+        Log.d(TAG, "init - PlayerViewModel - ${track.trackName}")
     }
+
+    private val isFavoritesMutableLiveData = MutableLiveData<Boolean>()
+    fun getIsFavorites(): LiveData<Boolean> = isFavoritesMutableLiveData
 
     private val valuesLiveData = MutableLiveData<Track>()
     fun getLoadingValues(): LiveData<Track> = valuesLiveData
@@ -32,14 +39,70 @@ class PlayerViewModel(
     private val playingPositionLiveData = MutableLiveData<String>()
     fun getPlayingPositionLiveData(): LiveData<String> = playingPositionLiveData
 
+    private var coroutineJob: Job? = null
     private var timerJob: Job? = null
+
+    fun changeTrackStatus() {
+        Log.d(TAG, "Track Status: ${isFavoritesMutableLiveData.value}")
+        if (getIsFavorites().value == true) {
+            Log.d(TAG, "Enter to true")
+            deleteFavoriteTrackJob()
+        } else {
+            Log.d(TAG, "Enter to false")
+            saveFavoriteTrackJob()
+        }
+        Log.d(TAG, "Change Track Status to: ${isFavoritesMutableLiveData.value}")
+
+    }
+
+    private fun deleteFavoriteTrackJob() {
+        coroutineJob?.cancel()
+        coroutineJob = viewModelScope.launch {
+            deleteFavoriteTrack()
+            Log.d(TAG, "Drop from Favorites: ${track.trackName}")
+            isFavoritesMutableLiveData.value = checkFavoriteTrack()
+        }
+    }
+
+    private fun saveFavoriteTrackJob() {
+        coroutineJob?.cancel()
+        coroutineJob = viewModelScope.launch {
+            saveFavoriteTrack()
+            Log.d(TAG, "Saved to Favorites: ${track.trackName}")
+            isFavoritesMutableLiveData.value = checkFavoriteTrack()
+        }
+    }
+
+    fun checkFavoriteTrackJob() {
+        coroutineJob?.cancel()
+        coroutineJob = viewModelScope.launch {
+            val result = checkFavoriteTrack()
+            Log.d(TAG, "Check Favorites: $result")
+            isFavoritesMutableLiveData.value = result
+        }
+    }
+
+    private suspend fun checkFavoriteTrack(): Boolean {
+        val trackEntity: FavoritesTrackEntity = trackDbConvertor.map(track)
+        return appDatabase.favoritesTrackDao().checkFavoritesTrack(trackEntity.trackId) > 0
+    }
+
+    private suspend fun deleteFavoriteTrack() {
+        val trackEntity: FavoritesTrackEntity = trackDbConvertor.map(track)
+        appDatabase.favoritesTrackDao().deleteFavoritesTrack(trackEntity.trackId)
+    }
+
+    private suspend fun saveFavoriteTrack() {
+        val trackEntity: FavoritesTrackEntity = trackDbConvertor.map(track)
+        appDatabase.favoritesTrackDao().insertFavoritesTrack(trackEntity)
+    }
 
     fun saveValues() {
         valuesLiveData.value = track
     }
 
     private fun startTimer() {
-        Log.d(BuildConfig.LOG_TAG, "startJob")
+        Log.d(TAG, "startJob")
         timerJob = viewModelScope.launch {
             while (mediaPlayerInteractor.getPlayerState() == PlayerState.STATE_PLAYING) {
                 delay(REFRESH_TIME_HEADER_DELAY_MILLIS)
@@ -118,5 +181,6 @@ class PlayerViewModel(
 
     companion object {
         private const val REFRESH_TIME_HEADER_DELAY_MILLIS: Long = 300L
+        private val TAG = PlayerActivity::class.simpleName
     }
 }
