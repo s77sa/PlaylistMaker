@@ -27,4 +27,8 @@
     <string name="library_new_playlist">New playlist</string>
     <string name="favorites_add">Added to favorites</string>
     <string name="favorites_delete">Removed from favorites</string>
+    <string name="tv_new_playsit">New playlist</string>
+    <string name="et_playlist_name">Name*</string>
+    <string name="et_playlist_desc">Description</string>
+    <string name="btn_playlist_create">Create</string>
 </resources>

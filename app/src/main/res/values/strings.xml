@@ -38,4 +38,9 @@
     <string name="library_new_playlist">Новый плейлист</string>
     <string name="favorites_add">Добавлено в избранное</string>
     <string name="favorites_delete">Удалено из избранного</string>
+    <string name="tv_new_playsit">Новый плейлист</string>
+    <string name="et_playlist_name">Название*</string>
+    <string name="et_playlist_desc">Описание</string>
+    <string name="btn_playlist_create">Создать</string>
+
 </resources>
