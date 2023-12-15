@@ -1,15 +1,20 @@
 package com.example.playlistmaker.ui.library.fragments.playlists.create
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentCreatePlaylistBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -37,14 +42,16 @@ class CreatePlaylistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initListeners()
 
+        initListeners()
         initPicker()
         initObserver()
+        initNameTextWatcher()
+        initDescriptionTextWatcher()
     }
 
-    private fun initObserver(){
-        viewModel.fileUri.observe(viewLifecycleOwner){
+    private fun initObserver() {
+        viewModel.fileUri.observe(viewLifecycleOwner) {
             Log.d(TAG, "initObserver")
             binding.ivMain.setImageURI(it)
         }
@@ -57,6 +64,25 @@ class CreatePlaylistFragment : Fragment() {
         binding.ivMain.setOnClickListener {
             callPicker()
         }
+        binding.btnCreate.setOnClickListener {
+            callSavePlaylist()
+        }
+    }
+
+    private fun callSavePlaylist() {
+        viewModel.savePlaylist()
+        callMessageSavePlaylist()
+        findNavController().popBackStack()
+    }
+
+    private fun callMessageSavePlaylist() {
+        val message: String =
+            getString(R.string.message_save_playlist).replace(
+                MESSAGE_REPLACE_PATTERN,
+                binding.etName.text.toString(),
+                false
+            )
+        Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun initPicker() {
@@ -65,7 +91,7 @@ class CreatePlaylistFragment : Fragment() {
                 if (uri != null) {
                     viewModel.saveImageToPrivateStorage(uri)
                 } else {
-                    Log.d("PhotoPicker", "No media selected")
+                    Log.d(TAG, "No media selected")
                 }
             }
     }
@@ -74,9 +100,79 @@ class CreatePlaylistFragment : Fragment() {
         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
+    private fun initNameTextWatcher() {
+        val simpleTextWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //Empty
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val text = binding.etName.text.toString()
+                if (text.isNotEmpty()) {
+                    viewModel.setPlayListName(text)
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                setEnabledCreateButton()
+                setColorNameEditText()
+            }
+        }
+        binding.etName.addTextChangedListener(simpleTextWatcher)
+    }
+
+    private fun initDescriptionTextWatcher() {
+        val simpleTextWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //Empty
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val text = binding.etDesc.text.toString()
+                if (text.isNotEmpty()) {
+                    viewModel.setPlaylistDescription(text)
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                setColorDescriptionEditText()
+            }
+        }
+        binding.etDesc.addTextChangedListener(simpleTextWatcher)
+    }
+
+
+    private fun setEnabledCreateButton() {
+        binding.btnCreate.isEnabled = binding.etName.text.isNotEmpty()
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun setColorNameEditText() {
+        if (binding.etName.text.isNotEmpty()) {
+            binding.etName.background = resources.getDrawable(R.drawable.ed_add_playlist_blue)
+            binding.tvPlName.visibility = View.VISIBLE
+        } else {
+            binding.etName.background = resources.getDrawable(R.drawable.ed_add_playlist_grey)
+            binding.tvPlName.visibility = View.INVISIBLE
+        }
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun setColorDescriptionEditText() {
+        if (binding.etDesc.text.isNotEmpty()) {
+            binding.etDesc.background = resources.getDrawable(R.drawable.ed_add_playlist_blue)
+            binding.tvPlDesc.visibility = View.VISIBLE
+        } else {
+            binding.etDesc.background = resources.getDrawable(R.drawable.ed_add_playlist_grey)
+            binding.tvPlDesc.visibility = View.INVISIBLE
+        }
+    }
+
     companion object {
         private val TAG = CreatePlaylistFragment::class.simpleName
+        private const val MESSAGE_REPLACE_PATTERN = "[playlistName]"
     }
+
 }
 
 

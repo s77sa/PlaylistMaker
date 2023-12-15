@@ -42,5 +42,6 @@
     <string name="et_playlist_name">Название*</string>
     <string name="et_playlist_desc">Описание</string>
     <string name="btn_playlist_create">Создать</string>
+    <string name="message_save_playlist">Плейлист \"[playlistName]\" создан</string>
 
 </resources>

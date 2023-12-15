@@ -30,18 +30,6 @@
 
     </LinearLayout>
 
-    <!--    <ImageView-->
-    <!--        android:id="@+id/iv_center"-->
-    <!--        android:layout_width="80dp"-->
-    <!--        android:layout_height="80dp"-->
-    <!--        android:contentDescription="@string/content_description"-->
-    <!--        android:src="@drawable/ic_add_photo"-->
-    <!--        app:layout_constraintBottom_toBottomOf="@+id/iv_main"-->
-    <!--        app:layout_constraintEnd_toEndOf="@+id/iv_main"-->
-    <!--        app:layout_constraintStart_toStartOf="@+id/iv_main"-->
-    <!--        app:layout_constraintTop_toTopOf="@+id/iv_main" />-->
-
-
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_main"
         android:layout_width="match_parent"
@@ -49,15 +37,14 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="26dp"
         android:layout_marginEnd="24dp"
+        android:background="@drawable/iv_add_photo_with_icon"
         android:contentDescription="@string/content_description"
         android:scaleType="centerCrop"
-        android:background="@drawable/iv_add_photo_with_icon"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:shapeAppearanceOverlay="@style/PlayerCornerForMainImage"
-        />
+        app:shapeAppearanceOverlay="@style/PlayerCornerForMainImage" />
     <!--        android:src="@drawable/ic_add_photo"-->
     <EditText
         android:id="@+id/et_name"
@@ -65,10 +52,10 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:autofillHints=""
-        android:background="@drawable/ed_add_playlist_focusable"
+        android:background="@drawable/ed_add_playlist_grey"
         android:hint="@string/et_playlist_name"
         android:imeOptions="actionDone"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,8 +72,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:autofillHints=""
+        android:background="@drawable/ed_add_playlist_grey"
         android:focusable="true"
-        android:background="@drawable/ed_add_playlist_focusable"
         android:hint="@string/et_playlist_desc"
         android:imeOptions="actionDone"
         app:layout_constraintEnd_toEndOf="parent"
@@ -111,5 +98,39 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_desc" />
+
+    <TextView
+        android:id="@+id/tv_pl_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="56dp"
+        android:background="@color/white"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:text="@string/et_playlist_name"
+        android:textColor="@color/blue"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/et_name"
+        app:layout_constraintStart_toStartOf="@+id/et_name"
+        app:layout_constraintTop_toTopOf="@+id/et_name" />
+
+    <TextView
+        android:id="@+id/tv_pl_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="56dp"
+        android:background="@color/white"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:text="@string/et_playlist_desc"
+        android:textColor="@color/blue"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/et_desc"
+        app:layout_constraintStart_toStartOf="@+id/et_desc"
+        app:layout_constraintTop_toTopOf="@+id/et_desc" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,4 +31,5 @@
     <string name="et_playlist_name">Name*</string>
     <string name="et_playlist_desc">Description</string>
     <string name="btn_playlist_create">Create</string>
+    <string name="message_save_playlist">Playlist \"[playlistName]\" created</string>
 </resources>
