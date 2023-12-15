@@ -9,6 +9,7 @@ import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.data.db.converters.FavoritesTrackDbConvertor
 import com.example.playlistmaker.data.player.PlayerRepository
 import com.example.playlistmaker.data.player.impl.PlayerRepositoryImpl
+import com.example.playlistmaker.data.privatestorage.PrivateStorage
 import com.example.playlistmaker.data.search.network.retrofit.RetrofitNetworkClient
 import com.example.playlistmaker.data.search.network.retrofit.TrackRepository
 import com.example.playlistmaker.data.search.network.retrofit.impl.TrackRepositoryImpl
@@ -103,4 +104,8 @@ val dataModule = module {
     }
 
     factory { FavoritesTrackDbConvertor() }
+
+    single<PrivateStorage> {
+        PrivateStorage(get())
+    }
 }

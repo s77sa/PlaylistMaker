@@ -27,7 +27,7 @@
         tools:layout="@layout/activity_player" />
     <fragment
         android:id="@+id/createPlaylistFragment"
-        android:name="com.example.playlistmaker.ui.playlist.CreatePlaylistFragment"
+        android:name="com.example.playlistmaker.ui.library.fragments.playlists.create.CreatePlaylistFragment"
         android:label="fragment_create_playlist"
         tools:layout="@layout/fragment_create_playlist" />
 </navigation>
