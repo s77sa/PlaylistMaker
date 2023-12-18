@@ -9,7 +9,7 @@ import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.data.db.converters.FavoritesTrackDbConvertor
 import com.example.playlistmaker.data.db.entity.FavoritesTrackEntity
 import com.example.playlistmaker.data.player.PlayerState
-import com.example.playlistmaker.data.search.models.Track
+import com.example.playlistmaker.data.models.Track
 import com.example.playlistmaker.domain.player.PlayerInteractor
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

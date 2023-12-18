@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.example.playlistmaker.data.search.models.Track
+import com.example.playlistmaker.data.models.Track
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.ui.search.recyclerview.TrackListAdapter
 import com.example.playlistmaker.ui.utils.Helpers

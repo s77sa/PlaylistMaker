@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.data.search.models.Track
-import com.example.playlistmaker.domain.db.FavoritesInteractor
+import com.example.playlistmaker.data.models.Track
+import com.example.playlistmaker.domain.db.DbInteractor
 import com.example.playlistmaker.ui.player.KEY_INTENT_PLAYER_ACTIVITY
 import com.example.playlistmaker.ui.player.PlayerActivity
 import com.example.playlistmaker.ui.sharing.ActivityNavigator
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class FragmentFavoritesViewModel(
     private val activityNavigator: ActivityNavigator,
-    private val favoritesInteractor: FavoritesInteractor
+    private val dbInteractor: DbInteractor
 ) : ViewModel() {
 
     private var trackListMutable = MutableLiveData<List<Track>>()
@@ -22,7 +22,7 @@ class FragmentFavoritesViewModel(
 
     fun loadFavoriteTracks() {
         viewModelScope.launch {
-            favoritesInteractor
+            dbInteractor
                 .favoritesTracks()
                 .collect { tracks -> processResult(tracks) }
         }

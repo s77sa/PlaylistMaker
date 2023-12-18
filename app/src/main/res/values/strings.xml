@@ -43,5 +43,6 @@
     <string name="et_playlist_desc">Описание</string>
     <string name="btn_playlist_create">Создать</string>
     <string name="message_save_playlist">Плейлист \"[playlistName]\" создан</string>
+    <string name="tv_playlist_tracks_count">[count] треков</string>
 
 </resources>

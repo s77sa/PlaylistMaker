@@ -32,4 +32,5 @@
     <string name="et_playlist_desc">Description</string>
     <string name="btn_playlist_create">Create</string>
     <string name="message_save_playlist">Playlist \"[playlistName]\" created</string>
+    <string name="tv_playlist_tracks_count">[count] tracks</string>
 </resources>

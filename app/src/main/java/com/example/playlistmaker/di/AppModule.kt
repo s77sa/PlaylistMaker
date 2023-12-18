@@ -1,8 +1,8 @@
 package com.example.playlistmaker.di
 
-import com.example.playlistmaker.data.search.models.Track
+import com.example.playlistmaker.data.models.Track
 import com.example.playlistmaker.ui.library.fragments.favorites.FragmentFavoritesViewModel
-import com.example.playlistmaker.ui.library.fragments.playlists.FragmentPlaylistsViewModel
+import com.example.playlistmaker.ui.library.fragments.playlists.PlaylistsFragmentViewModel
 import com.example.playlistmaker.ui.player.PlayerViewModel
 import com.example.playlistmaker.ui.library.fragments.playlists.create.CreatePlaylistFragmentViewModel
 import com.example.playlistmaker.ui.root.RootViewModel
@@ -50,8 +50,8 @@ val appModule = module {
         )
     }
 
-    viewModel<FragmentPlaylistsViewModel> {
-        FragmentPlaylistsViewModel()
+    viewModel<PlaylistsFragmentViewModel> {
+        PlaylistsFragmentViewModel()
     }
 
     single<ActivityNavigator> {
@@ -59,6 +59,6 @@ val appModule = module {
     }
 
     viewModel<CreatePlaylistFragmentViewModel>{
-        CreatePlaylistFragmentViewModel(get(), get())
+        CreatePlaylistFragmentViewModel(get(), get(), get())
     }
 }

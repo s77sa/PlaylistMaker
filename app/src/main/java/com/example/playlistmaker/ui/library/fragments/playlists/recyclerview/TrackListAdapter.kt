@@ -1,32 +1,33 @@
-package com.example.playlistmaker.ui.search.recyclerview
+package com.example.playlistmaker.ui.library.fragments.playlists.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.models.Track
+import com.example.playlistmaker.data.models.Playlist
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class TrackListAdapter(private val data: MutableList<Track>, private val coroutineScope: CoroutineScope) :
-    RecyclerView.Adapter<TrackListViewHolder>() {
-    companion object {
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-    }
+class PlaylistListAdapter(
+    private val data: MutableList<Playlist>,
+    private val coroutineScope: CoroutineScope
+) :
+    RecyclerView.Adapter<PlaylistListViewHolder>() {
 
     private var isClickAllowed = true
     private var onClickJob: Job? = null
     private var onClickListener: OnClickListener? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackListViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.search_item, parent, false)
-        return TrackListViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistListViewHolder {
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.playlist_item, parent, false)
+        return PlaylistListViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: TrackListViewHolder, position: Int) {
-        val item: Track = data[position]
+    override fun onBindViewHolder(holder: PlaylistListViewHolder, position: Int) {
+        val item: Playlist = data[position]
         holder.bind(item)
         holder.itemView.setOnClickListener {
             if (onClickListener != null && clickDebounce()) {
@@ -44,7 +45,7 @@ class TrackListAdapter(private val data: MutableList<Track>, private val corouti
     }
 
     interface OnClickListener {
-        fun onClick(position: Int, track: Track)
+        fun onClick(position: Int, track: Playlist)
     }
 
     private fun clickDebounce(): Boolean {
@@ -58,5 +59,9 @@ class TrackListAdapter(private val data: MutableList<Track>, private val corouti
             }
         }
         return current
+    }
+
+    companion object {
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

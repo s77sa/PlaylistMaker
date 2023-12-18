@@ -14,7 +14,7 @@ class LibraryPlaylistsFragment : Fragment() {
 
     private var _binding: FragmentLibraryPlaylistsBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: FragmentPlaylistsViewModel by viewModel<FragmentPlaylistsViewModel>()
+    private val viewModel: PlaylistsFragmentViewModel by viewModel<PlaylistsFragmentViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

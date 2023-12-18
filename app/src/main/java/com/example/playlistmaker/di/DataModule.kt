@@ -7,6 +7,8 @@ import androidx.room.Room
 import com.example.playlistmaker.BuildConfig
 import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.data.db.converters.FavoritesTrackDbConvertor
+import com.example.playlistmaker.data.db.converters.PlaylistDbConvertor
+import com.example.playlistmaker.data.db.converters.TracksInPlaylistDbConvertor
 import com.example.playlistmaker.data.player.PlayerRepository
 import com.example.playlistmaker.data.player.impl.PlayerRepositoryImpl
 import com.example.playlistmaker.data.privatestorage.PrivateStorage
@@ -104,6 +106,10 @@ val dataModule = module {
     }
 
     factory { FavoritesTrackDbConvertor() }
+
+    factory { PlaylistDbConvertor() }
+
+    factory { TracksInPlaylistDbConvertor() }
 
     single<PrivateStorage> {
         PrivateStorage(get())

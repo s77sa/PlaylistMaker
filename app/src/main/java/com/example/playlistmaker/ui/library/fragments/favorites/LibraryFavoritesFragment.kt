@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.example.playlistmaker.data.search.models.Track
+import com.example.playlistmaker.data.models.Track
 import com.example.playlistmaker.databinding.FragmentLibraryFavoritesBinding
 import com.example.playlistmaker.ui.search.recyclerview.TrackListAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorSecondary"
     tools:context=".ui.library.fragments.playlists.create.CreatePlaylistFragment">
 
 
@@ -101,16 +102,12 @@
 
     <TextView
         android:id="@+id/tv_pl_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TextViewPlaylistHeaders"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="56dp"
-        android:background="@color/white"
         android:paddingStart="6dp"
         android:paddingEnd="6dp"
         android:text="@string/et_playlist_name"
-        android:textColor="@color/blue"
-        android:textSize="12sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/et_name"
         app:layout_constraintStart_toStartOf="@+id/et_name"
@@ -118,16 +115,12 @@
 
     <TextView
         android:id="@+id/tv_pl_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TextViewPlaylistHeaders"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="56dp"
-        android:background="@color/white"
         android:paddingStart="6dp"
         android:paddingEnd="6dp"
         android:text="@string/et_playlist_desc"
-        android:textColor="@color/blue"
-        android:textSize="12sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/et_desc"
         app:layout_constraintStart_toStartOf="@+id/et_desc"

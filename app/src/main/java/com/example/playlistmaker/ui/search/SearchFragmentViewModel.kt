@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.data.search.models.Track
-import com.example.playlistmaker.data.search.models.Tracks
+import com.example.playlistmaker.data.models.Track
+import com.example.playlistmaker.data.models.Tracks
 import com.example.playlistmaker.data.search.network.retrofit.models.ConnectionStatus
 import com.example.playlistmaker.domain.search.TrackInteractor
 import com.example.playlistmaker.domain.settings.sharedprefs.HistoryInteractor

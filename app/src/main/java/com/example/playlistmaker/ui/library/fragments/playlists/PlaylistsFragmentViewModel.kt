@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 
-class FragmentPlaylistsViewModel : ViewModel() {
+class PlaylistsFragmentViewModel : ViewModel() {
     private val isMutableEditing = MutableLiveData<Boolean>().apply { false }
     val isEditing: LiveData<Boolean> = isMutableEditing
 }

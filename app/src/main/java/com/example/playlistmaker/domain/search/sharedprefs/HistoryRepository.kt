@@ -1,7 +1,7 @@
 package com.example.playlistmaker.domain.search.sharedprefs
 
-import com.example.playlistmaker.data.search.models.Track
-import com.example.playlistmaker.data.search.models.Tracks
+import com.example.playlistmaker.data.models.Track
+import com.example.playlistmaker.data.models.Tracks
 
 interface HistoryRepository {
 

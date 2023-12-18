@@ -7,7 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.search.models.Track
+import com.example.playlistmaker.data.models.Track
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.ui.utils.Helpers
 import org.koin.androidx.viewmodel.ext.android.viewModel
