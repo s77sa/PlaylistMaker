@@ -12,7 +12,7 @@ import com.example.playlistmaker.ui.sharing.ActivityNavigator
 import kotlinx.coroutines.launch
 
 
-class FragmentFavoritesViewModel(
+class FavoritesFragmentViewModel(
     private val activityNavigator: ActivityNavigator,
     private val dbInteractor: DbInteractor
 ) : ViewModel() {

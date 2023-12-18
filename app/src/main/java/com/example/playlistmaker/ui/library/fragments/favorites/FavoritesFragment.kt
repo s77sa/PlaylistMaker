@@ -12,16 +12,16 @@ import com.example.playlistmaker.ui.search.recyclerview.TrackListAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class LibraryFavoritesFragment : Fragment() {
+class FavoritesFragment : Fragment() {
 
     companion object {
-        private val TAG = LibraryFavoritesFragment::class.simpleName!!
-        fun newInstance() = LibraryFavoritesFragment().apply {
+        private val TAG = FavoritesFragment::class.simpleName!!
+        fun newInstance() = FavoritesFragment().apply {
             arguments = Bundle()
         }
     }
 
-    private val viewModel: FragmentFavoritesViewModel by viewModel<FragmentFavoritesViewModel>()
+    private val viewModel: FavoritesFragmentViewModel by viewModel<FavoritesFragmentViewModel>()
     private var _binding: FragmentLibraryFavoritesBinding? = null
     private val binding get() = _binding!!
     private var trackList: MutableList<Track> = mutableListOf()

@@ -10,7 +10,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentLibraryPlaylistsBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class LibraryPlaylistsFragment : Fragment() {
+class PlaylistsFragment : Fragment() {
 
     private var _binding: FragmentLibraryPlaylistsBinding? = null
     private val binding get() = _binding!!
@@ -47,7 +47,7 @@ class LibraryPlaylistsFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = LibraryPlaylistsFragment().apply {
+        fun newInstance() = PlaylistsFragment().apply {
             arguments = Bundle()
         }
     }

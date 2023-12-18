@@ -1,7 +1,7 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.data.models.Track
-import com.example.playlistmaker.ui.library.fragments.favorites.FragmentFavoritesViewModel
+import com.example.playlistmaker.ui.library.fragments.favorites.FavoritesFragmentViewModel
 import com.example.playlistmaker.ui.library.fragments.playlists.PlaylistsFragmentViewModel
 import com.example.playlistmaker.ui.player.PlayerViewModel
 import com.example.playlistmaker.ui.library.fragments.playlists.create.CreatePlaylistFragmentViewModel
@@ -43,8 +43,8 @@ val appModule = module {
         )
     }
 
-    viewModel<FragmentFavoritesViewModel> {
-        FragmentFavoritesViewModel(
+    viewModel<FavoritesFragmentViewModel> {
+        FavoritesFragmentViewModel(
             get(),
             get()
         )
