@@ -16,13 +16,19 @@ class PlaylistListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     private val playlistTracksCount: TextView = itemView.findViewById(R.id.tv_playlist_count)
 
     fun bind(item: Playlist) {
-        playlistArt.setImageURI(Uri.parse(item.imagePath))
+        if (!item.imagePath.isNullOrEmpty()) {
+            playlistArt.setImageURI(getUri(item.imagePath))
+        }
         playlistName.text = item.name
         playlistTracksCount.text =
             getString(itemView.context, R.string.tv_playlist_tracks_count).replace(
                 TRACKS_COUNT_PATTERNS,
                 item.tracksCount.toString()
             )
+    }
+
+    private fun getUri(fileName: String): Uri {
+        return Uri.parse(fileName)
     }
 
     companion object {

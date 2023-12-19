@@ -3,49 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="3dp"
-    android:background="@null"
-    card_view:cardElevation="5dp">
+    android:layout_margin="8dp"
+    android:background="?attr/colorSecondary"
+    card_view:cardElevation="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="?attr/colorSecondary"
         android:orientation="vertical"
         android:paddingHorizontal="13dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_playlist_art"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_playlist_stub"
-            app:layout_constraintDimensionRatio="h,1:1"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_playlist_stub_big"
+            app:layout_constraintDimensionRatio="1:1"
             app:shapeAppearanceOverlay="@style/TracksItemCorner" />
 
         <TextView
             android:id="@+id/tv_playlist_name"
+            style="@style/TextViewPlaylistRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="16dp"
-            android:ellipsize="end"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:textStyle="normal"
+            android:layout_marginTop="4dp"
             tools:text="@string/et_playlist_name" />
 
         <TextView
             android:id="@+id/tv_playlist_count"
+            style="@style/TextViewPlaylistRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="14dp"
-            android:ellipsize="end"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:textStyle="normal"
             tools:text="@string/tv_playlist_tracks_count" />
     </LinearLayout>
 

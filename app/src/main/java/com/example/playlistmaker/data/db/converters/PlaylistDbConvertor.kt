@@ -15,11 +15,12 @@ class PlaylistDbConvertor {
     }
 
     fun map(playlist: PlaylistsEntity): Playlist {
+
         return Playlist(
             id = playlist.id,
             name = playlist.name,
-            description = playlist.description!!,
-            imagePath = playlist.imagePath!!,
+            description = playlist.description,
+            imagePath = playlist.imagePath,
             tracksCount = 0
         )
     }

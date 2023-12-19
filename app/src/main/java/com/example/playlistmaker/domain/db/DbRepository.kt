@@ -12,4 +12,6 @@ interface DbRepository {
 
     fun tracksInPlaylists(playlistId: Int): Flow<List<Track>>
 
+    suspend fun countTracksInPlaylists(playlistId: Int): Int
+
 }

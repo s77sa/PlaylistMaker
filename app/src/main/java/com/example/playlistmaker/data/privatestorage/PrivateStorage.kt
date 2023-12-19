@@ -40,7 +40,8 @@ class PrivateStorage(
     }
 
     private fun generateName(): String {
-        return UUID.randomUUID().toString().replace("-", "")
+        val fileName = UUID.randomUUID().toString().replace("-", "")
+        return "$fileName.jpg"
     }
 
     companion object {

@@ -17,10 +17,11 @@
         app:cornerRadius="54dp"
         tools:ignore="TouchTargetSizeCheck" />
 
-    <LinearLayout style="@style/LibraryFragmentLayoutStubs"
+    <LinearLayout
         android:id="@+id/favorites_is_empty"
+        style="@style/LibraryFragmentLayoutStubs"
         android:layout_marginTop="106dp"
-        android:visibility="visible"
+        android:visibility="gone"
         tools:ignore="UseCompoundDrawables">
 
         <ImageView
@@ -37,5 +38,15 @@
             android:layout_marginTop="16dp"
             android:text="@string/playlists_is_empty" />
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_playlist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="76dp"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 </FrameLayout>

@@ -51,7 +51,7 @@ val appModule = module {
     }
 
     viewModel<PlaylistsFragmentViewModel> {
-        PlaylistsFragmentViewModel()
+        PlaylistsFragmentViewModel(get())
     }
 
     single<ActivityNavigator> {

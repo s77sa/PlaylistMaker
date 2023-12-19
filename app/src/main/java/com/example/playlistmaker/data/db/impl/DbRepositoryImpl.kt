@@ -46,4 +46,8 @@ class DbRepositoryImpl(
         return tracks.map(tracksInPlaylistDbConvertor::map)
     }
 
+    override suspend fun countTracksInPlaylists(playlistId: Int): Int {
+       return appDatabase.tracksInPlaylistDao().getCountTracksInPlaylist(playlistId)
+    }
+
 }

@@ -20,4 +20,8 @@ class DbInteractorImpl(
     override fun tracksInPlaylists(playlistId: Int): Flow<List<Track>> {
         return dbRepository.tracksInPlaylists(playlistId)
     }
+
+    override suspend fun countTracksInPlaylists(playlistId: Int): Int {
+        return dbRepository.countTracksInPlaylists(playlistId)
+    }
 }
