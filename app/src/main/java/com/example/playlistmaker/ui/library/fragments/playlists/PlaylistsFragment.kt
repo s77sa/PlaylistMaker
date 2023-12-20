@@ -31,6 +31,7 @@ class PlaylistsFragment : Fragment() {
         initListeners()
         initAdapters()
         viewModel.getPlaylists()
+        checkVisibility()
     }
 
     override fun onCreateView(
@@ -44,6 +45,7 @@ class PlaylistsFragment : Fragment() {
     private fun initObservers() {
         viewModel.playlistList.observe(viewLifecycleOwner) {
             addPlaylistToAdapter(it)
+            checkVisibility()
         }
     }
 
@@ -72,6 +74,17 @@ class PlaylistsFragment : Fragment() {
                 binding.rvPlaylist.adapter?.notifyItemRangeRemoved(0, itemCount)
             }
             binding.rvPlaylist.adapter?.notifyItemRangeChanged(0, playlistList.size)
+        }
+    }
+
+    private fun checkVisibility(){
+        if (playlistList.size > 0 ){
+            binding.rvPlaylist.visibility = View.VISIBLE
+            binding.favoritesIsEmpty.visibility = View.GONE
+        }
+        else{
+            binding.rvPlaylist.visibility = View.GONE
+            binding.favoritesIsEmpty.visibility = View.VISIBLE
         }
     }
 

@@ -11,6 +11,7 @@
         <item name="colorOnSecondary">@color/black</item>
         <item name="colorSecondaryVariant">@color/text_gray</item>
         <item name="colorOnSecondaryContainer">@color/text_gray</item>
+        <item name="colorOnSecondaryFixed">@color/light_gray</item>
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimary</item>

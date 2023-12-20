@@ -4,8 +4,7 @@
     <size
         android:width="50dp"
         android:height="4dp" />
-
-    <corners android:radius="44dp" />
-
+    <corners android:radius="8dp" />
+    <solid android:color="?attr/colorOnSecondaryFixed" />
 
 </shape>

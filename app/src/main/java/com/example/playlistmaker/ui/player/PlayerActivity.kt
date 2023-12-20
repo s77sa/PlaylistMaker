@@ -5,11 +5,14 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.models.Track
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.ui.utils.Helpers
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
@@ -23,6 +26,9 @@ class PlayerActivity : AppCompatActivity() {
     private var trackIsFavorites: Boolean = false
     private val viewModel by viewModel<PlayerViewModel> { parametersOf(track) }
 
+    private lateinit var bottomSheetContainer: LinearLayout
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+
     companion object {
         private const val REPLACE_LINK_PATTERN: String = "512x512bb.jpg"
         private val TAG = PlayerActivity::class.simpleName
@@ -35,6 +41,7 @@ class PlayerActivity : AppCompatActivity() {
         getMessageFromIntent()
         initObserver()
         clickListenersInit()
+        initBottomSheet()
         viewModel.saveValues()
         viewModel.preparePlayer()
         viewModel.checkFavoriteTrackJob()
@@ -48,6 +55,32 @@ class PlayerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.onDestroy()
+    }
+
+    private fun initBottomSheet() {
+        bottomSheetContainer = findViewById<LinearLayout>(R.id.bottom_sheet)
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                Log.d("Bottom", bottomSheetBehavior.state.toString())
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.overlay.visibility = View.GONE
+                    }
+
+                    else -> {
+                        binding.overlay.visibility = View.VISIBLE
+                    }
+                }
+
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+            }
+        })
     }
 
     private fun initObserver() {
@@ -80,17 +113,25 @@ class PlayerActivity : AppCompatActivity() {
         binding.ivPlayerBack.setOnClickListener { finishActivity() }
         binding.ivPlay.setOnClickListener { startPlaying() }
         binding.ivFavoriteBorder.setOnClickListener { onClickFavorites() }
+        binding.ivPlaylist.setOnClickListener { showBottomSheet() }
+        binding.overlay.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
+    }
+
+    private fun showBottomSheet() {
+        Toast.makeText(this, "Show bottom sheet", Toast.LENGTH_SHORT).show()
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
     }
 
     private fun onClickFavorites() {
         viewModel.changeTrackStatus()
     }
 
-    private fun changeIconFavorites(){
-        if(trackIsFavorites){
+    private fun changeIconFavorites() {
+        if (trackIsFavorites) {
             binding.ivFavoriteBorder.setImageResource(R.drawable.ic_button_favorite_red)
-        }
-        else{
+        } else {
             binding.ivFavoriteBorder.setImageResource(R.drawable.ic_button_favorite_border)
         }
     }
