@@ -2,6 +2,7 @@ package com.example.playlistmaker.ui.library.fragments.playlists.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.models.Playlist
@@ -12,7 +13,8 @@ import kotlinx.coroutines.launch
 
 class PlaylistListAdapter(
     private val data: MutableList<Playlist>,
-    private val coroutineScope: CoroutineScope
+    private val coroutineScope: CoroutineScope,
+    private val layoutResItem: Int
 ) :
     RecyclerView.Adapter<PlaylistListViewHolder>() {
 
@@ -20,9 +22,11 @@ class PlaylistListAdapter(
     private var onClickJob: Job? = null
     private var onClickListener: OnClickListener? = null
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistListViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.playlist_item, parent, false)
+            LayoutInflater.from(parent.context).inflate(layoutResItem, parent, false)
+            //LayoutInflater.from(parent.context).inflate(R.layout.playlist_item, parent, false)
         return PlaylistListViewHolder(view)
     }
 

@@ -10,8 +10,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.data.models.Track
 import com.example.playlistmaker.databinding.FragmentSearchBinding
+import com.example.playlistmaker.domain.library.TrackStorage
 import com.example.playlistmaker.ui.search.recyclerview.TrackListAdapter
 import com.example.playlistmaker.ui.utils.Helpers
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -172,7 +175,8 @@ class SearchFragment : Fragment() {
     private fun onClickRecyclerViewHistoryItem() {
         rvHistoryAdapter?.setOnClickListener(object : TrackListAdapter.OnClickListener {
             override fun onClick(position: Int, track: Track) {
-                viewModel.callPlayerActivity(track)
+//                viewModel.callPlayerActivity(track)
+                callPlayerFragment(track)
             }
         })
     }
@@ -186,9 +190,15 @@ class SearchFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
                 viewModel.addTrackToHistory(track)
-                viewModel.callPlayerActivity(track)
+                callPlayerFragment(track)
+                //viewModel.callPlayerActivity(track)
             }
         })
+    }
+
+    private fun callPlayerFragment(track: Track) {
+        (requireActivity() as TrackStorage).setTrack(track)
+        findNavController().navigate(R.id.playerFragment)
     }
 
     private fun clearButtonListener() {

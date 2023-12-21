@@ -6,20 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.data.models.Track
 import com.example.playlistmaker.databinding.FragmentLibraryFavoritesBinding
+import com.example.playlistmaker.domain.library.TrackStorage
 import com.example.playlistmaker.ui.search.recyclerview.TrackListAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class FavoritesFragment : Fragment() {
-
-    companion object {
-        private val TAG = FavoritesFragment::class.simpleName!!
-        fun newInstance() = FavoritesFragment().apply {
-            arguments = Bundle()
-        }
-    }
 
     private val viewModel: FavoritesFragmentViewModel by viewModel<FavoritesFragmentViewModel>()
     private var _binding: FragmentLibraryFavoritesBinding? = null
@@ -46,9 +42,14 @@ class FavoritesFragment : Fragment() {
     private fun onClickRVItem() {
         rvTrackListAdapter?.setOnClickListener(object : TrackListAdapter.OnClickListener {
             override fun onClick(position: Int, track: Track) {
-                viewModel.callPlayerActivity(track)
+                callPlayerFragment(track)
             }
         })
+    }
+
+    private fun callPlayerFragment(track: Track){
+        (requireActivity() as TrackStorage).setTrack(track)
+        findNavController().navigate(R.id.playerFragment)
     }
 
     override fun onCreateView(
@@ -90,6 +91,13 @@ class FavoritesFragment : Fragment() {
         } else {
             binding.rvFavorites.visibility = View.GONE
             binding.layoutIsEmpty.visibility = View.VISIBLE
+        }
+    }
+
+    companion object {
+        private val TAG = FavoritesFragment::class.simpleName!!
+        fun newInstance() = FavoritesFragment().apply {
+            arguments = Bundle()
         }
     }
 }

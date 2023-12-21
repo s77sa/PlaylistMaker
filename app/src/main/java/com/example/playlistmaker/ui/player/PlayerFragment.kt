@@ -1,16 +1,25 @@
 package com.example.playlistmaker.ui.player
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
+import com.example.playlistmaker.data.models.Playlist
 import com.example.playlistmaker.data.models.Track
-import com.example.playlistmaker.databinding.ActivityPlayerBinding
+import com.example.playlistmaker.databinding.FragmentLibraryFavoritesBinding
+import com.example.playlistmaker.databinding.FragmentPlayerBinding
+import com.example.playlistmaker.domain.library.TrackStorage
+import com.example.playlistmaker.ui.library.fragments.playlists.recyclerview.PlaylistListAdapter
 import com.example.playlistmaker.ui.utils.Helpers
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -19,32 +28,45 @@ import java.text.SimpleDateFormat
 
 const val KEY_INTENT_PLAYER_ACTIVITY = "player_intent"
 
-class PlayerActivity : AppCompatActivity() {
+class PlayerFragment : Fragment() {
 
-    private lateinit var binding: ActivityPlayerBinding
+    private var _binding: FragmentPlayerBinding? = null
+    private val binding get() = _binding!!
     private lateinit var track: Track
     private var trackIsFavorites: Boolean = false
-    private val viewModel by viewModel<PlayerViewModel> { parametersOf(track) }
+    private val viewModel by viewModel<PlayerFragmentViewModel> { parametersOf(track) }
 
     private lateinit var bottomSheetContainer: LinearLayout
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
-    companion object {
-        private const val REPLACE_LINK_PATTERN: String = "512x512bb.jpg"
-        private val TAG = PlayerActivity::class.simpleName
+    private var playlistList: MutableList<Playlist> = mutableListOf()
+    private var playlistListAdapter: PlaylistListAdapter? = null
+    private lateinit var rvPlaylist: RecyclerView
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentPlayerBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        getMessageFromIntent()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        track = (requireActivity() as TrackStorage).getTrack()!!
         initObserver()
         clickListenersInit()
         initBottomSheet()
         viewModel.saveValues()
         viewModel.preparePlayer()
         viewModel.checkFavoriteTrackJob()
+        initAdapters()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.onDestroy()
     }
 
     override fun onPause() {
@@ -52,22 +74,27 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.onPause()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.onDestroy()
+    private fun initAdapters() {
+        playlistListAdapter =
+            PlaylistListAdapter(playlistList, lifecycleScope, R.layout.playlist_bottom_sheet_item)
+        rvPlaylist = requireView().findViewById(R.id.rv_bottom_playlist)
+        rvPlaylist.adapter = playlistListAdapter
     }
 
     private fun initBottomSheet() {
-        bottomSheetContainer = findViewById<LinearLayout>(R.id.bottom_sheet)
+        bottomSheetContainer = requireView().findViewById<LinearLayout>(R.id.bottom_sheet)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         bottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                Log.d("Bottom", bottomSheetBehavior.state.toString())
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
                         binding.overlay.visibility = View.GONE
+                    }
+
+                    BottomSheetBehavior.STATE_HALF_EXPANDED -> {
+                        viewModel.getPlaylists()
                     }
 
                     else -> {
@@ -84,20 +111,37 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun initObserver() {
-        viewModel.getLoadingValues().observe(this) { track ->
+        viewModel.getLoadingValues().observe(viewLifecycleOwner) { track ->
             Log.d(TAG, "init - Player Observer - ${track.trackName}")
             writeTrackDataToView()
         }
-        viewModel.getPlayingPositionLiveData().observe(this) { value ->
+        viewModel.getPlayingPositionLiveData().observe(viewLifecycleOwner) { value ->
             binding.tvTrackTimeCurrent.text = value
         }
-        viewModel.getIsPlayingLiveData().observe(this) {
+        viewModel.getIsPlayingLiveData().observe(viewLifecycleOwner) {
             setButtonPlayState(it)
         }
-        viewModel.getIsFavorites().observe(this) {
+        viewModel.getIsFavorites().observe(viewLifecycleOwner) {
             trackIsFavorites = it
             changeIconFavorites()
             Log.d(TAG, "Observe Favorites: $it")
+        }
+        viewModel.playlistList.observe(viewLifecycleOwner) {
+            Log.d("Playlist observe: ", it.size.toString())
+            addPlaylistToAdapter(it)
+        }
+    }
+
+    private fun addPlaylistToAdapter(list: List<Playlist>) {
+        Log.d("Adapter add: ", list.size.toString())
+        if (list != playlistList) {
+            playlistList.clear()
+            playlistList.addAll(list)
+            val itemCount = rvPlaylist.adapter?.itemCount
+            if (itemCount != null) {
+                rvPlaylist.adapter?.notifyItemRangeRemoved(0, itemCount)
+            }
+            rvPlaylist.adapter?.notifyItemRangeChanged(0, playlistList.size)
         }
     }
 
@@ -117,10 +161,14 @@ class PlayerActivity : AppCompatActivity() {
         binding.overlay.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
+        requireView().findViewById<Button>(R.id.btn_new_playlist_bottom)
+            .setOnClickListener {
+                findNavController().navigate(R.id.createPlaylistFragment)
+            }
     }
 
     private fun showBottomSheet() {
-        Toast.makeText(this, "Show bottom sheet", Toast.LENGTH_SHORT).show()
+        bottomSheetContainer.visibility = View.VISIBLE
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
     }
 
@@ -141,7 +189,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun finishActivity() {
-        this.finish()
+        findNavController().popBackStack()
     }
 
     private fun writeTrackDataToView() {
@@ -176,12 +224,9 @@ class PlayerActivity : AppCompatActivity() {
         Helpers.glideBind(newLink, binding.ivArtWorkBig)
     }
 
-    private fun getMessageFromIntent() {
-        track = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getSerializableExtra(KEY_INTENT_PLAYER_ACTIVITY, Track::class.java)!!
-        } else {
-            @Suppress("DEPRECATION")
-            intent.getSerializableExtra(KEY_INTENT_PLAYER_ACTIVITY)!! as Track
-        }
+    companion object {
+        private const val REPLACE_LINK_PATTERN: String = "512x512bb.jpg"
+        private val TAG = PlayerFragment::class.simpleName
     }
+
 }

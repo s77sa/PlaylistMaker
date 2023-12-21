@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentCreatePlaylistBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -25,6 +27,8 @@ class CreatePlaylistFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<CreatePlaylistFragmentViewModel>()
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
+
+    private lateinit var alertDialog: MaterialAlertDialogBuilder
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +52,8 @@ class CreatePlaylistFragment : Fragment() {
         initObserver()
         initNameTextWatcher()
         initDescriptionTextWatcher()
+        initDialog()
+        initCallBack()
     }
 
     private fun initObserver() {
@@ -59,7 +65,7 @@ class CreatePlaylistFragment : Fragment() {
 
     private fun initListeners() {
         binding.ivBack.setOnClickListener {
-            findNavController().popBackStack()
+            callBack()
         }
         binding.ivMain.setOnClickListener {
             callPicker()
@@ -166,6 +172,36 @@ class CreatePlaylistFragment : Fragment() {
             binding.etDesc.background = resources.getDrawable(R.drawable.ed_add_playlist_grey)
             binding.tvPlDesc.visibility = View.INVISIBLE
         }
+    }
+
+    private fun callBack() {
+        if (binding.etName.text.isNotEmpty() || binding.etDesc.text.isNotEmpty()) {
+            showMessage()
+        } else {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun initDialog() {
+        alertDialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.message_header_create_playlist)
+            .setMessage(R.string.message_body_create_playlist)
+            .setNeutralButton(R.string.dialog_botton_cancel) { dialog, whitch ->
+
+            }
+            .setPositiveButton(R.string.dialog_botton_complete) { dialog, whitch ->
+                findNavController().popBackStack()
+            }
+    }
+
+    private fun initCallBack() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            callBack()
+        }
+    }
+
+    private fun showMessage() {
+        alertDialog.show()
     }
 
     companion object {

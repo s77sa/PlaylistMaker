@@ -1,5 +1,7 @@
 package com.example.playlistmaker.ui.player
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,24 +10,31 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.data.db.converters.FavoritesTrackDbConvertor
 import com.example.playlistmaker.data.db.entity.FavoritesTrackEntity
-import com.example.playlistmaker.data.player.PlayerState
+import com.example.playlistmaker.data.models.Playlist
 import com.example.playlistmaker.data.models.Track
+import com.example.playlistmaker.data.player.PlayerState
+import com.example.playlistmaker.domain.db.DbInteractor
 import com.example.playlistmaker.domain.player.PlayerInteractor
+import com.example.playlistmaker.ui.root.RootActivity
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerViewModel(
+class PlayerFragmentViewModel(
     private val track: Track,
     private var mediaPlayerInteractor: PlayerInteractor,
     private val appDatabase: AppDatabase,
-    private val trackDbConvertor: FavoritesTrackDbConvertor
+    private val trackDbConvertor: FavoritesTrackDbConvertor,
+    private val dbInteractor: DbInteractor
 ) : ViewModel() {
     init {
         Log.d(TAG, "init - PlayerViewModel - ${track.trackName}")
     }
+
+    private var playlistListMutable = MutableLiveData<List<Playlist>>()
+    val playlistList: LiveData<List<Playlist>> = playlistListMutable
 
     private val isFavoritesMutableLiveData = MutableLiveData<Boolean>()
     fun getIsFavorites(): LiveData<Boolean> = isFavoritesMutableLiveData
@@ -41,6 +50,29 @@ class PlayerViewModel(
 
     private var coroutineJob: Job? = null
     private var timerJob: Job? = null
+
+    fun getPlaylists() {
+        viewModelScope.launch {
+            dbInteractor
+                .playlists()
+                .collect { playlist -> playlistResult(playlist) }
+        }
+    }
+
+    private fun playlistResult(playlists: List<Playlist>) {
+        for (playlist in playlists) {
+            playlist.tracksCount = getCountTracks(playlist.id)
+        }
+        playlistListMutable.value = playlists
+    }
+
+    private fun getCountTracks(trackId: Int): Int {
+        var count = 0
+        viewModelScope.launch {
+            count = dbInteractor.countTracksInPlaylists(trackId)
+        }
+        return count
+    }
 
     fun changeTrackStatus() {
         Log.d(TAG, "Track Status: ${isFavoritesMutableLiveData.value}")
@@ -181,6 +213,6 @@ class PlayerViewModel(
 
     companion object {
         private const val REFRESH_TIME_HEADER_DELAY_MILLIS: Long = 300L
-        private val TAG = PlayerActivity::class.simpleName
+        private val TAG = PlayerFragment::class.simpleName
     }
 }

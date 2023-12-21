@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.models.Playlist
 import com.example.playlistmaker.databinding.FragmentLibraryPlaylistsBinding
@@ -23,7 +22,14 @@ class PlaylistsFragment : Fragment() {
 
     private var playlistList: MutableList<Playlist> = mutableListOf()
     private var playlistListAdapter: PlaylistListAdapter? = null
-    private val recyclerView: RecyclerView? = null
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentLibraryPlaylistsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,14 +38,6 @@ class PlaylistsFragment : Fragment() {
         initAdapters()
         viewModel.getPlaylists()
         checkVisibility()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentLibraryPlaylistsBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     private fun initObservers() {
@@ -60,7 +58,11 @@ class PlaylistsFragment : Fragment() {
     }
 
     private fun initAdapters() {
-        playlistListAdapter = PlaylistListAdapter(playlistList, viewLifecycleOwner.lifecycleScope)
+        playlistListAdapter = PlaylistListAdapter(
+            playlistList,
+            viewLifecycleOwner.lifecycleScope,
+            R.layout.playlist_item
+        )
         binding.rvPlaylist.layoutManager = GridLayoutManager(context, RECYCLERVIEW_COLUMN)
         binding.rvPlaylist.adapter = playlistListAdapter
     }
@@ -77,12 +79,11 @@ class PlaylistsFragment : Fragment() {
         }
     }
 
-    private fun checkVisibility(){
-        if (playlistList.size > 0 ){
+    private fun checkVisibility() {
+        if (playlistList.size > 0) {
             binding.rvPlaylist.visibility = View.VISIBLE
             binding.favoritesIsEmpty.visibility = View.GONE
-        }
-        else{
+        } else {
             binding.rvPlaylist.visibility = View.GONE
             binding.favoritesIsEmpty.visibility = View.VISIBLE
         }

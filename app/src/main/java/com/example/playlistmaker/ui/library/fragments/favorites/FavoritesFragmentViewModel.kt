@@ -6,14 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.data.models.Track
 import com.example.playlistmaker.domain.db.DbInteractor
-import com.example.playlistmaker.ui.player.KEY_INTENT_PLAYER_ACTIVITY
-import com.example.playlistmaker.ui.player.PlayerActivity
 import com.example.playlistmaker.ui.sharing.ActivityNavigator
 import kotlinx.coroutines.launch
 
 
 class FavoritesFragmentViewModel(
-    private val activityNavigator: ActivityNavigator,
     private val dbInteractor: DbInteractor
 ) : ViewModel() {
 
@@ -31,14 +28,4 @@ class FavoritesFragmentViewModel(
     private fun processResult(tracks: List<Track>) {
         trackListMutable.value = tracks
     }
-
-    @Suppress("UNCHECKED_CAST")
-    fun callPlayerActivity(item: Track) {
-        activityNavigator.intentCallWithKeySerializable(
-            PlayerActivity::class.java as Class<Any>,
-            KEY_INTENT_PLAYER_ACTIVITY,
-            item
-        )
-    }
-
 }

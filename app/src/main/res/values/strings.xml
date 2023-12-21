@@ -45,5 +45,9 @@
     <string name="message_save_playlist">Плейлист \"[playlistName]\" создан</string>
     <string name="tv_playlist_tracks_count">[count] треков</string>
     <string name="bottom_sheet_add_to_playlist">Добавить в плейлист</string>
+    <string name="message_header_create_playlist">Завершить создание плейлиста?</string>
+    <string name="message_body_create_playlist">Все несохраненные данные будут потеряны</string>
+    <string name="dialog_botton_cancel">Отмена</string>
+    <string name="dialog_botton_complete">Завершить</string>
 
 </resources>
