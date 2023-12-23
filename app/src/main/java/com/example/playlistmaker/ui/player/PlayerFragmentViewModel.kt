@@ -1,7 +1,6 @@
 package com.example.playlistmaker.ui.player
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -61,7 +60,7 @@ class PlayerFragmentViewModel(
         coroutineJob = viewModelScope.launch {
             if ((dbInteractor.checkTrackInPlaylist(playlist.id, track.trackId!!) > 0)) {
                 addedTrackInPlaylistMutable.value = MessageStatus.TRACK_EXIST
-            }else{
+            } else {
                 addTrackToPlaylist(track, playlistId)
                 addedTrackInPlaylistMutable.value = MessageStatus.TRACK_ADDED
             }

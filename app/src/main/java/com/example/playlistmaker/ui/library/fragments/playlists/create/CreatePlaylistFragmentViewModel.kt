@@ -60,10 +60,6 @@ class CreatePlaylistFragmentViewModel(
         return privateStorage.loadImage(fileName)
     }
 
-    private fun checkPermission(): Boolean {
-        return true
-    }
-
     companion object {
         private val TAG = CreatePlaylistFragmentViewModel::class.simpleName
     }

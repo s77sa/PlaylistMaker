@@ -1,7 +1,6 @@
 package com.example.playlistmaker.ui.library.fragments.playlists
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +10,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.playlistmaker.R
-import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.databinding.FragmentLibraryPlaylistsBinding
+import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.ui.library.recyclerview.PlaylistListAdapter
-import com.example.playlistmaker.ui.player.PlayerFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistsFragment : Fragment() {

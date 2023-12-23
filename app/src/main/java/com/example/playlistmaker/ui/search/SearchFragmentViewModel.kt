@@ -17,7 +17,6 @@ import kotlinx.coroutines.launch
 
 class SearchFragmentViewModel(
     private val trackInteractor: TrackInteractor,
-    private val activityNavigator: ActivityNavigator,
     private val historyInteractor: HistoryInteractor
 ) : ViewModel() {
     init {
