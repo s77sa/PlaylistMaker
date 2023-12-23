@@ -102,6 +102,7 @@ val dataModule = module {
 
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, PLAY_LIST_DATABASE_NAME)
+            .fallbackToDestructiveMigration()
             .build()
     }
 

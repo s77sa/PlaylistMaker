@@ -1,21 +1,21 @@
 package com.example.playlistmaker.ui.player
 
-import android.content.Context
-import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.data.db.converters.FavoritesTrackDbConvertor
+import com.example.playlistmaker.data.db.converters.TracksInPlaylistDbConvertor
 import com.example.playlistmaker.data.db.entity.FavoritesTrackEntity
-import com.example.playlistmaker.data.models.Playlist
+import com.example.playlistmaker.data.db.entity.TracksInPlaylistsEntity
 import com.example.playlistmaker.data.models.Track
 import com.example.playlistmaker.data.player.PlayerState
 import com.example.playlistmaker.domain.db.DbInteractor
+import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.domain.player.PlayerInteractor
-import com.example.playlistmaker.ui.root.RootActivity
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -27,14 +27,18 @@ class PlayerFragmentViewModel(
     private var mediaPlayerInteractor: PlayerInteractor,
     private val appDatabase: AppDatabase,
     private val trackDbConvertor: FavoritesTrackDbConvertor,
+    private val tracksInPlaylistDbConvertor: TracksInPlaylistDbConvertor,
     private val dbInteractor: DbInteractor
 ) : ViewModel() {
     init {
         Log.d(TAG, "init - PlayerViewModel - ${track.trackName}")
     }
 
+    private var addedTrackInPlaylistMutable = MutableLiveData<MessageStatus>(MessageStatus.NOTHIN)
+    fun addedTrackInPlaylist(): LiveData<MessageStatus> = addedTrackInPlaylistMutable
+
     private var playlistListMutable = MutableLiveData<List<Playlist>>()
-    val playlistList: LiveData<List<Playlist>> = playlistListMutable
+    fun getPlaylistList(): LiveData<List<Playlist>> = playlistListMutable
 
     private val isFavoritesMutableLiveData = MutableLiveData<Boolean>()
     fun getIsFavorites(): LiveData<Boolean> = isFavoritesMutableLiveData
@@ -51,6 +55,25 @@ class PlayerFragmentViewModel(
     private var coroutineJob: Job? = null
     private var timerJob: Job? = null
 
+    fun addTrackToPlaylist(track: Track, playlist: Playlist) {
+        val playlistId = playlist.id
+        coroutineJob?.cancel()
+        coroutineJob = viewModelScope.launch {
+            if ((dbInteractor.checkTrackInPlaylist(playlist.id, track.trackId!!) > 0)) {
+                addedTrackInPlaylistMutable.value = MessageStatus.TRACK_EXIST
+            }else{
+                addTrackToPlaylist(track, playlistId)
+                addedTrackInPlaylistMutable.value = MessageStatus.TRACK_ADDED
+            }
+        }
+    }
+
+    private suspend fun addTrackToPlaylist(track: Track, playlistId: Int) {
+        val trackInPlaylistEntity: TracksInPlaylistsEntity =
+            tracksInPlaylistDbConvertor.map(track, playlistId)
+        appDatabase.tracksInPlaylistDao().insertTrackInPlaylist(trackInPlaylistEntity)
+    }
+
     fun getPlaylists() {
         viewModelScope.launch {
             dbInteractor
@@ -59,32 +82,19 @@ class PlayerFragmentViewModel(
         }
     }
 
-    private fun playlistResult(playlists: List<Playlist>) {
+    private suspend fun playlistResult(playlists: List<Playlist>) {
         for (playlist in playlists) {
-            playlist.tracksCount = getCountTracks(playlist.id)
+            playlist.tracksCount = dbInteractor.countTracksInPlaylists(playlist.id)
         }
         playlistListMutable.value = playlists
     }
 
-    private fun getCountTracks(trackId: Int): Int {
-        var count = 0
-        viewModelScope.launch {
-            count = dbInteractor.countTracksInPlaylists(trackId)
-        }
-        return count
-    }
-
     fun changeTrackStatus() {
-        Log.d(TAG, "Track Status: ${isFavoritesMutableLiveData.value}")
         if (getIsFavorites().value == true) {
-            Log.d(TAG, "Enter to true")
             deleteFavoriteTrackJob()
         } else {
-            Log.d(TAG, "Enter to false")
             saveFavoriteTrackJob()
         }
-        Log.d(TAG, "Change Track Status to: ${isFavoritesMutableLiveData.value}")
-
     }
 
     private fun deleteFavoriteTrackJob() {
@@ -213,6 +223,6 @@ class PlayerFragmentViewModel(
 
     companion object {
         private const val REFRESH_TIME_HEADER_DELAY_MILLIS: Long = 300L
-        private val TAG = PlayerFragment::class.simpleName
+        private val TAG = PlayerFragmentViewModel::class.simpleName
     }
 }

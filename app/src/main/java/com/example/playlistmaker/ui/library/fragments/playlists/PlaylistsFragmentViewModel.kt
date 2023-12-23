@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.data.models.Playlist
+import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.domain.db.DbInteractor
 import kotlinx.coroutines.launch
 
@@ -24,18 +24,10 @@ class PlaylistsFragmentViewModel(
         }
     }
 
-    private fun playlistResult(playlists: List<Playlist>) {
+    private suspend fun playlistResult(playlists: List<Playlist>) {
         for (playlist in playlists){
-            playlist.tracksCount = getCountTracks(playlist.id)
+            playlist.tracksCount = dbInteractor.countTracksInPlaylists(playlist.id)
         }
         playlistListMutable.value = playlists
-    }
-
-    private fun getCountTracks(trackId: Int): Int{
-        var count = 0
-        viewModelScope.launch{
-            count = dbInteractor.countTracksInPlaylists(trackId)
-        }
-        return count
     }
 }

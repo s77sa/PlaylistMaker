@@ -175,7 +175,6 @@ class SearchFragment : Fragment() {
     private fun onClickRecyclerViewHistoryItem() {
         rvHistoryAdapter?.setOnClickListener(object : TrackListAdapter.OnClickListener {
             override fun onClick(position: Int, track: Track) {
-//                viewModel.callPlayerActivity(track)
                 callPlayerFragment(track)
             }
         })
@@ -191,7 +190,6 @@ class SearchFragment : Fragment() {
                 ).show()
                 viewModel.addTrackToHistory(track)
                 callPlayerFragment(track)
-                //viewModel.callPlayerActivity(track)
             }
         })
     }

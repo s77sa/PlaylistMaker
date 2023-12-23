@@ -1,6 +1,6 @@
 package com.example.playlistmaker.domain.db.impl
 
-import com.example.playlistmaker.data.models.Playlist
+import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.data.models.Track
 import com.example.playlistmaker.domain.db.DbInteractor
 import com.example.playlistmaker.domain.db.DbRepository
@@ -23,5 +23,9 @@ class DbInteractorImpl(
 
     override suspend fun countTracksInPlaylists(playlistId: Int): Int {
         return dbRepository.countTracksInPlaylists(playlistId)
+    }
+
+    override suspend fun checkTrackInPlaylist(playlistId: Int, trackId: Int): Int {
+        return dbRepository.checkTrackInPlaylist(playlistId, trackId)
     }
 }

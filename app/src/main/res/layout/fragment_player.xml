@@ -236,12 +236,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <View android:id="@+id/overlay"
+    <View
+        android:id="@+id/overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#99000000"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <include layout="@layout/playlist_bottom_sheet" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -10,7 +10,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class TrackListAdapter(private val data: MutableList<Track>, private val coroutineScope: CoroutineScope) :
+class TrackListAdapter(
+    private val data: MutableList<Track>,
+    private val coroutineScope: CoroutineScope
+) :
     RecyclerView.Adapter<TrackListViewHolder>() {
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L

@@ -1,12 +1,12 @@
 package com.example.playlistmaker.data.db.converters
 
-import com.example.playlistmaker.data.db.entity.TracksInPlaylists
+import com.example.playlistmaker.data.db.entity.TracksInPlaylistsEntity
 import com.example.playlistmaker.data.models.Track
 
 class TracksInPlaylistDbConvertor {
 
-    fun map(track: Track, playlistId: Int): TracksInPlaylists {
-        return TracksInPlaylists(
+    fun map(track: Track, playlistId: Int): TracksInPlaylistsEntity {
+        return TracksInPlaylistsEntity(
             id = 0,
             trackId = track.trackId!!,
             artistName = track.artistName!!,
@@ -22,7 +22,7 @@ class TracksInPlaylistDbConvertor {
         )
     }
 
-    fun map(track: TracksInPlaylists): Track {
+    fun map(track: TracksInPlaylistsEntity): Track {
         return Track(
             trackId = track.trackId,
             artistName = track.artistName,

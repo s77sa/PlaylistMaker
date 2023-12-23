@@ -6,8 +6,8 @@ import com.example.playlistmaker.data.db.converters.PlaylistDbConvertor
 import com.example.playlistmaker.data.db.converters.TracksInPlaylistDbConvertor
 import com.example.playlistmaker.data.db.entity.FavoritesTrackEntity
 import com.example.playlistmaker.data.db.entity.PlaylistsEntity
-import com.example.playlistmaker.data.db.entity.TracksInPlaylists
-import com.example.playlistmaker.data.models.Playlist
+import com.example.playlistmaker.data.db.entity.TracksInPlaylistsEntity
+import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.data.models.Track
 import com.example.playlistmaker.domain.db.DbRepository
 import kotlinx.coroutines.flow.Flow
@@ -42,12 +42,16 @@ class DbRepositoryImpl(
         emit(convertFromTracksInPlaylistEntity(tracks))
     }
 
-    private fun convertFromTracksInPlaylistEntity(tracks: List<TracksInPlaylists>): List<Track> {
+    private fun convertFromTracksInPlaylistEntity(tracks: List<TracksInPlaylistsEntity>): List<Track> {
         return tracks.map(tracksInPlaylistDbConvertor::map)
     }
 
     override suspend fun countTracksInPlaylists(playlistId: Int): Int {
        return appDatabase.tracksInPlaylistDao().getCountTracksInPlaylist(playlistId)
+    }
+
+    override suspend fun checkTrackInPlaylist(playlistId: Int, trackId: Int): Int {
+        return appDatabase.tracksInPlaylistDao().checkTrackInPlaylist(playlistId, trackId)
     }
 
 }

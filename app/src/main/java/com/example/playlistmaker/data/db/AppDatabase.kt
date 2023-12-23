@@ -7,15 +7,16 @@ import com.example.playlistmaker.data.db.dao.PlaylistDao
 import com.example.playlistmaker.data.db.dao.TracksInPlaylistsDao
 import com.example.playlistmaker.data.db.entity.FavoritesTrackEntity
 import com.example.playlistmaker.data.db.entity.PlaylistsEntity
-import com.example.playlistmaker.data.db.entity.TracksInPlaylists
+import com.example.playlistmaker.data.db.entity.TracksInPlaylistsEntity
 
 @Database(
-    version = 1,
+    version = 2,
     entities = [
         FavoritesTrackEntity::class,
         PlaylistsEntity::class,
-        TracksInPlaylists::class
-    ]
+        TracksInPlaylistsEntity::class
+    ],
+    exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -24,4 +25,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun playlistsDao(): PlaylistDao
 
     abstract fun tracksInPlaylistDao(): TracksInPlaylistsDao
+
 }

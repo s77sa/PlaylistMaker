@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.data.db.converters.PlaylistDbConvertor
-import com.example.playlistmaker.data.models.Playlist
+import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.data.privatestorage.PrivateStorage
 import kotlinx.coroutines.launch
 

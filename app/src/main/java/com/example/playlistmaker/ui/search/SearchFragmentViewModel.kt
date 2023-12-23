@@ -10,8 +10,6 @@ import com.example.playlistmaker.data.models.Tracks
 import com.example.playlistmaker.data.search.network.retrofit.models.ConnectionStatus
 import com.example.playlistmaker.domain.search.TrackInteractor
 import com.example.playlistmaker.domain.settings.sharedprefs.HistoryInteractor
-import com.example.playlistmaker.ui.player.KEY_INTENT_PLAYER_ACTIVITY
-import com.example.playlistmaker.ui.player.PlayerFragment
 import com.example.playlistmaker.ui.sharing.ActivityNavigator
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -150,24 +148,6 @@ class SearchFragmentViewModel(
         }
         saveHistoryToSharedPrefs()
     }
-
-//    @Suppress("UNCHECKED_CAST")
-//    fun callPlayerActivity(item: Track) {
-//        activityNavigator.intentCallWithKeySerializable(
-//            PlayerFragment::class.java as Class<Any>,
-//            KEY_INTENT_PLAYER_ACTIVITY,
-//            item
-//        )
-//    }
-
-fun callPlayerActivity(item: Track) {
-    //qqq
-//    activityNavigator.intentCallWithKeySerializable(
-//        PlayerFragment::class.java as Class<Any>,
-//        KEY_INTENT_PLAYER_ACTIVITY,
-//        item
-//    )
-}
 
     private fun initSearch(queryText: String) {
         if (queryText.isNotEmpty()) {

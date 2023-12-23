@@ -14,19 +14,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.models.Playlist
 import com.example.playlistmaker.data.models.Track
-import com.example.playlistmaker.databinding.FragmentLibraryFavoritesBinding
 import com.example.playlistmaker.databinding.FragmentPlayerBinding
 import com.example.playlistmaker.domain.library.TrackStorage
-import com.example.playlistmaker.ui.library.fragments.playlists.recyclerview.PlaylistListAdapter
+import com.example.playlistmaker.domain.model.Playlist
+import com.example.playlistmaker.ui.library.recyclerview.PlaylistListAdapter
 import com.example.playlistmaker.ui.utils.Helpers
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
-
-const val KEY_INTENT_PLAYER_ACTIVITY = "player_intent"
 
 class PlayerFragment : Fragment() {
 
@@ -40,8 +37,11 @@ class PlayerFragment : Fragment() {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     private var playlistList: MutableList<Playlist> = mutableListOf()
+
     private var playlistListAdapter: PlaylistListAdapter? = null
     private lateinit var rvPlaylist: RecyclerView
+
+    private var playlistName: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,13 +55,14 @@ class PlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         track = (requireActivity() as TrackStorage).getTrack()!!
+        initAdapters()
         initObserver()
         clickListenersInit()
         initBottomSheet()
         viewModel.saveValues()
         viewModel.preparePlayer()
         viewModel.checkFavoriteTrackJob()
-        initAdapters()
+
     }
 
     override fun onDestroyView() {
@@ -75,10 +76,51 @@ class PlayerFragment : Fragment() {
     }
 
     private fun initAdapters() {
-        playlistListAdapter =
-            PlaylistListAdapter(playlistList, lifecycleScope, R.layout.playlist_bottom_sheet_item)
         rvPlaylist = requireView().findViewById(R.id.rv_bottom_playlist)
+        playlistListAdapter = PlaylistListAdapter(
+            playlistList,
+            viewLifecycleOwner.lifecycleScope,
+            R.layout.playlist_bottom_sheet_item
+        )
         rvPlaylist.adapter = playlistListAdapter
+    }
+
+    private fun initOnClickBottomSheetPlaylist() {
+        playlistListAdapter!!.setOnClickListener(object : PlaylistListAdapter.OnClickListener {
+            override fun onClick(position: Int, playlist: Playlist) {
+                playlistName = playlist.name
+                callAddTrack(playlist)
+            }
+        })
+    }
+
+    private fun callAddTrack(playlist: Playlist) {
+        viewModel.addTrackToPlaylist(track, playlist)
+    }
+
+    private fun showMessage(messageStatus: MessageStatus) {
+        when (messageStatus) {
+            MessageStatus.TRACK_ADDED -> {
+                Toast.makeText(
+                    requireContext(), getString(R.string.message_add_to_playlist).replace(
+                        REPLACE_MESSAGE_PATTERN,
+                        playlistName
+                    ), Toast.LENGTH_SHORT
+                ).show()
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            }
+
+            MessageStatus.TRACK_EXIST -> {
+                Toast.makeText(
+                    requireContext(), getString(R.string.message_track_exist_playlist).replace(
+                        REPLACE_MESSAGE_PATTERN,
+                        playlistName
+                    ), Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            else -> {}
+        }
     }
 
     private fun initBottomSheet() {
@@ -126,9 +168,12 @@ class PlayerFragment : Fragment() {
             changeIconFavorites()
             Log.d(TAG, "Observe Favorites: $it")
         }
-        viewModel.playlistList.observe(viewLifecycleOwner) {
+        viewModel.getPlaylistList().observe(viewLifecycleOwner) {
             Log.d("Playlist observe: ", it.size.toString())
             addPlaylistToAdapter(it)
+        }
+        viewModel.addedTrackInPlaylist().observe(viewLifecycleOwner) {
+            showMessage(it)
         }
     }
 
@@ -165,7 +210,10 @@ class PlayerFragment : Fragment() {
             .setOnClickListener {
                 findNavController().navigate(R.id.createPlaylistFragment)
             }
+
+        initOnClickBottomSheetPlaylist()
     }
+
 
     private fun showBottomSheet() {
         bottomSheetContainer.visibility = View.VISIBLE
@@ -227,6 +275,7 @@ class PlayerFragment : Fragment() {
     companion object {
         private const val REPLACE_LINK_PATTERN: String = "512x512bb.jpg"
         private val TAG = PlayerFragment::class.simpleName
+        private const val REPLACE_MESSAGE_PATTERN = "[playlistName]"
     }
 
 }

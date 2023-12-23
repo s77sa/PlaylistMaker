@@ -1,11 +1,9 @@
-package com.example.playlistmaker.ui.library.fragments.playlists.recyclerview
+package com.example.playlistmaker.ui.library.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.R
-import com.example.playlistmaker.data.models.Playlist
+import com.example.playlistmaker.domain.model.Playlist
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -26,7 +24,6 @@ class PlaylistListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistListViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(layoutResItem, parent, false)
-            //LayoutInflater.from(parent.context).inflate(R.layout.playlist_item, parent, false)
         return PlaylistListViewHolder(view)
     }
 
@@ -49,7 +46,7 @@ class PlaylistListAdapter(
     }
 
     interface OnClickListener {
-        fun onClick(position: Int, track: Playlist)
+        fun onClick(position: Int, playlist: Playlist)
     }
 
     private fun clickDebounce(): Boolean {
