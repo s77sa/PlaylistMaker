@@ -29,7 +29,6 @@ val appModule = module {
     viewModel<SearchFragmentViewModel> {
         SearchFragmentViewModel(
             trackInteractor = get(),
-            activityNavigator = get(),
             historyInteractor = get()
         )
     }
