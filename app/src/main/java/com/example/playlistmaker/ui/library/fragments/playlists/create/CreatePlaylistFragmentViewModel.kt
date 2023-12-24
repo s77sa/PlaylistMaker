@@ -9,13 +9,13 @@ import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.data.db.converters.PlaylistDbConvertor
 import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.data.privatestorage.PrivateStorage
+import com.example.playlistmaker.domain.db.DbInteractor
 import kotlinx.coroutines.launch
 
 
 class CreatePlaylistFragmentViewModel(
     private val privateStorage: PrivateStorage,
-    private val appDatabase: AppDatabase,
-    private val playlistDbConvertor: PlaylistDbConvertor
+    private val dbInteractor: DbInteractor
 ) : ViewModel() {
 
     private val mutableFileUri = MutableLiveData<Uri?>().apply {  }
@@ -35,9 +35,8 @@ class CreatePlaylistFragmentViewModel(
             mutableFileUri.value?.path,
             0
         )
-        playlistDbConvertor.map(playlist)
         viewModelScope.launch {
-            appDatabase.playlistsDao().addPlaylist(playlistDbConvertor.map(playlist))
+            dbInteractor.addPlaylist(playlist)
         }
     }
 

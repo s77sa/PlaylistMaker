@@ -1,5 +1,6 @@
 package com.example.playlistmaker.ui.root
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -43,15 +44,24 @@ class RootActivity : AppCompatActivity(), TrackStorage {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.createPlaylistFragment -> {
-                    bottomNavigationView.visibility = View.GONE
+                    visibleBottomNav(View.GONE)
+                }
+
+                R.id.playerFragment -> {
+                    visibleBottomNav(View.GONE)
                 }
 
                 else -> {
-                    bottomNavigationView.visibility = View.VISIBLE
+                    visibleBottomNav(View.VISIBLE)
                 }
 
             }
         }
+    }
+
+    private fun visibleBottomNav(visibility: Int){
+        bottomNavigationView.visibility = visibility
+        binding.bottomNavigationSeparator.visibility = visibility
     }
 
     override fun setTrack(track: Track) {

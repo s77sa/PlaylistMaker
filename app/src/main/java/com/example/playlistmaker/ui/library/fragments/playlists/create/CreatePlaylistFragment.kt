@@ -65,7 +65,7 @@ class CreatePlaylistFragment : Fragment() {
 
     private fun initListeners() {
         binding.ivBack.setOnClickListener {
-            callBack()
+            callBackAndCheck()
         }
         binding.ivMain.setOnClickListener {
             callPicker()
@@ -174,8 +174,8 @@ class CreatePlaylistFragment : Fragment() {
         }
     }
 
-    private fun callBack() {
-        if (binding.etName.text.isNotEmpty() || binding.etDesc.text.isNotEmpty()) {
+    private fun callBackAndCheck() {
+        if (binding.etName.text.isNotEmpty() || binding.etDesc.text.isNotEmpty() || viewModel.fileUri.value != null) {
             showMessage()
         } else {
             findNavController().popBackStack()
@@ -196,7 +196,7 @@ class CreatePlaylistFragment : Fragment() {
 
     private fun initCallBack() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            callBack()
+            callBackAndCheck()
         }
     }
 

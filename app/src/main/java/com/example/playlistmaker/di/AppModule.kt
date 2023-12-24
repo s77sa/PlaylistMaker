@@ -37,9 +37,6 @@ val appModule = module {
         PlayerFragmentViewModel(
             track = track,
             get(),
-            get(),
-            get(),
-            get(),
             get()
         )
     }
@@ -59,6 +56,6 @@ val appModule = module {
     }
 
     viewModel<CreatePlaylistFragmentViewModel> {
-        CreatePlaylistFragmentViewModel(get(), get(), get())
+        CreatePlaylistFragmentViewModel(get(), get())
     }
 }

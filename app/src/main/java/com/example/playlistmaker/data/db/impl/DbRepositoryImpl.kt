@@ -7,9 +7,9 @@ import com.example.playlistmaker.data.db.converters.TracksInPlaylistDbConvertor
 import com.example.playlistmaker.data.db.entity.FavoritesTrackEntity
 import com.example.playlistmaker.data.db.entity.PlaylistsEntity
 import com.example.playlistmaker.data.db.entity.TracksInPlaylistsEntity
-import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.data.models.Track
 import com.example.playlistmaker.domain.db.DbRepository
+import com.example.playlistmaker.domain.model.Playlist
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -47,11 +47,37 @@ class DbRepositoryImpl(
     }
 
     override suspend fun countTracksInPlaylists(playlistId: Int): Int {
-       return appDatabase.tracksInPlaylistDao().getCountTracksInPlaylist(playlistId)
+        return appDatabase.tracksInPlaylistDao().getCountTracksInPlaylist(playlistId)
     }
 
     override suspend fun checkTrackInPlaylist(playlistId: Int, trackId: Int): Int {
         return appDatabase.tracksInPlaylistDao().checkTrackInPlaylist(playlistId, trackId)
     }
+
+    override suspend fun addPlaylist(playlist: Playlist) {
+        appDatabase.playlistsDao().addPlaylist(playlistDbConvertor.map(playlist))
+    }
+
+    override suspend fun insertTrackInPlaylist(track: Track, playlistId: Int) {
+        appDatabase.tracksInPlaylistDao().insertTrackInPlaylist(
+            tracksInPlaylistDbConvertor.map(track, playlistId)
+        )
+    }
+
+    override suspend fun insertFavoritesTrack(track: Track) {
+        appDatabase.favoritesTrackDao().insertFavoritesTrack(
+            trackDbConvertor.map(track)
+        )
+    }
+
+    override suspend fun deleteFavoritesTrack(track: Track) {
+        appDatabase.favoritesTrackDao().deleteFavoritesTrack(trackDbConvertor.map(track).trackId)
+    }
+
+    override suspend fun checkFavoritesTrack(track: Track): Boolean {
+        return appDatabase.favoritesTrackDao()
+            .checkFavoritesTrack(trackDbConvertor.map(track).trackId) > 0
+    }
+
 
 }

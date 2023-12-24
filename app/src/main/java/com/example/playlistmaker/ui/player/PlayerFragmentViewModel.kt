@@ -24,9 +24,6 @@ import java.util.Locale
 class PlayerFragmentViewModel(
     private val track: Track,
     private var mediaPlayerInteractor: PlayerInteractor,
-    private val appDatabase: AppDatabase,
-    private val trackDbConvertor: FavoritesTrackDbConvertor,
-    private val tracksInPlaylistDbConvertor: TracksInPlaylistDbConvertor,
     private val dbInteractor: DbInteractor
 ) : ViewModel() {
     init {
@@ -68,9 +65,7 @@ class PlayerFragmentViewModel(
     }
 
     private suspend fun addTrackToPlaylist(track: Track, playlistId: Int) {
-        val trackInPlaylistEntity: TracksInPlaylistsEntity =
-            tracksInPlaylistDbConvertor.map(track, playlistId)
-        appDatabase.tracksInPlaylistDao().insertTrackInPlaylist(trackInPlaylistEntity)
+        dbInteractor.insertTrackInPlaylist(track, playlistId)
     }
 
     fun getPlaylists() {
@@ -124,18 +119,15 @@ class PlayerFragmentViewModel(
     }
 
     private suspend fun checkFavoriteTrack(): Boolean {
-        val trackEntity: FavoritesTrackEntity = trackDbConvertor.map(track)
-        return appDatabase.favoritesTrackDao().checkFavoritesTrack(trackEntity.trackId) > 0
+        return dbInteractor.checkFavoritesTrack(track)
     }
 
     private suspend fun deleteFavoriteTrack() {
-        val trackEntity: FavoritesTrackEntity = trackDbConvertor.map(track)
-        appDatabase.favoritesTrackDao().deleteFavoritesTrack(trackEntity.trackId)
+        dbInteractor.deleteFavoritesTrack(track)
     }
 
     private suspend fun saveFavoriteTrack() {
-        val trackEntity: FavoritesTrackEntity = trackDbConvertor.map(track)
-        appDatabase.favoritesTrackDao().insertFavoritesTrack(trackEntity)
+        dbInteractor.insertFavoritesTrack(track)
     }
 
     fun saveValues() {
