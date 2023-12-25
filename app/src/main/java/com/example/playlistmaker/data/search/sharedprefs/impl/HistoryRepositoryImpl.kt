@@ -2,7 +2,7 @@ package com.example.playlistmaker.data.search.sharedprefs.impl
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
-import com.example.playlistmaker.data.models.Track
+import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.data.models.Tracks
 import com.example.playlistmaker.domain.search.sharedprefs.HistoryRepository
 import com.google.gson.Gson

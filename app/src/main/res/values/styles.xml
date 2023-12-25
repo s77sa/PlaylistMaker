@@ -118,6 +118,9 @@
     <style name="TracksItemCorner">
         <item name="cornerSize">2dp</item>
     </style>
+    <style name="PlaylistItemCorner">
+        <item name="cornerSize">8dp</item>
+    </style>
     <style name="PlayerCornerForMainImage">
         <item name="cornerSize">8dp</item>
     </style>

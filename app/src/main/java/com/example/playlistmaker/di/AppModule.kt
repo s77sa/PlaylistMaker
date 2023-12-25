@@ -1,6 +1,6 @@
 package com.example.playlistmaker.di
 
-import com.example.playlistmaker.data.models.Track
+import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.ui.library.fragments.favorites.FavoritesFragmentViewModel
 import com.example.playlistmaker.ui.library.fragments.playlists.PlaylistsFragmentViewModel
 import com.example.playlistmaker.ui.library.fragments.playlists.create.CreatePlaylistFragmentViewModel

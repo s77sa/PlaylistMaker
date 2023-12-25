@@ -1,6 +1,5 @@
 package com.example.playlistmaker.ui.root
 
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.models.Track
+import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.databinding.ActivityRootBinding
 import com.example.playlistmaker.domain.library.TrackStorage
 import com.google.android.material.bottomnavigation.BottomNavigationView

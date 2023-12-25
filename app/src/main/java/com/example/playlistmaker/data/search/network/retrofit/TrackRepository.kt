@@ -1,6 +1,6 @@
 package com.example.playlistmaker.data.search.network.retrofit
 
-import com.example.playlistmaker.data.models.Track
+import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.data.search.network.retrofit.models.Resource
 import kotlinx.coroutines.flow.Flow
 

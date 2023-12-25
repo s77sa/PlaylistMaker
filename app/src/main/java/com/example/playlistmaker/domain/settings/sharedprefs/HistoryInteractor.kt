@@ -1,6 +1,6 @@
 package com.example.playlistmaker.domain.settings.sharedprefs
 
-import com.example.playlistmaker.data.models.Track
+import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.data.models.Tracks
 
 interface HistoryInteractor {

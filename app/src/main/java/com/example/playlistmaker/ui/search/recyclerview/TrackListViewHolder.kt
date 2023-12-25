@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.ui.utils.Helpers
-import com.example.playlistmaker.data.models.Track
+import com.example.playlistmaker.domain.model.Track
 
 class TrackListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

@@ -1,6 +1,6 @@
 package com.example.playlistmaker.domain.search.impl
 
-import com.example.playlistmaker.data.models.Track
+import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.data.search.network.retrofit.TrackRepository
 import com.example.playlistmaker.data.search.network.retrofit.models.ConnectionStatus
 import com.example.playlistmaker.data.search.network.retrofit.models.Resource

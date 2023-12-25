@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.models.Track
+import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.databinding.FragmentLibraryFavoritesBinding
 import com.example.playlistmaker.domain.library.TrackStorage
 import com.example.playlistmaker.ui.search.recyclerview.TrackListAdapter

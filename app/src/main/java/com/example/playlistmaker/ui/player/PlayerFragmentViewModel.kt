@@ -5,12 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.data.db.AppDatabase
-import com.example.playlistmaker.data.db.converters.FavoritesTrackDbConvertor
-import com.example.playlistmaker.data.db.converters.TracksInPlaylistDbConvertor
-import com.example.playlistmaker.data.db.entity.FavoritesTrackEntity
-import com.example.playlistmaker.data.db.entity.TracksInPlaylistsEntity
-import com.example.playlistmaker.data.models.Track
+import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.data.player.PlayerState
 import com.example.playlistmaker.domain.db.DbInteractor
 import com.example.playlistmaker.domain.model.Playlist
