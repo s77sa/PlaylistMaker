@@ -183,7 +183,7 @@ class CreatePlaylistFragment : Fragment() {
     }
 
     private fun initDialog() {
-        alertDialog = MaterialAlertDialogBuilder(requireContext())
+        alertDialog = MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
             .setTitle(R.string.message_header_create_playlist)
             .setMessage(R.string.message_body_create_playlist)
             .setNeutralButton(R.string.dialog_botton_cancel) { dialog, whitch ->
