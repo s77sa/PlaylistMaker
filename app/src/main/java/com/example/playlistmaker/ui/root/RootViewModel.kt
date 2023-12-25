@@ -6,16 +6,16 @@ import com.example.playlistmaker.ui.utils.ThemeSwitcher
 
 class RootViewModel(
     private var themeInteractor: ThemeInteractor
-) : ViewModel(){
+) : ViewModel() {
     init {
         switchTheme()
     }
 
-    private fun getThemeFromSharedPrefs(): Boolean{
+    private fun getThemeFromSharedPrefs(): Boolean {
         return themeInteractor.restoreTheme()
     }
 
-    fun switchTheme(){
+    fun switchTheme() {
         ThemeSwitcher.switchTheme(getThemeFromSharedPrefs())
     }
 }
