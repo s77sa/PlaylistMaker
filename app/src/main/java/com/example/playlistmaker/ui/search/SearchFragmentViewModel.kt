@@ -37,8 +37,8 @@ class SearchFragmentViewModel(
         MutableLiveData<ActivityState>().apply { ActivityState.HIDE_ALL }
     val searchActivityState: LiveData<ActivityState> = searchActivityStateMutable
 
-    private val searchTrackListMutable = MutableLiveData<List<Track>>()
-    val searchTrackList: LiveData<List<Track>> = searchTrackListMutable
+    private val searchTrackListMutable = MutableLiveData<List<Track>?>()
+    val searchTrackList: LiveData<List<Track>?> = searchTrackListMutable
 
     private val historyTrackListMutable = MutableLiveData<MutableList<Track>>()
     val historyTrackList: LiveData<MutableList<Track>> = historyTrackListMutable
@@ -155,7 +155,7 @@ class SearchFragmentViewModel(
     private fun processResult(foundMovies: List<Track>?, errorMessage: ConnectionStatus) {
         when (errorMessage) {
             ConnectionStatus.SUCCESS -> {
-                if (foundMovies != null) {
+                if (!foundMovies.isNullOrEmpty()) {
                     searchTrackListMutable.value = foundMovies
                     if (foundMovies.isNotEmpty()) {
                         searchActivityStateMutable.value = ActivityState.SEARCH_RESULT

@@ -71,8 +71,10 @@ class SearchFragment : Fragment() {
             Log.d(TAG, "observe searchText = $it")
         }
         viewModel.searchTrackList.observe(viewLifecycleOwner) {
-            addSearchResultToRecycle(it)
-            Log.d(TAG, "observe searchTrackList = ${it.size}")
+            if(!it.isNullOrEmpty()) {
+                addSearchResultToRecycle(it)
+                Log.d(TAG, "observe searchTrackList = ${it.size}")
+            }
         }
         viewModel.historyTrackList.observe(viewLifecycleOwner) {
             addHistoryResultToRecycle(it)
