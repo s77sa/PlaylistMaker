@@ -5,21 +5,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.data.search.models.Track
-import com.example.playlistmaker.data.search.models.Tracks
+import com.example.playlistmaker.data.models.Tracks
 import com.example.playlistmaker.data.search.network.retrofit.models.ConnectionStatus
+import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.domain.search.TrackInteractor
 import com.example.playlistmaker.domain.settings.sharedprefs.HistoryInteractor
-import com.example.playlistmaker.ui.player.KEY_INTENT_PLAYER_ACTIVITY
-import com.example.playlistmaker.ui.player.PlayerActivity
-import com.example.playlistmaker.ui.sharing.ActivityNavigator
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SearchFragmentViewModel(
     private val trackInteractor: TrackInteractor,
-    private val activityNavigator: ActivityNavigator,
     private val historyInteractor: HistoryInteractor
 ) : ViewModel() {
     init {
@@ -29,7 +25,7 @@ class SearchFragmentViewModel(
     companion object {
         private const val HISTORY_COUNT = 10
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private val TAG = SearchFragment::class.simpleName!!
+        private val TAG = SearchFragmentViewModel::class.simpleName
     }
 
     private var searchJob: Job? = null
@@ -41,8 +37,8 @@ class SearchFragmentViewModel(
         MutableLiveData<ActivityState>().apply { ActivityState.HIDE_ALL }
     val searchActivityState: LiveData<ActivityState> = searchActivityStateMutable
 
-    private val searchTrackListMutable = MutableLiveData<List<Track>>()
-    val searchTrackList: LiveData<List<Track>> = searchTrackListMutable
+    private val searchTrackListMutable = MutableLiveData<List<Track>?>()
+    val searchTrackList: LiveData<List<Track>?> = searchTrackListMutable
 
     private val historyTrackListMutable = MutableLiveData<MutableList<Track>>()
     val historyTrackList: LiveData<MutableList<Track>> = historyTrackListMutable
@@ -56,8 +52,9 @@ class SearchFragmentViewModel(
     }
 
     fun setSearchText(value: String) {
-        searchTextMutable.value = value
-        if (value.isNotEmpty()) {
+        Log.d(TAG, "setSearchText = $value")
+        if (searchTextMutable.value != value) {
+            searchTextMutable.value = value
             searchDebounce()
         }
     }
@@ -97,12 +94,12 @@ class SearchFragmentViewModel(
 
     fun checkState() {
         loadHistoryFromSharedPrefs()
-        Log.d(TAG, "checkState")
-        if (searchTextMutable.value?.isEmpty() == true || searchTextMutable.value == null) {
-            Log.d(TAG, "checkState2")
-            showHistory()
-        } else {
-            showHistory()
+        if (searchTextMutable.value.isNullOrEmpty() && !historyTrackListMutable.value.isNullOrEmpty()) {
+            searchActivityStateMutable.value = ActivityState.HISTORY_RESULT
+        } else if (searchTextMutable.value.isNullOrEmpty() && !historyTrackListMutable.value.isNullOrEmpty()) {
+            searchActivityStateMutable.value = ActivityState.HISTORY_RESULT
+        } else if (searchTextMutable.value.isNullOrEmpty() && historyTrackListMutable.value.isNullOrEmpty()) {
+            searchActivityStateMutable.value = ActivityState.HIDE_ALL
         }
     }
 
@@ -110,14 +107,6 @@ class SearchFragmentViewModel(
         Log.d(TAG, "VM ClearHistory")
         historyTrackListMutable.value?.clear()
         saveHistoryToSharedPrefs()
-    }
-
-    private fun showHistory() {
-        if (!historyTrackListMutable.value.isNullOrEmpty()) {
-            searchActivityStateMutable.value = ActivityState.HISTORY_RESULT
-            Log.d(TAG, "checkHistory State = ${searchActivityStateMutable.value}")
-            Log.d(TAG, "checkHistory Size = ${historyTrackListMutable.value?.size}")
-        }
     }
 
     fun addTrackToHistory(item: Track) {
@@ -151,15 +140,6 @@ class SearchFragmentViewModel(
         saveHistoryToSharedPrefs()
     }
 
-    @Suppress("UNCHECKED_CAST")
-    fun callPlayerActivity(item: Track) {
-        activityNavigator.intentCallWithKeySerializable(
-            PlayerActivity::class.java as Class<Any>,
-            KEY_INTENT_PLAYER_ACTIVITY,
-            item
-        )
-    }
-
     private fun initSearch(queryText: String) {
         if (queryText.isNotEmpty()) {
             viewModelScope.launch {
@@ -175,8 +155,8 @@ class SearchFragmentViewModel(
     private fun processResult(foundMovies: List<Track>?, errorMessage: ConnectionStatus) {
         when (errorMessage) {
             ConnectionStatus.SUCCESS -> {
-                if (foundMovies != null) {
-                    searchTrackListMutable.value = foundMovies as List<Track>
+                if (!foundMovies.isNullOrEmpty()) {
+                    searchTrackListMutable.value = foundMovies
                     if (foundMovies.isNotEmpty()) {
                         searchActivityStateMutable.value = ActivityState.SEARCH_RESULT
                     } else {

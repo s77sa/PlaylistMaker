@@ -10,18 +10,21 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.example.playlistmaker.data.search.models.Track
+import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
+import com.example.playlistmaker.domain.library.TrackStorage
+import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.ui.search.recyclerview.TrackListAdapter
 import com.example.playlistmaker.ui.utils.Helpers
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
 
-    companion object{
+    companion object {
         private val TAG = SearchFragment::class.simpleName!!
     }
-    
+
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchFragmentViewModel>()
@@ -68,20 +71,23 @@ class SearchFragment : Fragment() {
             Log.d(TAG, "observe searchText = $it")
         }
         viewModel.searchTrackList.observe(viewLifecycleOwner) {
-            addSearchResultToRecycle(it)
-            Log.d(TAG, "observe searchTrackList = ${it.size}")
+            if(!it.isNullOrEmpty()) {
+                addSearchResultToRecycle(it)
+                Log.d(TAG, "observe searchTrackList = ${it.size}")
+            }
         }
         viewModel.historyTrackList.observe(viewLifecycleOwner) {
             addHistoryResultToRecycle(it)
             Log.d(TAG, "observe historyTrackList = ${it.size}")
         }
         viewModel.searchActivityState.observe(viewLifecycleOwner) {
-            showInvisibleLayout(it)
             Log.d(TAG, "observe ActivityState = $it")
+            showInvisibleLayout(it)
         }
     }
 
     private fun clearHistory() {
+        Log.d(TAG, "clearHistory")
         if (historyTrackList.size > 0) historyTrackList.clear()
         showInvisibleLayout(ActivityState.HIDE_ALL)
         viewModel.clearHistory()
@@ -103,13 +109,14 @@ class SearchFragment : Fragment() {
     }
 
     private fun addSearchResultToRecycle(list: List<Track>) {
+        Log.d(TAG, "addSearchResultToRecycle: ${list.size}")
+        val itemCount = binding.rvSearch.adapter?.itemCount
         searchTrackList.clear()
         searchTrackList.addAll(list)
-        val itemCount = binding.rvSearch.adapter?.itemCount
         if (itemCount != null) {
             binding.rvSearch.adapter?.notifyItemRangeRemoved(0, itemCount)
+            binding.rvSearch.adapter?.notifyItemRangeInserted(0, list.size)
         }
-        binding.rvSearch.adapter?.notifyItemRangeInserted(0, searchTrackList.size)
     }
 
     private fun addHistoryResultToRecycle(list: List<Track>) {
@@ -122,13 +129,16 @@ class SearchFragment : Fragment() {
     }
 
     private fun clearSearchResult() {
-        Log.println(Log.INFO, TAG, "clearSearchRecycle")
-        searchTrackList.clear()
-        val itemCount = binding.rvSearch.adapter?.itemCount
-        if (itemCount != null) {
-            binding.rvSearch.adapter?.notifyItemRangeChanged(0, itemCount)
-        }
+        clearResultFromSearchRecycle()
         viewModel.checkState()
+    }
+
+    private fun clearResultFromSearchRecycle() {
+        val itemCount = binding.rvSearch.adapter?.itemCount
+        searchTrackList.clear()
+        if (itemCount != null) {
+            binding.rvSearch.adapter?.notifyItemRangeRemoved(0, itemCount)
+        }
     }
 
     private fun initTextWatcher() {
@@ -140,12 +150,8 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.ivSearchClear.visibility = clearButtonVisibility(s)
                 val text = binding.etSearch.text.toString()
-                if (text.isNotEmpty()) {
-                    Log.d(TAG, "onTextChanged=$text")
-                    viewModel.setSearchText(text)
-                } else {
-                    showInvisibleLayout(ActivityState.HISTORY_RESULT)
-                }
+                Log.d(TAG, "onTextChanged=$text")
+                viewModel.setSearchText(text)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -172,7 +178,7 @@ class SearchFragment : Fragment() {
     private fun onClickRecyclerViewHistoryItem() {
         rvHistoryAdapter?.setOnClickListener(object : TrackListAdapter.OnClickListener {
             override fun onClick(position: Int, track: Track) {
-                viewModel.callPlayerActivity(track)
+                callPlayerFragment(track)
             }
         })
     }
@@ -186,9 +192,14 @@ class SearchFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
                 viewModel.addTrackToHistory(track)
-                viewModel.callPlayerActivity(track)
+                callPlayerFragment(track)
             }
         })
+    }
+
+    private fun callPlayerFragment(track: Track) {
+        (requireActivity() as TrackStorage).setTrack(track)
+        findNavController().navigate(R.id.playerFragment)
     }
 
     private fun clearButtonListener() {

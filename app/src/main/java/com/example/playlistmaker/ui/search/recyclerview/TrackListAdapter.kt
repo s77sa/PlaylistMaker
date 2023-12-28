@@ -4,13 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.search.models.Track
+import com.example.playlistmaker.domain.model.Track
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class TrackListAdapter(private val data: MutableList<Track>, private val coroutineScope: CoroutineScope) :
+class TrackListAdapter(
+    private val data: MutableList<Track>,
+    private val coroutineScope: CoroutineScope
+) :
     RecyclerView.Adapter<TrackListViewHolder>() {
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L

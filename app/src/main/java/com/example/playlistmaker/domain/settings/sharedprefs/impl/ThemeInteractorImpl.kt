@@ -1,6 +1,6 @@
 package com.example.playlistmaker.domain.settings.sharedprefs.impl
 
-import com.example.playlistmaker.data.settings.sharedprefs.ThemeRepository
+import com.example.playlistmaker.domain.settings.sharedprefs.ThemeRepository
 import com.example.playlistmaker.domain.settings.sharedprefs.ThemeInteractor
 
 class ThemeInteractorImpl(private val repository: ThemeRepository):

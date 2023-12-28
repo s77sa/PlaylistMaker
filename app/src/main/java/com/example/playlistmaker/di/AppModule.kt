@@ -1,9 +1,10 @@
 package com.example.playlistmaker.di
 
-import com.example.playlistmaker.data.search.models.Track
-import com.example.playlistmaker.ui.library.fragments.favorites.FragmentFavoritesViewModel
-import com.example.playlistmaker.ui.library.fragments.playlists.FragmentPlaylistsViewModel
-import com.example.playlistmaker.ui.player.PlayerViewModel
+import com.example.playlistmaker.domain.model.Track
+import com.example.playlistmaker.ui.library.fragments.favorites.FavoritesFragmentViewModel
+import com.example.playlistmaker.ui.library.fragments.playlists.PlaylistsFragmentViewModel
+import com.example.playlistmaker.ui.library.fragments.playlists.create.CreatePlaylistFragmentViewModel
+import com.example.playlistmaker.ui.player.PlayerFragmentViewModel
 import com.example.playlistmaker.ui.root.RootViewModel
 import com.example.playlistmaker.ui.search.SearchFragmentViewModel
 import com.example.playlistmaker.ui.settings.SettingsFragmentViewModel
@@ -28,32 +29,33 @@ val appModule = module {
     viewModel<SearchFragmentViewModel> {
         SearchFragmentViewModel(
             trackInteractor = get(),
-            activityNavigator = get(),
             historyInteractor = get()
         )
     }
 
-    viewModel<PlayerViewModel> { (track: Track) ->
-        PlayerViewModel(
+    viewModel<PlayerFragmentViewModel> { (track: Track) ->
+        PlayerFragmentViewModel(
             track = track,
             get(),
-            get(),
             get()
         )
     }
 
-    viewModel<FragmentFavoritesViewModel> {
-        FragmentFavoritesViewModel(
-            get(),
+    viewModel<FavoritesFragmentViewModel> {
+        FavoritesFragmentViewModel(
             get()
         )
     }
 
-    viewModel<FragmentPlaylistsViewModel> {
-        FragmentPlaylistsViewModel()
+    viewModel<PlaylistsFragmentViewModel> {
+        PlaylistsFragmentViewModel(get())
     }
 
     single<ActivityNavigator> {
         ActivityNavigator(get())
+    }
+
+    viewModel<CreatePlaylistFragmentViewModel> {
+        CreatePlaylistFragmentViewModel(get(), get())
     }
 }

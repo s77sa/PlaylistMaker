@@ -7,16 +7,19 @@ import androidx.room.Room
 import com.example.playlistmaker.BuildConfig
 import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.data.db.converters.FavoritesTrackDbConvertor
+import com.example.playlistmaker.data.db.converters.PlaylistDbConvertor
+import com.example.playlistmaker.data.db.converters.TracksInPlaylistDbConvertor
 import com.example.playlistmaker.data.player.PlayerRepository
-import com.example.playlistmaker.data.player.PlayerRepositoryImpl
+import com.example.playlistmaker.data.player.impl.PlayerRepositoryImpl
+import com.example.playlistmaker.data.privatestorage.PrivateStorage
 import com.example.playlistmaker.data.search.network.retrofit.RetrofitNetworkClient
-import com.example.playlistmaker.domain.search.TrackRepository
+import com.example.playlistmaker.data.search.network.retrofit.TrackRepository
 import com.example.playlistmaker.data.search.network.retrofit.impl.TrackRepositoryImpl
 import com.example.playlistmaker.data.search.network.retrofit.models.ItunesApiService
 import com.example.playlistmaker.data.search.network.retrofit.models.NetworkClient
-import com.example.playlistmaker.data.search.sharedprefs.HistoryRepository
+import com.example.playlistmaker.domain.search.sharedprefs.HistoryRepository
 import com.example.playlistmaker.data.search.sharedprefs.impl.HistoryRepositoryImpl
-import com.example.playlistmaker.data.settings.sharedprefs.ThemeRepository
+import com.example.playlistmaker.domain.settings.sharedprefs.ThemeRepository
 import com.example.playlistmaker.data.settings.sharedprefs.impl.ThemeRepositoryImpl
 import com.example.playlistmaker.data.sharing.ExternalNavigatorRepository
 import com.example.playlistmaker.data.sharing.impl.ExternalNavigatorRepositoryImpl
@@ -99,8 +102,17 @@ val dataModule = module {
 
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, PLAY_LIST_DATABASE_NAME)
+            .fallbackToDestructiveMigration()
             .build()
     }
 
     factory { FavoritesTrackDbConvertor() }
+
+    factory { PlaylistDbConvertor() }
+
+    factory { TracksInPlaylistDbConvertor() }
+
+    single<PrivateStorage> {
+        PrivateStorage(get())
+    }
 }

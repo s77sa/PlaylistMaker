@@ -1,7 +1,7 @@
 package com.example.playlistmaker.domain.settings.sharedprefs
 
-import com.example.playlistmaker.data.search.models.Track
-import com.example.playlistmaker.data.search.models.Tracks
+import com.example.playlistmaker.domain.model.Track
+import com.example.playlistmaker.data.models.Tracks
 
 interface HistoryInteractor {
     fun saveUserHistory(tracks: List<Track>)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Playlist Maker</string>
     <string name="txt_search">Search</string>
     <string name="txt_library">Library</string>
@@ -27,4 +27,17 @@
     <string name="library_new_playlist">New playlist</string>
     <string name="favorites_add">Added to favorites</string>
     <string name="favorites_delete">Removed from favorites</string>
+    <string name="tv_new_playsit">New playlist</string>
+    <string name="et_playlist_name">Name*</string>
+    <string name="et_playlist_desc">Description</string>
+    <string name="btn_playlist_create">Create</string>
+    <string name="message_save_playlist">Playlist \"[playlistName]\" created</string>
+    <string name="tv_playlist_tracks_text">tracks</string>
+    <string name="bottom_sheet_add_to_playlist">Add to playlist</string>
+    <string name="message_header_create_playlist">Finish creating a playlist?</string>
+    <string name="message_body_create_playlist">All unsaved data will be lost</string>
+    <string name="dialog_botton_cancel">Cancel</string>
+    <string name="dialog_botton_complete">Complete</string>
+    <string name="message_add_to_playlist">Added to playlist [playlistName]</string>
+    <string name="message_track_exist_playlist">The track has already been added to the playlist [playlistName]</string>
 </resources>
