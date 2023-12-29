@@ -16,14 +16,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.FragmentCreatePlaylistBinding
+import com.example.playlistmaker.databinding.FragmentPlaylistCreateBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class CreatePlaylistFragment : Fragment() {
 
-    private var _binding: FragmentCreatePlaylistBinding? = null
+    private var _binding: FragmentPlaylistCreateBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<CreatePlaylistFragmentViewModel>()
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
@@ -34,7 +34,7 @@ class CreatePlaylistFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCreatePlaylistBinding.inflate(inflater, container, false)
+        _binding = FragmentPlaylistCreateBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -155,7 +155,7 @@ class CreatePlaylistFragment : Fragment() {
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun setColorNameEditText() {
         if (binding.etName.text.isNotEmpty()) {
-            binding.etName.background = resources.getDrawable(R.drawable.ed_add_playlist_blue)
+            binding.etName.background = resources.getDrawable(R.drawable.ed_add_playlist_blue, )
             binding.tvPlName.visibility = View.VISIBLE
         } else {
             binding.etName.background = resources.getDrawable(R.drawable.ed_add_playlist_grey)
@@ -186,10 +186,10 @@ class CreatePlaylistFragment : Fragment() {
         alertDialog = MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
             .setTitle(R.string.message_header_create_playlist)
             .setMessage(R.string.message_body_create_playlist)
-            .setNeutralButton(R.string.dialog_botton_cancel) { dialog, whitch ->
+            .setNeutralButton(R.string.dialog_botton_cancel) { _, _ ->
 
             }
-            .setPositiveButton(R.string.dialog_botton_complete) { dialog, whitch ->
+            .setPositiveButton(R.string.dialog_botton_complete) { _, _ ->
                 findNavController().popBackStack()
             }
     }

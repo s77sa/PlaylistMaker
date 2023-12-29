@@ -243,7 +243,7 @@
         android:background="#99000000"
         android:visibility="gone" />
 
-    <include layout="@layout/playlist_bottom_sheet" />
+    <include layout="@layout/bottom_sheet_list_playlist" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

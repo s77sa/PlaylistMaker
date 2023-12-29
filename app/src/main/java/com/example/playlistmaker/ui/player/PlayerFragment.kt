@@ -80,7 +80,7 @@ class PlayerFragment : Fragment() {
         playlistListAdapter = PlaylistListAdapter(
             playlistList,
             viewLifecycleOwner.lifecycleScope,
-            R.layout.playlist_bottom_sheet_item
+            R.layout.bottom_sheet_list_playlist_item
         )
         rvPlaylist.adapter = playlistListAdapter
     }
