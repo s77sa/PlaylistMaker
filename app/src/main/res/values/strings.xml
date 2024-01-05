@@ -52,4 +52,7 @@
     <string name="message_add_to_playlist">Добавлено в плейлист [playlistName]</string>
     <string name="message_track_exist_playlist">Трек уже добавлен в плейлист [playlistName]</string>
     <string name="minutes_text">минутаы</string>
+    <string name="message_delete_track">Хотите удалить трек?</string>
+    <string name="message_dialog_negative">НЕТ</string>
+    <string name="message_dialog_positive">ДА</string>
 </resources>

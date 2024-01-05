@@ -47,11 +47,24 @@ class EditPlaylistFragmentViewModel(
         loadPlaylistInformation(playlist)
     }
 
+    fun initDeleteTrack(track: Track) {
+        val playlist = playlistMutable.value
+        Log.d(TAG, "Init drop track: ${track.trackName}")
+        viewModelScope.launch {
+            if (playlist != null) {
+                track.trackId?.let { dbInteractor.deleteTrackFromPlaylist(playlist.id, it) }
+            }
+        }
+        if (playlist != null) {
+            loadPlaylistInformation(playlist)
+        }
+    }
+
     private fun loadPlaylistInformation(playlist: Playlist) {
         getTracksInPlaylist(playlist)
     }
 
-    private fun loadOtherPlaylistInformation(){
+    private fun loadOtherPlaylistInformation() {
         mutablePlaylistName.value = playlistMutable.value?.name
         if (!playlistMutable.value?.description.isNullOrEmpty()) {
             mutablePlaylistDescription.value = playlistMutable.value?.description
@@ -88,14 +101,17 @@ class EditPlaylistFragmentViewModel(
     }
 
     private fun getTracksInPlaylist(playlist: Playlist) {
+        Log.d(TAG, "getTracksInPlaylist")
         viewModelScope.launch {
             dbInteractor
                 .tracksInPlaylists(playlistId = playlist.id)
-                .collect { tracks -> tracksResult(tracks) }
+                .collect { tracks -> tracksResult(tracks)
+                    Log.d(TAG, "getTracksInPlaylist  coroutine: ${tracks.size}")}
         }
     }
 
     private fun tracksResult(tracks: List<Track>) {
+        Log.d(TAG, "tracksResult: ${tracks.size}")
         tracksInPlaylistMutable.value = tracks
         loadOtherPlaylistInformation()
     }

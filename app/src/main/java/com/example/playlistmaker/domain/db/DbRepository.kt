@@ -26,4 +26,6 @@ interface DbRepository {
 
     suspend fun checkFavoritesTrack(track: Track): Boolean
 
+    suspend fun deleteTrackFromPlaylist(playlistId: Int, trackId: Int)
+
 }

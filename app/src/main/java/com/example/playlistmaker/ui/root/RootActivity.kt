@@ -53,6 +53,10 @@ class RootActivity : AppCompatActivity(), TrackStorage, PlaylistStorage {
                     visibleBottomNav(View.GONE)
                 }
 
+                R.id.editPlaylistFragment ->{
+                    visibleBottomNav(View.GONE)
+                }
+
                 else -> {
                     visibleBottomNav(View.VISIBLE)
                 }

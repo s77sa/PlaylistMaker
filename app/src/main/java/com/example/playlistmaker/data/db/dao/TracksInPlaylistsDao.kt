@@ -21,6 +21,9 @@ interface TracksInPlaylistsDao {
     @Query("DELETE FROM tracks_in_playlists_table WHERE playlistId = :playlistId")
     suspend fun deleteAllTrackInPlaylist(playlistId: Int)
 
+    @Query("DELETE FROM tracks_in_playlists_table WHERE playlistId = :playlistId AND trackId = :trackId")
+    suspend fun deleteTrackFromPlaylist(playlistId: Int, trackId: Int)
+
     @Query("SELECT COUNT() FROM tracks_in_playlists_table WHERE playlistId = :playlistId")
     suspend fun getCountTracksInPlaylist(playlistId: Int): Int
 

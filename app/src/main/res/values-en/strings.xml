@@ -41,4 +41,7 @@
     <string name="message_add_to_playlist">Added to playlist [playlistName]</string>
     <string name="message_track_exist_playlist">The track has already been added to the playlist [playlistName]</string>
     <string name="minutes_text">minutes</string>
+    <string name="message_delete_track">Want to delete a track?</string>
+    <string name="message_dialog_negative">NO</string>
+    <string name="message_dialog_positive">YES</string>
 </resources>

@@ -125,14 +125,13 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <include layout="@layout/bottom_sheet_list_tracks" />
+
     <View
         android:id="@+id/overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#99000000"
         android:visibility="gone" />
-
-
-    <include layout="@layout/bottom_sheet_list_tracks" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

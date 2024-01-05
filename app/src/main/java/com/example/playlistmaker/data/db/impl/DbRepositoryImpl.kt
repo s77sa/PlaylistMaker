@@ -79,5 +79,8 @@ class DbRepositoryImpl(
             .checkFavoritesTrack(trackDbConvertor.map(track).trackId) > 0
     }
 
+    override suspend fun deleteTrackFromPlaylist(playlistId: Int, trackId: Int) {
+        return appDatabase.tracksInPlaylistDao().deleteTrackFromPlaylist(playlistId, trackId)
+    }
 
 }

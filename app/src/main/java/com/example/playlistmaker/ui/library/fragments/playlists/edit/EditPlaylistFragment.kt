@@ -16,12 +16,10 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistEditBinding
 import com.example.playlistmaker.domain.library.PlaylistStorage
 import com.example.playlistmaker.domain.library.TrackStorage
-import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.domain.model.Track
-import com.example.playlistmaker.ui.library.fragments.playlists.PlaylistsFragment
-import com.example.playlistmaker.ui.library.recyclerview.PlaylistListAdapter
 import com.example.playlistmaker.ui.search.recyclerview.TrackListAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -38,7 +36,8 @@ class EditPlaylistFragment : Fragment() {
     private var tracksAdapter: TrackListAdapter? = null
     private lateinit var rvTracks: RecyclerView
 
-    //private lateinit var alertDialog: MaterialAlertDialogBuilder
+    private lateinit var alertDialog: MaterialAlertDialogBuilder
+    private var alertDialogTrackItem: Track? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,6 +60,7 @@ class EditPlaylistFragment : Fragment() {
         initObservers()
         initBottomSheet()
         initAdapters()
+        initDeleteDialog()
         initClickListeners()
     }
 
@@ -81,6 +81,7 @@ class EditPlaylistFragment : Fragment() {
             setImageToImageView(it)
         }
         viewModel.tracksInPlaylist.observe(viewLifecycleOwner) {
+            Log.d(TAG, "observer tracks: ${it.size}")
             addTracksToAdapter(it)
         }
     }
@@ -94,19 +95,19 @@ class EditPlaylistFragment : Fragment() {
         rvTracks.adapter = tracksAdapter
     }
 
-    private fun addTracksToAdapter(list: List<Track>){
-        if(list != tracksList){
+    private fun addTracksToAdapter(list: List<Track>) {
+        if (list != tracksList) {
+            val itemCount = rvTracks.adapter?.itemCount
             tracksList.clear()
             tracksList.addAll(list)
-            val itemCount = rvTracks.adapter?.itemCount
-            if (itemCount != null){
+            if (itemCount != null) {
                 rvTracks.adapter?.notifyItemRangeRemoved(0, itemCount)
                 rvTracks.adapter?.notifyItemRangeChanged(0, tracksList.size)
             }
         }
     }
 
-    private fun onClickTrackItem(){
+    private fun onClickTrackItem() {
         tracksAdapter?.setOnClickListener(object : TrackListAdapter.OnClickListener {
             override fun onClick(position: Int, track: Track) {
                 Log.d(TAG, "Click on: ${track.trackName}")
@@ -114,16 +115,41 @@ class EditPlaylistFragment : Fragment() {
             }
         })
 
-        tracksAdapter?.onLongClickListener(object : TrackListAdapter.OnLongClickListener{
+        tracksAdapter?.onLongClickListener(object : TrackListAdapter.OnLongClickListener {
             override fun onLongClick(position: Int, track: Track): Boolean {
                 Log.d(TAG, "Long Click on: ${track.trackName}")
+                alertDialogTrackItem = track
+                alertDialog.show()
+                callOverlay(true)
                 return true
             }
-
         })
     }
 
-    private fun callPlayerFragment(track: Track){
+    private fun initDeleteDialog() {
+        alertDialog =
+            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogPlayListEditTheme)
+                .setMessage(R.string.message_delete_track)
+                .setNegativeButton(R.string.message_dialog_negative) { _, _ ->
+
+                }
+                .setPositiveButton(R.string.message_dialog_positive) { _, _ ->
+                    alertDialogTrackItem?.let {
+                        viewModel.initDeleteTrack(it)
+                        alertDialogTrackItem = null
+                    }
+                }
+    }
+
+    private fun callOverlay(enableOverlay: Boolean) {
+        if (enableOverlay) {
+            binding.overlay.visibility = View.VISIBLE
+        } else {
+            binding.overlay.visibility = View.GONE
+        }
+    }
+
+    private fun callPlayerFragment(track: Track) {
         (requireActivity() as TrackStorage).setTrack(track)
         findNavController().navigate(R.id.playerFragment)
     }
@@ -165,6 +191,10 @@ class EditPlaylistFragment : Fragment() {
             finishFragment()
         }
         onClickTrackItem()
+        alertDialog.setOnDismissListener {
+            Log.d(TAG, "setOnDismissListener")
+            callOverlay(false)
+        }
     }
 
     private fun finishFragment() {
