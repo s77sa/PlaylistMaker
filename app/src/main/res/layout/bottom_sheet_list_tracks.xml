@@ -11,9 +11,6 @@
     app:behavior_hideable="false"
     app:behavior_peekHeight="180dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-    <!--    app:behavior_peekHeight="180dp"-->
-    <!--    app:layout_anchor="@+id/iv_playlist_edit_share"-->
-    <!--    app:layout_anchorGravity="top|end"-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

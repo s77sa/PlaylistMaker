@@ -1,21 +1,26 @@
 package com.example.playlistmaker.ui.library.fragments.playlists.edit
 
 import android.app.ActionBar.LayoutParams
-import android.content.res.Resources
-import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistEditBinding
 import com.example.playlistmaker.domain.library.PlaylistStorage
+import com.example.playlistmaker.domain.library.TrackStorage
+import com.example.playlistmaker.domain.model.Playlist
+import com.example.playlistmaker.domain.model.Track
+import com.example.playlistmaker.ui.library.fragments.playlists.PlaylistsFragment
+import com.example.playlistmaker.ui.library.recyclerview.PlaylistListAdapter
+import com.example.playlistmaker.ui.search.recyclerview.TrackListAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -28,7 +33,10 @@ class EditPlaylistFragment : Fragment() {
 
     private lateinit var bottomSheetContainer: LinearLayout
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
-    //private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
+
+    private var tracksList: MutableList<Track> = mutableListOf()
+    private var tracksAdapter: TrackListAdapter? = null
+    private lateinit var rvTracks: RecyclerView
 
     //private lateinit var alertDialog: MaterialAlertDialogBuilder
 
@@ -50,12 +58,13 @@ class EditPlaylistFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as PlaylistStorage).getPlaylist()
         getPlaylist()
-        initClickListeners()
         initObservers()
         initBottomSheet()
+        initAdapters()
+        initClickListeners()
     }
 
-    private fun initObservers(){
+    private fun initObservers() {
         viewModel.playlistName.observe(viewLifecycleOwner) {
             setValueName(it)
         }
@@ -71,10 +80,56 @@ class EditPlaylistFragment : Fragment() {
         viewModel.fileUri.observe(viewLifecycleOwner) {
             setImageToImageView(it)
         }
+        viewModel.tracksInPlaylist.observe(viewLifecycleOwner) {
+            addTracksToAdapter(it)
+        }
     }
-    
-    private fun setImageToImageView(uri: Uri?){
-        if(uri != null){
+
+    private fun initAdapters() {
+        rvTracks = requireView().findViewById(R.id.rv_bottom_tracks)
+        tracksAdapter = TrackListAdapter(
+            tracksList,
+            viewLifecycleOwner.lifecycleScope
+        )
+        rvTracks.adapter = tracksAdapter
+    }
+
+    private fun addTracksToAdapter(list: List<Track>){
+        if(list != tracksList){
+            tracksList.clear()
+            tracksList.addAll(list)
+            val itemCount = rvTracks.adapter?.itemCount
+            if (itemCount != null){
+                rvTracks.adapter?.notifyItemRangeRemoved(0, itemCount)
+                rvTracks.adapter?.notifyItemRangeChanged(0, tracksList.size)
+            }
+        }
+    }
+
+    private fun onClickTrackItem(){
+        tracksAdapter?.setOnClickListener(object : TrackListAdapter.OnClickListener {
+            override fun onClick(position: Int, track: Track) {
+                Log.d(TAG, "Click on: ${track.trackName}")
+                callPlayerFragment(track)
+            }
+        })
+
+        tracksAdapter?.onLongClickListener(object : TrackListAdapter.OnLongClickListener{
+            override fun onLongClick(position: Int, track: Track): Boolean {
+                Log.d(TAG, "Long Click on: ${track.trackName}")
+                return true
+            }
+
+        })
+    }
+
+    private fun callPlayerFragment(track: Track){
+        (requireActivity() as TrackStorage).setTrack(track)
+        findNavController().navigate(R.id.playerFragment)
+    }
+
+    private fun setImageToImageView(uri: Uri?) {
+        if (uri != null) {
             binding.ivPlaylistArt.setImageURI(uri)
             binding.ivPlaylistArt.layoutParams.width = LayoutParams.MATCH_PARENT
             binding.ivPlaylistArt.layoutParams.height = LayoutParams.MATCH_PARENT
@@ -82,27 +137,25 @@ class EditPlaylistFragment : Fragment() {
 
     }
 
-    private fun setValueName(value: String){
+    private fun setValueName(value: String) {
         binding.tvPlaylistName.text = value
     }
 
-    private fun setValueDescription(value: String?){
-        if(!value.isNullOrEmpty()){
+    private fun setValueDescription(value: String?) {
+        if (!value.isNullOrEmpty()) {
             binding.tvPlaylistDesc.text = value
             binding.tvPlaylistDesc.visibility = View.VISIBLE
-        }
-        else
-        {
+        } else {
             binding.tvPlaylistDesc.visibility = View.GONE
         }
     }
 
-    private fun setValueTime(value: String){
+    private fun setValueTime(value: String) {
         Log.d(TAG, "setValueTime: $value")
         binding.tvPlaylistDuration.text = value
     }
 
-    private fun setValueCount(value: String){
+    private fun setValueCount(value: String) {
         Log.d(TAG, "setValueCount: $value")
         binding.tvPlaylistCount.text = value
     }
@@ -111,6 +164,7 @@ class EditPlaylistFragment : Fragment() {
         binding.playlistEditToolbar.setNavigationOnClickListener {
             finishFragment()
         }
+        onClickTrackItem()
     }
 
     private fun finishFragment() {
@@ -127,33 +181,6 @@ class EditPlaylistFragment : Fragment() {
     private fun initBottomSheet() {
         bottomSheetContainer = requireView().findViewById<LinearLayout>(R.id.bottom_sheet)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
-//        bottomSheetBehavior.state = BottomSheetBehavior
-        //bottomSheetBehavior.peekHeight = getHeight()
-
-    }
-
-    private fun getHeight(): Int {
-
-        val dm = Resources.getSystem().displayMetrics
-        Log.d(TAG, "heightPixels: ${dm.heightPixels} widthPixels: ${dm.widthPixels}")
-        val rect = dm.run { Rect(0, 0, heightPixels, widthPixels) }
-        Log.d(TAG, "rect heightPixels: ${rect.width()}")
-//        return rect.height()
-//        val display = Resources.getSystem().displayMetrics.densityDpi
-//
-        val location = IntArray(2)
-        binding.tvPlaylistName.getLocationOnScreen(location)
-        val x = location[0]
-        val y = location[1]
-
-        Log.d(TAG, "$x $y")
-//        val value = binding.plEditGuideline.measuredWidth
-////        val value = (location[1].toFloat() * 0.75f).toInt()
-////        val value = display
-////
-//        Log.d(TAG, value.toString())
-
-        return y
     }
 
     companion object {
