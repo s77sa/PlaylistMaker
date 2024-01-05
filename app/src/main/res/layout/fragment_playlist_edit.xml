@@ -9,6 +9,7 @@
     tools:context=".ui.library.fragments.playlists.edit.EditPlaylistFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -19,39 +20,34 @@
             android:orientation="vertical"
             app:layout_constraintGuide_begin="16dp" />
 
+        <FrameLayout
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="360dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_playlist_art"
+                android:layout_width="236dp"
+                android:layout_height="234dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/trackImage"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_playlist_stub_big"
+                app:layout_constraintDimensionRatio="1:1" />
+        </FrameLayout>
+
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/playlist_edit_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:logo="@drawable/ic_arrow" />
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="360dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </View>
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iv_playlist_art"
-            android:layout_width="236dp"
-            android:layout_height="234dp"
-            android:contentDescription="@string/trackImage"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_playlist_stub_big"
-            app:layout_constraintBottom_toBottomOf="@+id/view"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@+id/view"
-            app:layout_constraintStart_toStartOf="@+id/view"
-            app:layout_constraintTop_toTopOf="@+id/view"
-            app:shapeAppearanceOverlay="@style/PlayerCornerForMainImage" />
+            app:navigationIcon="@drawable/ic_arrow" />
 
         <TextView
             android:id="@+id/tv_playlist_name"
@@ -65,10 +61,11 @@
             tools:text="Best Playlist" />
 
         <TextView
-            android:id="@+id/tv_playlist_year"
+            android:id="@+id/tv_playlist_desc"
             style="@style/PlaylistInformationTextView"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/ys_display_regular"
+            android:visibility="gone"
             app:layout_constrainedWidth="true"
             app:layout_constraintStart_toStartOf="@+id/left_guide"
             app:layout_constraintTop_toBottomOf="@+id/tv_playlist_name"
@@ -80,11 +77,10 @@
             android:layout_marginTop="8dp"
             android:ellipsize="end"
             android:fontFamily="@font/ys_display_regular"
-            android:text="@string/track_name"
             app:drawableRightCompat="@drawable/ic_ellipse_black"
             app:layout_constrainedWidth="true"
             app:layout_constraintStart_toStartOf="@+id/left_guide"
-            app:layout_constraintTop_toBottomOf="@+id/tv_playlist_year"
+            app:layout_constraintTop_toBottomOf="@+id/tv_playlist_desc"
             tools:text="300 минут" />
 
         <TextView
@@ -92,7 +88,6 @@
             style="@style/PlaylistInformationTextView"
             android:layout_marginStart="0dp"
             android:fontFamily="@font/ys_display_regular"
-            android:text="@string/track_name"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="@+id/tv_playlist_duration"
             app:layout_constraintStart_toEndOf="@+id/tv_playlist_duration"
@@ -100,25 +95,33 @@
             tools:text="532 трека" />
 
         <ImageView
-            android:id="@+id/iv_playlist_share"
+            android:id="@+id/iv_playlist_edit_share"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginTop="16dp"
+            android:contentDescription="@string/content_description"
             app:layout_constraintStart_toStartOf="@+id/left_guide"
             app:layout_constraintTop_toBottomOf="@+id/tv_playlist_duration"
-            app:srcCompat="@drawable/ic_share"
-            android:contentDescription="@string/content_description" />
+            app:srcCompat="@drawable/ic_share" />
 
         <ImageView
             android:id="@+id/iv_playlist_more"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:contentDescription="@string/content_description"
-            app:layout_constraintStart_toEndOf="@+id/iv_playlist_share"
+            app:layout_constraintStart_toEndOf="@+id/iv_playlist_edit_share"
             app:layout_constraintTop_toBottomOf="@+id/tv_playlist_duration"
             app:srcCompat="@drawable/ic_more" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/pl_edit_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="512dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -128,6 +131,7 @@
         android:layout_height="match_parent"
         android:background="#99000000"
         android:visibility="gone" />
+
 
     <include layout="@layout/bottom_sheet_list_tracks" />
 

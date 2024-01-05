@@ -199,7 +199,7 @@ class PlayerFragment : Fragment() {
     }
 
     private fun clickListenersInit() {
-        binding.ivPlayerBack.setOnClickListener { finishActivity() }
+        binding.ivPlayerBack.setOnClickListener { finishFragment() }
         binding.ivPlay.setOnClickListener { startPlaying() }
         binding.ivFavoriteBorder.setOnClickListener { onClickFavorites() }
         binding.ivPlaylist.setOnClickListener { showBottomSheet() }
@@ -236,7 +236,7 @@ class PlayerFragment : Fragment() {
         viewModel.playbackControl()
     }
 
-    private fun finishActivity() {
+    private fun finishFragment() {
         findNavController().popBackStack()
     }
 

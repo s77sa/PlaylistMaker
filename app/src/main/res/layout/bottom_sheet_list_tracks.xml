@@ -8,9 +8,12 @@
     android:background="@drawable/player_bottom_sheet"
     android:orientation="vertical"
     android:visibility="visible"
-    app:behavior_hideable="true"
-    app:behavior_peekHeight="240dp"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="180dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+    <!--    app:behavior_peekHeight="180dp"-->
+    <!--    app:layout_anchor="@+id/iv_playlist_edit_share"-->
+    <!--    app:layout_anchorGravity="top|end"-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

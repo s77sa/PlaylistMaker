@@ -1,16 +1,17 @@
 package com.example.playlistmaker.ui.library.fragments.playlists
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentLibraryPlaylistsBinding
+import com.example.playlistmaker.domain.library.PlaylistStorage
 import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.ui.library.recyclerview.PlaylistListAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -35,10 +36,10 @@ class PlaylistsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
-        initListeners()
         initAdapters()
         viewModel.getPlaylists()
         checkVisibility()
+        initClickListeners()
     }
 
     private fun initObservers() {
@@ -48,20 +49,25 @@ class PlaylistsFragment : Fragment() {
         }
     }
 
-    private fun initListeners() {
+    private fun initClickListeners() {
         binding.btnNewPlaylist.setOnClickListener {
             callAddNewPlaylist()
         }
-        onClickPlaylist()
+        onClickPlaylistItem()
     }
 
-    private fun onClickPlaylist() {
+    private fun onClickPlaylistItem() {
         playlistListAdapter?.setOnClickListener(object : PlaylistListAdapter.OnClickListener {
             override fun onClick(position: Int, playlist: Playlist) {
-                val message = "test"
-                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                Log.d(TAG, "Click to: ${playlist.name}")
+                callEditPlaylistFragment(playlist)
             }
         })
+    }
+
+    private fun callEditPlaylistFragment(playlist: Playlist) {
+        (requireActivity() as PlaylistStorage).setPlaylist(playlist)
+        findNavController().navigate(R.id.editPlaylistFragment)
     }
 
     private fun callAddNewPlaylist() {
@@ -106,6 +112,8 @@ class PlaylistsFragment : Fragment() {
         }
 
         private const val RECYCLERVIEW_COLUMN = 2
+
+        private val TAG = PlaylistsFragment::class.java.simpleName
 
     }
 }
