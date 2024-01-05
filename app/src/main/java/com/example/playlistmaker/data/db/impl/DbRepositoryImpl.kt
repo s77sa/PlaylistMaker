@@ -83,4 +83,12 @@ class DbRepositoryImpl(
         return appDatabase.tracksInPlaylistDao().deleteTrackFromPlaylist(playlistId, trackId)
     }
 
+    override suspend fun deleteAllTrackInPlaylist(playlistId: Int){
+        return appDatabase.tracksInPlaylistDao().deleteAllTrackInPlaylist(playlistId)
+    }
+
+    override suspend fun deletePlaylist(id: Int){
+        return appDatabase.playlistsDao().deletePlaylist(id)
+    }
+
 }

@@ -52,4 +52,12 @@ class DbInteractorImpl(
     override suspend fun deleteTrackFromPlaylist(playlistId: Int, trackId: Int) {
         return dbRepository.deleteTrackFromPlaylist(playlistId, trackId)
     }
+
+    override suspend fun deleteAllTrackInPlaylist(playlistId: Int) {
+        return dbRepository.deleteAllTrackInPlaylist(playlistId)
+    }
+
+    override suspend fun deletePlaylist(id: Int) {
+        return dbRepository.deletePlaylist(id)
+    }
 }

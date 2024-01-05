@@ -32,7 +32,7 @@
         tools:layout="@layout/fragment_player" />
     <fragment
         android:id="@+id/editPlaylistFragment"
-        android:name="com.example.playlistmaker.ui.library.fragments.playlists.edit.EditPlaylistFragment"
+        android:name="com.example.playlistmaker.ui.library.fragments.playlists.info.InfoPlaylistFragment"
         android:label="fragment_playlist_edit"
         tools:layout="@layout/fragment_playlist_edit" />
 </navigation>

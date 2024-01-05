@@ -44,4 +44,8 @@
     <string name="message_delete_track">Want to delete a track?</string>
     <string name="message_dialog_negative">NO</string>
     <string name="message_dialog_positive">YES</string>
+    <string name="extra_share">Share</string>
+    <string name="extra_edit">Edit information</string>
+    <string name="extra_delete_playlist">Delete playlist</string>
+    <string name="message_delete_playlist">Want to delete the playlist «[playlistName]»?</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.library.fragments.playlists.edit
+package com.example.playlistmaker.ui.library.fragments.playlists.info
 
 import android.content.Context
 import android.net.Uri
@@ -6,17 +6,17 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.data.privatestorage.PrivateStorage
 import com.example.playlistmaker.domain.db.DbInteractor
 import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.domain.model.Track
+import com.example.playlistmaker.domain.sharing.ExternalNavigatorInteractor
 import com.example.playlistmaker.ui.utils.Helpers
 import kotlinx.coroutines.launch
 
 
-class EditPlaylistFragmentViewModel(
+class InfoPlaylistFragmentViewModel(
     private val context: Context,
-    private val privateStorage: PrivateStorage,
+    private val externalNavigatorInteractor: ExternalNavigatorInteractor,
     private val dbInteractor: DbInteractor
 ) : ViewModel() {
 
@@ -41,13 +41,51 @@ class EditPlaylistFragmentViewModel(
     private val playlistMutable = MutableLiveData<Playlist>().apply { }
     val playlist get() = playlistMutable
 
+    fun initDeletePlaylist(){
+        val playlistId: Int = playlist.value?.id ?: -1
+        callDeletePlaylist(playlistId)
+        callDeleteAllTracks(playlistId)
+    }
+
+    private fun callDeletePlaylist(playlistId: Int){
+        viewModelScope.launch{
+            dbInteractor.deletePlaylist(playlistId)
+        }
+    }
+
+    private fun callDeleteAllTracks(playlistId: Int){
+        viewModelScope.launch{
+            dbInteractor.deleteAllTrackInPlaylist(playlistId)
+        }
+    }
+
+    fun callSharePlaylist(){
+        externalNavigatorInteractor.intentSend(generateSendMessage())
+    }
+
+    private fun generateSendMessage(): String{
+        var message: String? = null
+        message = "${playlistMutable.value?.name}\n${playlistMutable.value?.description}"
+        val tracks = tracksInPlaylistMutable.value
+        var count = 0
+        if (tracks != null) {
+            for(track in tracks){
+                count++
+                val duration = track.trackTimeMillis?.let { Helpers.millisToString(it) }
+                message += "\n${count}. ${track.artistName} - ${track.trackName} ($duration)"
+            }
+        }
+        Log.d(TAG,message)
+        return message
+    }
+
     fun setPlaylist(playlist: Playlist) {
         Log.d(TAG, "playlist.name = ${playlist.name}")
         playlistMutable.value = playlist
         loadPlaylistInformation(playlist)
     }
 
-    fun initDeleteTrack(track: Track) {
+    fun callDeleteTrack(track: Track) {
         val playlist = playlistMutable.value
         Log.d(TAG, "Init drop track: ${track.trackName}")
         viewModelScope.launch {
@@ -117,7 +155,7 @@ class EditPlaylistFragmentViewModel(
     }
 
     companion object {
-        private val TAG = EditPlaylistFragmentViewModel::class.java.simpleName
+        private val TAG = InfoPlaylistFragmentViewModel::class.java.simpleName
     }
 
 }

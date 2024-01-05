@@ -28,4 +28,8 @@ interface DbRepository {
 
     suspend fun deleteTrackFromPlaylist(playlistId: Int, trackId: Int)
 
+    suspend fun deleteAllTrackInPlaylist(playlistId: Int)
+
+    suspend fun deletePlaylist(id: Int)
+
 }
