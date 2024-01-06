@@ -35,6 +35,7 @@
     <string name="tracks_text">tracks</string>
     <string name="bottom_sheet_add_to_playlist">Add to playlist</string>
     <string name="message_header_create_playlist">Finish creating a playlist?</string>
+    <string name="message_header_edit_playlist">Finish editing playlist?</string>
     <string name="message_body_create_playlist">All unsaved data will be lost</string>
     <string name="dialog_botton_cancel">Cancel</string>
     <string name="dialog_botton_complete">Complete</string>
@@ -48,4 +49,6 @@
     <string name="extra_edit">Edit information</string>
     <string name="extra_delete_playlist">Delete playlist</string>
     <string name="message_delete_playlist">Want to delete the playlist «[playlistName]»?</string>
+    <string name="tv_edit_playlist">Edit playlist</string>
+    <string name="btn_save">Save</string>
 </resources>

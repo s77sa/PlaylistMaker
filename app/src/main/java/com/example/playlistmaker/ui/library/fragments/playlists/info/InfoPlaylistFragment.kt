@@ -14,7 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.FragmentPlaylistEditBinding
+import com.example.playlistmaker.databinding.FragmentPlaylistInfoBinding
 import com.example.playlistmaker.domain.library.PlaylistStorage
 import com.example.playlistmaker.domain.library.TrackStorage
 import com.example.playlistmaker.domain.model.Playlist
@@ -27,7 +27,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class InfoPlaylistFragment : Fragment() {
 
-    private var _binding: FragmentPlaylistEditBinding? = null
+    private var _binding: FragmentPlaylistInfoBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<InfoPlaylistFragmentViewModel>()
 
@@ -44,13 +44,13 @@ class InfoPlaylistFragment : Fragment() {
     private lateinit var deletePlaylistDialog: MaterialAlertDialogBuilder
     private lateinit var deleteTrackDialog: MaterialAlertDialogBuilder
     private var alertDialogTrackItem: Track? = null
-    private var alertDialogPlaylistItem: Playlist? = null
+    private var playlist: Playlist? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentPlaylistEditBinding.inflate(inflater, container, false)
+        _binding = FragmentPlaylistInfoBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -62,7 +62,7 @@ class InfoPlaylistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        alertDialogPlaylistItem = (requireActivity() as PlaylistStorage).getPlaylist()
+        playlist = (requireActivity() as PlaylistStorage).getPlaylist()
         getPlaylist()
         initObservers()
         initBottomSheet()
@@ -95,11 +95,12 @@ class InfoPlaylistFragment : Fragment() {
     }
 
     private fun callEditPlaylist() {
-
+        playlist?.let { (requireActivity() as PlaylistStorage).setPlaylist(it) }
+        findNavController().navigate(R.id.editPlaylistFragment)
     }
 
     private fun callDeletePlaylist() {
-        val message: String? = alertDialogPlaylistItem?.name?.let {
+        val message: String? = playlist?.name?.let {
             getString(R.string.message_delete_playlist).toString().replace(
                 MESSAGE_REPLACE_PATTERN,
                 it

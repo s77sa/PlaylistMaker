@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:visibility="visible"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="200dp"
+    app:behavior_peekHeight="140dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <androidx.constraintlayout.widget.ConstraintLayout

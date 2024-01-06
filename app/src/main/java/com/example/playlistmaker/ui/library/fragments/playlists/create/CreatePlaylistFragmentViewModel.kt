@@ -5,20 +5,18 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.data.db.AppDatabase
-import com.example.playlistmaker.data.db.converters.PlaylistDbConvertor
-import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.data.privatestorage.PrivateStorage
 import com.example.playlistmaker.domain.db.DbInteractor
+import com.example.playlistmaker.domain.model.Playlist
 import kotlinx.coroutines.launch
 
 
-class CreatePlaylistFragmentViewModel(
+open class CreatePlaylistFragmentViewModel(
     private val privateStorage: PrivateStorage,
     private val dbInteractor: DbInteractor
 ) : ViewModel() {
 
-    private val mutableFileUri = MutableLiveData<Uri?>().apply {  }
+    private val mutableFileUri = MutableLiveData<Uri?>().apply { }
     val fileUri get() = mutableFileUri
 
     private val mutablePlaylistName = MutableLiveData<String>().apply { }
@@ -27,7 +25,7 @@ class CreatePlaylistFragmentViewModel(
     private val mutablePlaylistDescription = MutableLiveData<String>().apply { }
     val playlistDescription get() = mutablePlaylistDescription
 
-    fun savePlaylist() {
+    open fun savePlaylist() {
         val playlist: Playlist = Playlist(
             0,
             mutablePlaylistName.value!!,
@@ -60,7 +58,7 @@ class CreatePlaylistFragmentViewModel(
     }
 
     companion object {
-        private val TAG = CreatePlaylistFragmentViewModel::class.simpleName
+        val TAG = CreatePlaylistFragmentViewModel::class.simpleName
     }
 
 }

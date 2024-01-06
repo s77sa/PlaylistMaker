@@ -4,6 +4,7 @@ import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.ui.library.fragments.favorites.FavoritesFragmentViewModel
 import com.example.playlistmaker.ui.library.fragments.playlists.PlaylistsFragmentViewModel
 import com.example.playlistmaker.ui.library.fragments.playlists.create.CreatePlaylistFragmentViewModel
+import com.example.playlistmaker.ui.library.fragments.playlists.edit.EditPlaylistFragmentViewModel
 import com.example.playlistmaker.ui.library.fragments.playlists.info.InfoPlaylistFragmentViewModel
 import com.example.playlistmaker.ui.player.PlayerFragmentViewModel
 import com.example.playlistmaker.ui.root.RootViewModel
@@ -62,5 +63,9 @@ val appModule = module {
 
     viewModel<InfoPlaylistFragmentViewModel> {
         InfoPlaylistFragmentViewModel(get(), get(), get())
+    }
+
+    viewModel<EditPlaylistFragmentViewModel> {
+        EditPlaylistFragmentViewModel(get(), get())
     }
 }

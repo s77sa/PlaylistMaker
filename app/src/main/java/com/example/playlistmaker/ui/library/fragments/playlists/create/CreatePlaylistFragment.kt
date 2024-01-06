@@ -21,14 +21,14 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class CreatePlaylistFragment : Fragment() {
+open class CreatePlaylistFragment : Fragment() {
 
     private var _binding: FragmentPlaylistCreateBinding? = null
-    private val binding get() = _binding!!
-    private val viewModel by viewModel<CreatePlaylistFragmentViewModel>()
+    open val binding get() = _binding!!
+    open val viewModel by viewModel<CreatePlaylistFragmentViewModel>()
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
 
-    private lateinit var alertDialog: MaterialAlertDialogBuilder
+    open lateinit var alertDialog: MaterialAlertDialogBuilder
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

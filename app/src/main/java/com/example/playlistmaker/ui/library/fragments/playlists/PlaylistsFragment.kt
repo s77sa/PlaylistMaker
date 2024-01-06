@@ -60,14 +60,14 @@ class PlaylistsFragment : Fragment() {
         playlistListAdapter?.setOnClickListener(object : PlaylistListAdapter.OnClickListener {
             override fun onClick(position: Int, playlist: Playlist) {
                 Log.d(TAG, "Click to: ${playlist.name}")
-                callEditPlaylistFragment(playlist)
+                callInfoPlaylistFragment(playlist)
             }
         })
     }
 
-    private fun callEditPlaylistFragment(playlist: Playlist) {
+    private fun callInfoPlaylistFragment(playlist: Playlist) {
         (requireActivity() as PlaylistStorage).setPlaylist(playlist)
-        findNavController().navigate(R.id.editPlaylistFragment)
+        findNavController().navigate(R.id.infoPlaylistFragment)
     }
 
     private fun callAddNewPlaylist() {
