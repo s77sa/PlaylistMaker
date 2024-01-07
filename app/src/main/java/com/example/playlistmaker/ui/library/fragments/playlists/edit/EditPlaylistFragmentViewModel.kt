@@ -1,7 +1,7 @@
 package com.example.playlistmaker.ui.library.fragments.playlists.edit
 
 import android.net.Uri
-import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.data.privatestorage.PrivateStorage
 import com.example.playlistmaker.domain.db.DbInteractor
@@ -17,6 +17,9 @@ class EditPlaylistFragmentViewModel(privateStorage: PrivateStorage, dbInteractor
     private var playlistId: Int = 0
     private var playlistUri: String? = null
 
+    private val mutablePlaylistData = MutableLiveData<Playlist>().apply { }
+    val playlistData get() = mutablePlaylistData
+
     override fun savePlaylist() {
 
         val playlist: Playlist? = super.playlistName.value?.let { name ->
@@ -28,7 +31,7 @@ class EditPlaylistFragmentViewModel(privateStorage: PrivateStorage, dbInteractor
                 0
             )
         }
-        Log.d(TAG, "override savePlaylist ${playlist.toString()}")
+        mutablePlaylistData.value = playlist
         viewModelScope.launch {
             if (playlist != null) {
                 dbInteractor.updatePlaylist(playlist)

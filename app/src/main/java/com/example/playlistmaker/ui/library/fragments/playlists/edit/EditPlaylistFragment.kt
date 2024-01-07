@@ -21,6 +21,13 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
         playlist = (requireActivity() as PlaylistStorage).getPlaylist()
         redefineMessage()
         loadCurrentPlaylist()
+        initObserver()
+    }
+
+    private fun initObserver() {
+        viewModel.playlistData.observe(viewLifecycleOwner) {
+            (requireActivity() as PlaylistStorage).setPlaylist(it)
+        }
     }
 
     private fun redefineMessage() {

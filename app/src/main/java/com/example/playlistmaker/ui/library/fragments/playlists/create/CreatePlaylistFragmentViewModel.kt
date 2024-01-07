@@ -25,6 +25,7 @@ open class CreatePlaylistFragmentViewModel(
     private val mutablePlaylistDescription = MutableLiveData<String>().apply { }
     open val playlistDescription get() = mutablePlaylistDescription
 
+
     open fun savePlaylist() {
         val playlist = Playlist(
             0,

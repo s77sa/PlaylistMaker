@@ -75,7 +75,7 @@ open class CreatePlaylistFragment : Fragment() {
         }
     }
 
-    private fun callSavePlaylist() {
+    open fun callSavePlaylist() {
         viewModel.savePlaylist()
         callMessageSavePlaylist()
         findNavController().popBackStack()

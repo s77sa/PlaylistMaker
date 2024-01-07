@@ -263,6 +263,7 @@ class InfoPlaylistFragment : Fragment() {
         val playlist = (requireActivity() as PlaylistStorage).getPlaylist()
         if (playlist != null) {
             viewModel.setPlaylist(playlist)
+            Log.d(TAG, "getPlaylist: ${playlist.name}")
         }
     }
 
