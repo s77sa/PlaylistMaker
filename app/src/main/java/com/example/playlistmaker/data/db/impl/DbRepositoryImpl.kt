@@ -91,4 +91,9 @@ class DbRepositoryImpl(
         return appDatabase.playlistsDao().deletePlaylist(id)
     }
 
+    override suspend fun updatePlaylist(playlist: Playlist) {
+        val playlistsEntity = playlistDbConvertor.map(playlist)
+        appDatabase.playlistsDao().updatePlaylist(playlistsEntity)
+    }
+
 }

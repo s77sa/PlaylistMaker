@@ -81,7 +81,7 @@ open class CreatePlaylistFragment : Fragment() {
         findNavController().popBackStack()
     }
 
-    private fun callMessageSavePlaylist() {
+    open fun callMessageSavePlaylist() {
         val message: String =
             getString(R.string.message_save_playlist).replace(
                 MESSAGE_REPLACE_PATTERN,
@@ -155,7 +155,7 @@ open class CreatePlaylistFragment : Fragment() {
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun setColorNameEditText() {
         if (binding.etName.text.isNotEmpty()) {
-            binding.etName.background = resources.getDrawable(R.drawable.ed_add_playlist_blue, )
+            binding.etName.background = resources.getDrawable(R.drawable.ed_add_playlist_blue)
             binding.tvPlName.visibility = View.VISIBLE
         } else {
             binding.etName.background = resources.getDrawable(R.drawable.ed_add_playlist_grey)
@@ -206,7 +206,7 @@ open class CreatePlaylistFragment : Fragment() {
 
     companion object {
         private val TAG = CreatePlaylistFragment::class.simpleName
-        private const val MESSAGE_REPLACE_PATTERN = "[playlistName]"
+        const val MESSAGE_REPLACE_PATTERN = "[playlistName]"
     }
 
 }

@@ -43,6 +43,7 @@
     <string name="et_playlist_desc">Описание</string>
     <string name="btn_playlist_create">Создать</string>
     <string name="message_save_playlist">Плейлист \"[playlistName]\" создан</string>
+    <string name="message_edit_playlist">Плейлист \"[playlistName]\" сохранен</string>
     <string name="tracks_text">трекаов</string>
     <string name="bottom_sheet_add_to_playlist">Добавить в плейлист</string>
     <string name="message_header_create_playlist">Завершить создание плейлиста?</string>

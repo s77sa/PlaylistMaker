@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.playlistmaker.data.db.entity.PlaylistsEntity
 
 @Dao
@@ -17,5 +18,8 @@ interface PlaylistDao {
 
     @Query("SELECT * FROM playlists_table ORDER BY id DESC")
     suspend fun getPlaylist(): List<PlaylistsEntity>
+
+    @Update
+    suspend fun updatePlaylist(playlist: PlaylistsEntity)
 
 }

@@ -32,6 +32,7 @@
     <string name="et_playlist_desc">Description</string>
     <string name="btn_playlist_create">Create</string>
     <string name="message_save_playlist">Playlist \"[playlistName]\" created</string>
+    <string name="message_edit_playlist">Playlist \"[playlistName]\" saved</string>
     <string name="tracks_text">tracks</string>
     <string name="bottom_sheet_add_to_playlist">Add to playlist</string>
     <string name="message_header_create_playlist">Finish creating a playlist?</string>

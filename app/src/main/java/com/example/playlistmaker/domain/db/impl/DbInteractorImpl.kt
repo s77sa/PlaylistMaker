@@ -1,9 +1,9 @@
 package com.example.playlistmaker.domain.db.impl
 
-import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.domain.db.DbInteractor
 import com.example.playlistmaker.domain.db.DbRepository
 import com.example.playlistmaker.domain.model.Playlist
+import com.example.playlistmaker.domain.model.Track
 import kotlinx.coroutines.flow.Flow
 
 class DbInteractorImpl(
@@ -59,5 +59,9 @@ class DbInteractorImpl(
 
     override suspend fun deletePlaylist(id: Int) {
         return dbRepository.deletePlaylist(id)
+    }
+
+    override suspend fun updatePlaylist(playlist: Playlist) {
+        dbRepository.updatePlaylist(playlist)
     }
 }

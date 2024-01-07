@@ -30,4 +30,6 @@ interface DbInteractor {
     suspend fun deleteAllTrackInPlaylist(playlistId: Int)
 
     suspend fun deletePlaylist(id: Int)
+
+    suspend fun updatePlaylist(playlist: Playlist)
 }
