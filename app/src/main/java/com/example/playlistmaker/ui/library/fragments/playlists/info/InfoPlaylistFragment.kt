@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -91,6 +92,17 @@ class InfoPlaylistFragment : Fragment() {
         }
         viewModel.tracksInPlaylist.observe(viewLifecycleOwner) {
             addTracksToAdapter(it)
+            checkShowInvisibleView()
+        }
+    }
+
+    private fun checkShowInvisibleView() {
+        if (tracksList.size > 0) {
+            binding.root.findViewById<LinearLayout>(R.id.tracks_not_exist).visibility = View.GONE
+            binding.root.findViewById<ScrollView>(R.id.tracks_exist).visibility = View.VISIBLE
+        } else {
+            binding.root.findViewById<LinearLayout>(R.id.tracks_not_exist).visibility = View.VISIBLE
+            binding.root.findViewById<ScrollView>(R.id.tracks_exist).visibility = View.GONE
         }
     }
 

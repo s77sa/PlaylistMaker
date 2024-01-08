@@ -24,6 +24,7 @@
     <string name="library_tabLayout_playLists">Playlists</string>
     <string name="favorites_is_empty">Your library is empty</string>
     <string name="playlists_is_empty">You have not created\nany playlist</string>
+    <string name="tracks_in_playlists_is_empty">You haven\'t added\nany tracks</string>
     <string name="library_new_playlist">New playlist</string>
     <string name="favorites_add">Added to favorites</string>
     <string name="favorites_delete">Removed from favorites</string>

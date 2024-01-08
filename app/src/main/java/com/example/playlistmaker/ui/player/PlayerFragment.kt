@@ -62,7 +62,6 @@ class PlayerFragment : Fragment() {
         viewModel.saveValues()
         viewModel.preparePlayer()
         viewModel.checkFavoriteTrackJob()
-
     }
 
     override fun onDestroyView() {
