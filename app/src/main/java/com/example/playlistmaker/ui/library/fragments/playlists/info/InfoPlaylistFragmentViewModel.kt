@@ -41,41 +41,44 @@ class InfoPlaylistFragmentViewModel(
     private val playlistMutable = MutableLiveData<Playlist>().apply { }
     val playlist get() = playlistMutable
 
-    fun initDeletePlaylist(){
+    fun initDeletePlaylist() {
         val playlistId: Int = playlist.value?.id ?: -1
         callDeletePlaylist(playlistId)
         callDeleteAllTracks(playlistId)
     }
 
-    private fun callDeletePlaylist(playlistId: Int){
-        viewModelScope.launch{
+    private fun callDeletePlaylist(playlistId: Int) {
+        viewModelScope.launch {
             dbInteractor.deletePlaylist(playlistId)
         }
     }
 
-    private fun callDeleteAllTracks(playlistId: Int){
-        viewModelScope.launch{
+    private fun callDeleteAllTracks(playlistId: Int) {
+        viewModelScope.launch {
             dbInteractor.deleteAllTrackInPlaylist(playlistId)
         }
     }
 
-    fun callSharePlaylist(){
+    fun callSharePlaylist() {
         externalNavigatorInteractor.intentSend(generateSendMessage())
     }
 
-    private fun generateSendMessage(): String{
+    private fun generateSendMessage(): String {
         var message: String? = null
-        message = "${playlistMutable.value?.name}\n${playlistMutable.value?.description}"
+        message = "${playlistMutable.value?.name}"
+        if (playlistMutable.value?.description.isNullOrEmpty()) {
+            message += "\n${playlistMutable.value?.description}"
+        }
         val tracks = tracksInPlaylistMutable.value
         var count = 0
         if (tracks != null) {
-            for(track in tracks){
+            for (track in tracks) {
                 count++
                 val duration = track.trackTimeMillis?.let { Helpers.millisToString(it) }
                 message += "\n${count}. ${track.artistName} - ${track.trackName} ($duration)"
             }
         }
-        Log.d(TAG,message)
+        Log.d(TAG, message)
         return message
     }
 
@@ -143,8 +146,10 @@ class InfoPlaylistFragmentViewModel(
         viewModelScope.launch {
             dbInteractor
                 .tracksInPlaylists(playlistId = playlist.id)
-                .collect { tracks -> tracksResult(tracks)
-                    Log.d(TAG, "getTracksInPlaylist  coroutine: ${tracks.size}")}
+                .collect { tracks ->
+                    tracksResult(tracks)
+                    Log.d(TAG, "getTracksInPlaylist  coroutine: ${tracks.size}")
+                }
         }
     }
 

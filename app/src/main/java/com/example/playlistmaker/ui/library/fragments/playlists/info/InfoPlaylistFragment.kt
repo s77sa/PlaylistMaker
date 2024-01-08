@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -123,7 +124,20 @@ class InfoPlaylistFragment : Fragment() {
     }
 
     private fun callSharePlaylist() {
-        viewModel.callSharePlaylist()
+        if(checkExistsTracks()){
+            viewModel.callSharePlaylist()
+        }
+    }
+
+    private fun checkExistsTracks(): Boolean{
+        if(tracksList.size >0){
+            return true
+        }
+        else{
+            Toast.makeText(requireContext(), R.string.message_no_tracks_in_playlist, Toast.LENGTH_LONG).show()
+            bottomSheetBehaviorExtra.state = BottomSheetBehavior.STATE_HIDDEN
+            return false
+        }
     }
 
     private fun callMorePlaylist() {
