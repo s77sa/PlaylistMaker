@@ -15,9 +15,8 @@ class EditPlaylistFragmentViewModel(privateStorage: PrivateStorage, dbInteractor
     ) {
 
     private var playlistId: Int = 0
-    private var playlistUri: String? = null
 
-    private val mutablePlaylistData = MutableLiveData<Playlist>().apply { }
+    private val mutablePlaylistData = MutableLiveData<Playlist?>()
     val playlistData get() = mutablePlaylistData
 
     override fun savePlaylist() {
@@ -41,10 +40,6 @@ class EditPlaylistFragmentViewModel(privateStorage: PrivateStorage, dbInteractor
 
     fun setPlaylistId(id: Int) {
         playlistId = id
-    }
-
-    fun setPlaylistUri(value: String) {
-        playlistUri = value
     }
 
     fun setImageUri(stringUri: String) {

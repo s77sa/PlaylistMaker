@@ -35,10 +35,10 @@ class InfoPlaylistFragmentViewModel(
     private val playlistTrackCountMutable = MutableLiveData<String>().apply { }
     val playlistTrackCount get() = playlistTrackCountMutable
 
-    private val tracksInPlaylistMutable = MutableLiveData<List<Track>>().apply { }
+    private val tracksInPlaylistMutable = MutableLiveData<List<Track>>()
     val tracksInPlaylist get() = tracksInPlaylistMutable
 
-    private val playlistMutable = MutableLiveData<Playlist>().apply { }
+    private val playlistMutable = MutableLiveData<Playlist>()
     val playlist get() = playlistMutable
 
     fun initDeletePlaylist() {
@@ -114,6 +114,8 @@ class InfoPlaylistFragmentViewModel(
         playlistTrackCountMutable.value = getTrackCount()
         playlistTotalMinuteMutable.value = getTracksTotalTime()
     }
+
+
 
     private fun getTrackCount(): String {
         val count = tracksInPlaylistMutable.value?.size ?: 0

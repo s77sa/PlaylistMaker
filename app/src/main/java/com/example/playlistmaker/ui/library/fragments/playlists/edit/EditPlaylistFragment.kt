@@ -26,7 +26,9 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
 
     private fun initObserver() {
         viewModel.playlistData.observe(viewLifecycleOwner) {
-            (requireActivity() as PlaylistStorage).setPlaylist(it)
+            if (it != null) {
+                (requireActivity() as PlaylistStorage).setPlaylist(it)
+            }
         }
     }
 
