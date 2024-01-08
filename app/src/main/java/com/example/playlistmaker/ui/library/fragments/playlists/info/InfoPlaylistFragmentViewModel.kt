@@ -66,7 +66,7 @@ class InfoPlaylistFragmentViewModel(
     private fun generateSendMessage(): String {
         var message: String? = null
         message = "${playlistMutable.value?.name}"
-        if (playlistMutable.value?.description.isNullOrEmpty()) {
+        if (!playlistMutable.value?.description.isNullOrEmpty()) {
             message += "\n${playlistMutable.value?.description}"
         }
         val tracks = tracksInPlaylistMutable.value
@@ -94,10 +94,8 @@ class InfoPlaylistFragmentViewModel(
         viewModelScope.launch {
             if (playlist != null) {
                 track.trackId?.let { dbInteractor.deleteTrackFromPlaylist(playlist.id, it) }
+                loadPlaylistInformation(playlist)
             }
-        }
-        if (playlist != null) {
-            loadPlaylistInformation(playlist)
         }
     }
 
