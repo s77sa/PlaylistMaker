@@ -3,59 +3,66 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
+    android:layout_marginStart="4dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="4dp"
     android:background="?attr/colorSecondary"
     card_view:cardElevation="0dp">
 
-    <LinearLayout
-        android:layout_width="160dp"
-        android:layout_height="196dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="?attr/colorSecondary"
         android:orientation="vertical">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_playlist_art"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="0dp"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_playlist_stub_big"
             app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/PlaylistItemCorner" />
 
         <TextView
             android:id="@+id/tv_playlist_name"
             style="@style/TextViewPlaylistRecyclerView"
             android:layout_width="match_parent"
-            android:layout_marginTop="4dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_playlist_art"
             tools:text="@string/et_playlist_name" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_tracks_in_playlist_count"
+            style="@style/TextViewPlaylistRecyclerView"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_playlist_name"
+            tools:text="156" />
 
-            <TextView
-                android:id="@+id/tv_tracks_in_playlist_count"
-                style="@style/TextViewPlaylistRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                tools:text="156" />
+        <TextView
+            android:id="@+id/tv_text_tracks"
+            style="@style/TextViewPlaylistRecyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            app:layout_constraintStart_toEndOf="@+id/tv_tracks_in_playlist_count"
+            app:layout_constraintTop_toBottomOf="@+id/tv_playlist_name"
+            tools:text="треков" />
 
-            <TextView
-                android:id="@+id/tv_text_tracks"
-                style="@style/TextViewPlaylistRecyclerView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                tools:text="треков" />
 
-        </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
