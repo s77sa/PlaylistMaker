@@ -24,6 +24,7 @@
     <string name="library_tabLayout_playLists">Playlists</string>
     <string name="favorites_is_empty">Your library is empty</string>
     <string name="playlists_is_empty">You have not created\nany playlist</string>
+    <string name="tracks_in_playlists_is_empty">You haven\'t added\nany tracks</string>
     <string name="library_new_playlist">New playlist</string>
     <string name="favorites_add">Added to favorites</string>
     <string name="favorites_delete">Removed from favorites</string>
@@ -32,12 +33,25 @@
     <string name="et_playlist_desc">Description</string>
     <string name="btn_playlist_create">Create</string>
     <string name="message_save_playlist">Playlist \"[playlistName]\" created</string>
-    <string name="tv_playlist_tracks_text">tracks</string>
+    <string name="message_edit_playlist">Playlist \"[playlistName]\" saved</string>
+    <string name="tracks_text">tracks</string>
     <string name="bottom_sheet_add_to_playlist">Add to playlist</string>
     <string name="message_header_create_playlist">Finish creating a playlist?</string>
+    <string name="message_header_edit_playlist">Finish editing playlist?</string>
     <string name="message_body_create_playlist">All unsaved data will be lost</string>
     <string name="dialog_botton_cancel">Cancel</string>
     <string name="dialog_botton_complete">Complete</string>
     <string name="message_add_to_playlist">Added to playlist [playlistName]</string>
     <string name="message_track_exist_playlist">The track has already been added to the playlist [playlistName]</string>
+    <string name="minutes_text">minutes</string>
+    <string name="message_delete_track">Want to delete a track?</string>
+    <string name="message_dialog_negative">NO</string>
+    <string name="message_dialog_positive">YES</string>
+    <string name="extra_share">Share</string>
+    <string name="extra_edit">Edit information</string>
+    <string name="extra_delete_playlist">Delete playlist</string>
+    <string name="message_delete_playlist">Want to delete the playlist «[playlistName]»?</string>
+    <string name="tv_edit_playlist">Edit playlist</string>
+    <string name="btn_save">Save</string>
+    <string name="message_no_tracks_in_playlist">There are no tracks in the playlist that can be shared</string>
 </resources>

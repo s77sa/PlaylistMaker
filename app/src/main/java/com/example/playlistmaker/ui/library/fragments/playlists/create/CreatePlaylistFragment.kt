@@ -16,25 +16,25 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.FragmentCreatePlaylistBinding
+import com.example.playlistmaker.databinding.FragmentPlaylistCreateBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class CreatePlaylistFragment : Fragment() {
+open class CreatePlaylistFragment : Fragment() {
 
-    private var _binding: FragmentCreatePlaylistBinding? = null
-    private val binding get() = _binding!!
-    private val viewModel by viewModel<CreatePlaylistFragmentViewModel>()
+    private var _binding: FragmentPlaylistCreateBinding? = null
+    open val binding get() = _binding!!
+    open val viewModel by viewModel<CreatePlaylistFragmentViewModel>()
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
 
-    private lateinit var alertDialog: MaterialAlertDialogBuilder
+    open lateinit var alertDialog: MaterialAlertDialogBuilder
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCreatePlaylistBinding.inflate(inflater, container, false)
+        _binding = FragmentPlaylistCreateBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -75,13 +75,13 @@ class CreatePlaylistFragment : Fragment() {
         }
     }
 
-    private fun callSavePlaylist() {
+    open fun callSavePlaylist() {
         viewModel.savePlaylist()
         callMessageSavePlaylist()
         findNavController().popBackStack()
     }
 
-    private fun callMessageSavePlaylist() {
+    open fun callMessageSavePlaylist() {
         val message: String =
             getString(R.string.message_save_playlist).replace(
                 MESSAGE_REPLACE_PATTERN,
@@ -186,10 +186,10 @@ class CreatePlaylistFragment : Fragment() {
         alertDialog = MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
             .setTitle(R.string.message_header_create_playlist)
             .setMessage(R.string.message_body_create_playlist)
-            .setNeutralButton(R.string.dialog_botton_cancel) { dialog, whitch ->
+            .setNeutralButton(R.string.dialog_botton_cancel) { _, _ ->
 
             }
-            .setPositiveButton(R.string.dialog_botton_complete) { dialog, whitch ->
+            .setPositiveButton(R.string.dialog_botton_complete) { _, _ ->
                 findNavController().popBackStack()
             }
     }
@@ -206,7 +206,7 @@ class CreatePlaylistFragment : Fragment() {
 
     companion object {
         private val TAG = CreatePlaylistFragment::class.simpleName
-        private const val MESSAGE_REPLACE_PATTERN = "[playlistName]"
+        const val MESSAGE_REPLACE_PATTERN = "[playlistName]"
     }
 
 }

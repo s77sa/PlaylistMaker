@@ -79,5 +79,21 @@ class DbRepositoryImpl(
             .checkFavoritesTrack(trackDbConvertor.map(track).trackId) > 0
     }
 
+    override suspend fun deleteTrackFromPlaylist(playlistId: Int, trackId: Int) {
+        return appDatabase.tracksInPlaylistDao().deleteTrackFromPlaylist(playlistId, trackId)
+    }
+
+    override suspend fun deleteAllTrackInPlaylist(playlistId: Int){
+        return appDatabase.tracksInPlaylistDao().deleteAllTrackInPlaylist(playlistId)
+    }
+
+    override suspend fun deletePlaylist(id: Int){
+        return appDatabase.playlistsDao().deletePlaylist(id)
+    }
+
+    override suspend fun updatePlaylist(playlist: Playlist) {
+        val playlistsEntity = playlistDbConvertor.map(playlist)
+        appDatabase.playlistsDao().updatePlaylist(playlistsEntity)
+    }
 
 }

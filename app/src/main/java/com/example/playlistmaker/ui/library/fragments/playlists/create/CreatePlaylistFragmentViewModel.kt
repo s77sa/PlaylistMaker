@@ -5,30 +5,29 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.data.db.AppDatabase
-import com.example.playlistmaker.data.db.converters.PlaylistDbConvertor
-import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.data.privatestorage.PrivateStorage
 import com.example.playlistmaker.domain.db.DbInteractor
+import com.example.playlistmaker.domain.model.Playlist
 import kotlinx.coroutines.launch
 
 
-class CreatePlaylistFragmentViewModel(
+open class CreatePlaylistFragmentViewModel(
     private val privateStorage: PrivateStorage,
-    private val dbInteractor: DbInteractor
+    val dbInteractor: DbInteractor
 ) : ViewModel() {
 
-    private val mutableFileUri = MutableLiveData<Uri?>().apply {  }
-    val fileUri get() = mutableFileUri
+    private val mutableFileUri = MutableLiveData<Uri?>().apply { }
+    open val fileUri get() = mutableFileUri
 
     private val mutablePlaylistName = MutableLiveData<String>().apply { }
-    val playlistName get() = mutablePlaylistName
+    open val playlistName get() = mutablePlaylistName
 
     private val mutablePlaylistDescription = MutableLiveData<String>().apply { }
-    val playlistDescription get() = mutablePlaylistDescription
+    open val playlistDescription get() = mutablePlaylistDescription
 
-    fun savePlaylist() {
-        val playlist: Playlist = Playlist(
+
+    open fun savePlaylist() {
+        val playlist = Playlist(
             0,
             mutablePlaylistName.value!!,
             mutablePlaylistDescription.value,
@@ -40,27 +39,27 @@ class CreatePlaylistFragmentViewModel(
         }
     }
 
-    fun setPlayListName(text: String) {
+    open fun setPlayListName(text: String) {
         mutablePlaylistName.value = text
     }
 
-    fun setPlaylistDescription(text: String) {
+    open fun setPlaylistDescription(text: String) {
         mutablePlaylistDescription.value = text
     }
 
     fun saveImageToPrivateStorage(uri: Uri) {
         Log.d(TAG, uri.path.toString())
         val fileName = privateStorage.saveImage(uri)
-        mutableFileUri.value = loadImageToPrivateStorage(fileName)
-
+        val fullPath = loadImageFromPrivateStorage(fileName)
+        mutableFileUri.value = fullPath
     }
 
-    private fun loadImageToPrivateStorage(fileName: String): Uri {
+    private fun loadImageFromPrivateStorage(fileName: String): Uri {
         return privateStorage.loadImage(fileName)
     }
 
     companion object {
-        private val TAG = CreatePlaylistFragmentViewModel::class.simpleName
+        val TAG = CreatePlaylistFragmentViewModel::class.simpleName
     }
 
 }

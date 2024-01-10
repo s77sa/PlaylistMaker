@@ -1,6 +1,8 @@
 package com.example.playlistmaker.ui.search.recyclerview
 
 import android.view.LayoutInflater
+import android.view.View
+import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
@@ -22,6 +24,7 @@ class TrackListAdapter(
     private var isClickAllowed = true
     private var onClickJob: Job? = null
     private var onClickListener: OnClickListener? = null
+    private var onLongClickListener: OnLongClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.search_item, parent, false)
@@ -33,8 +36,11 @@ class TrackListAdapter(
         holder.bind(item)
         holder.itemView.setOnClickListener {
             if (onClickListener != null && clickDebounce()) {
-                onClickListener!!.onClick(position, item)
+                onClickListener?.onClick(position, item)
             }
+        }
+        holder.itemView.setOnLongClickListener{
+            onLongClickListener?.onLongClick(position,item) ?: false
         }
     }
 
@@ -46,12 +52,19 @@ class TrackListAdapter(
         this.onClickListener = onClickListener
     }
 
+    fun onLongClickListener(onLongClickListener: OnLongClickListener){
+        this.onLongClickListener = onLongClickListener
+    }
+
     interface OnClickListener {
         fun onClick(position: Int, track: Track)
     }
 
+    interface OnLongClickListener {
+        fun onLongClick(position: Int, track: Track): Boolean
+    }
+
     private fun clickDebounce(): Boolean {
-        onClickJob?.cancel()
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
@@ -63,3 +76,4 @@ class TrackListAdapter(
         return current
     }
 }
+

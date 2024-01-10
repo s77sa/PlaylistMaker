@@ -62,7 +62,6 @@ class PlayerFragment : Fragment() {
         viewModel.saveValues()
         viewModel.preparePlayer()
         viewModel.checkFavoriteTrackJob()
-
     }
 
     override fun onDestroyView() {
@@ -80,7 +79,7 @@ class PlayerFragment : Fragment() {
         playlistListAdapter = PlaylistListAdapter(
             playlistList,
             viewLifecycleOwner.lifecycleScope,
-            R.layout.playlist_bottom_sheet_item
+            R.layout.bottom_sheet_list_playlist_item
         )
         rvPlaylist.adapter = playlistListAdapter
     }
@@ -199,7 +198,7 @@ class PlayerFragment : Fragment() {
     }
 
     private fun clickListenersInit() {
-        binding.ivPlayerBack.setOnClickListener { finishActivity() }
+        binding.ivPlayerBack.setOnClickListener { finishFragment() }
         binding.ivPlay.setOnClickListener { startPlaying() }
         binding.ivFavoriteBorder.setOnClickListener { onClickFavorites() }
         binding.ivPlaylist.setOnClickListener { showBottomSheet() }
@@ -236,7 +235,7 @@ class PlayerFragment : Fragment() {
         viewModel.playbackControl()
     }
 
-    private fun finishActivity() {
+    private fun finishFragment() {
         findNavController().popBackStack()
     }
 

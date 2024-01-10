@@ -24,4 +24,12 @@ interface DbInteractor {
     suspend fun deleteFavoritesTrack(track: Track)
 
     suspend fun checkFavoritesTrack(track: Track): Boolean
+
+    suspend fun deleteTrackFromPlaylist(playlistId: Int, trackId: Int)
+
+    suspend fun deleteAllTrackInPlaylist(playlistId: Int)
+
+    suspend fun deletePlaylist(id: Int)
+
+    suspend fun updatePlaylist(playlist: Playlist)
 }

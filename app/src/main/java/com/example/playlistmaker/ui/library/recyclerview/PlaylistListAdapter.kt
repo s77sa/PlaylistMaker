@@ -1,5 +1,6 @@
 package com.example.playlistmaker.ui.library.recyclerview
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -32,7 +33,7 @@ class PlaylistListAdapter(
         holder.bind(item)
         holder.itemView.setOnClickListener {
             if (onClickListener != null && clickDebounce()) {
-                onClickListener!!.onClick(position, item)
+                onClickListener?.onClick(position, item)
             }
         }
     }
@@ -64,5 +65,6 @@ class PlaylistListAdapter(
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private val TAG = PlaylistListAdapter::class.java.simpleName
     }
 }

@@ -1,7 +1,7 @@
 package com.example.playlistmaker.domain.db
 
-import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.domain.model.Playlist
+import com.example.playlistmaker.domain.model.Track
 import kotlinx.coroutines.flow.Flow
 
 interface DbRepository {
@@ -25,5 +25,13 @@ interface DbRepository {
     suspend fun deleteFavoritesTrack(track: Track)
 
     suspend fun checkFavoritesTrack(track: Track): Boolean
+
+    suspend fun deleteTrackFromPlaylist(playlistId: Int, trackId: Int)
+
+    suspend fun deleteAllTrackInPlaylist(playlistId: Int)
+
+    suspend fun deletePlaylist(id: Int)
+
+    suspend fun updatePlaylist(playlist: Playlist)
 
 }

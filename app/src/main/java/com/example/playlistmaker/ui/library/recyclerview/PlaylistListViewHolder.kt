@@ -4,11 +4,10 @@ import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.getString
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.model.Playlist
-import java.util.Locale
+import com.example.playlistmaker.ui.utils.Helpers
 
 class PlaylistListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -24,36 +23,12 @@ class PlaylistListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         }
         playlistName.text = item.name
         playlistTracksCount.text = item.tracksCount.toString()
-        playlistTracksText.text = numeralDeclens(item.tracksCount)
+        playlistTracksText.text =
+            Helpers.tracksDeclension(playlistTracksText.context, item.tracksCount)
     }
 
     private fun getUri(fileName: String): Uri {
         return Uri.parse(fileName)
-    }
-
-    private fun numeralDeclens(count: Int): String {
-        var text: String = getString(itemView.context, R.string.tv_playlist_tracks_text)
-        val lastInt = (count.toString()[count.toString().length - 1]).digitToInt()
-        if (Locale.getDefault().language == Locale("ru").language) {
-            text = when (lastInt) {
-                1 -> {
-                    text.removeRange(4, text.length)
-                }
-
-                in 2..4 -> {
-                    text.removeRange(5, text.length)
-                }
-
-                else -> {
-                    text.removeRange(4, text.length - 2)
-                }
-            }
-        } else {
-            if (lastInt == 1) {
-                text = text.removeRange(5, text.length)
-            }
-        }
-        return text
     }
 
     companion object

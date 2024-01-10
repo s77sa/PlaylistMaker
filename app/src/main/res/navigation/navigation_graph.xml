@@ -24,10 +24,19 @@
         android:id="@+id/createPlaylistFragment"
         android:name="com.example.playlistmaker.ui.library.fragments.playlists.create.CreatePlaylistFragment"
         android:label="fragment_create_playlist"
-        tools:layout="@layout/fragment_create_playlist" />
+        tools:layout="@layout/fragment_playlist_create" />
     <fragment
         android:id="@+id/playerFragment"
         android:name="com.example.playlistmaker.ui.player.PlayerFragment"
         android:label="fragment_player"
         tools:layout="@layout/fragment_player" />
+    <fragment
+        android:id="@+id/infoPlaylistFragment"
+        android:name="com.example.playlistmaker.ui.library.fragments.playlists.info.InfoPlaylistFragment"
+        android:label="fragment_playlist_info"
+        tools:layout="@layout/fragment_playlist_info" />
+    <fragment
+        android:id="@+id/editPlaylistFragment"
+        android:name="com.example.playlistmaker.ui.library.fragments.playlists.edit.EditPlaylistFragment"
+        android:label="EditPlaylistFragment" />
 </navigation>
